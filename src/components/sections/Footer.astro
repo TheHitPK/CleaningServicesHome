@@ -1,0 +1,38 @@
+---
+import Logo from '../ui/Logo.astro';
+import Icon from '../icons/Icon.astro';
+import { site, nav, services, serviceAreas, tel } from '../../data/site';
+import { footer } from '../../data/content';
+const link = 'inline-flex min-h-8 items-center gap-2 transition-colors duration-150 hover:text-accent';
+const title = 'mb-4 text-h4 text-white';
+---
+<footer class="bg-primary-900 pt-20 pb-[calc(2rem+56px)] text-sm text-white/72 lg:pb-8">
+  <div class="container-site">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1.2fr_1.3fr] lg:gap-12">
+      <div class="grid content-start justify-items-start gap-3">
+        <Logo variant="light" />
+        <p class="my-2 max-w-[34ch]">{footer.about}</p>
+        <a class={link} href={tel}><Icon name="phone" size={16} class="text-accent" /> {site.phone.display}</a>
+        <a class={link} href={`mailto:${site.email}`}><Icon name="mail" size={16} class="text-accent" /> {site.email}</a>
+      </div>
+      <nav aria-labelledby="ft-pages">
+        <h2 class={title} id="ft-pages">Pages</h2>
+        <ul class="grid gap-1">{nav.map((n) => <li><a class={link} href={n.href}>{n.label}</a></li>)}</ul>
+      </nav>
+      <nav aria-labelledby="ft-services">
+        <h2 class={title} id="ft-services">Services</h2>
+        <ul class="grid gap-1">{services.map((s) => <li><a class={link} href="#services">{s.name}</a></li>)}</ul>
+      </nav>
+      <div>
+        <h2 class={title}>Service Areas</h2>
+        <p>{serviceAreas.join(', ')}, {site.region}.</p>
+      </div>
+    </div>
+
+    <div class="mt-16 flex flex-wrap justify-between gap-x-8 gap-y-3 border-t border-white/12 pt-6 text-[.8125rem]">
+      <span>© {new Date().getFullYear()} {site.legalName}. All rights reserved.</span>
+      <span>Call or text <a class="font-bold text-accent hover:underline" href={tel}>{site.phone.display}</a></span>
+      <span>{footer.bottomNote}</span>
+    </div>
+  </div>
+</footer>

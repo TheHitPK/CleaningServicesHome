@@ -1,0 +1,52 @@
+---
+// Input / select / textarea con label visible. DESIGN_SYSTEM §2.4
+interface Props {
+  name: string;
+  label: string;
+  id: string;
+  as?: 'input' | 'select' | 'textarea';
+  type?: 'text' | 'tel' | 'email' | 'date';
+  placeholder?: string;
+  required?: boolean;
+  options?: readonly string[];
+  hint?: string;
+  autocomplete?: string;
+  inputmode?: 'text' | 'numeric' | 'tel' | 'email';
+  pattern?: string;
+  maxlength?: number;
+  /** Fondo blanco (para formularios sobre bg-soft) */
+  onSoft?: boolean;
+  class?: string;
+}
+
+const {
+  name, label, id, as = 'input', type = 'text', placeholder, required = false,
+  options = [], hint, autocomplete, inputmode, pattern, maxlength, onSoft = false, class: className,
+} = Astro.props;
+
+const hintId = hint ? `${id}-hint` : undefined;
+const control = [
+  'w-full min-h-[50px] rounded-sm border px-[15px] py-[13px] text-base leading-snug text-primary',
+  'placeholder:text-muted placeholder:opacity-100',
+  'transition-[border-color,background-color,box-shadow] duration-150',
+  'hover:border-sky focus:border-deep focus:bg-white focus:outline-none focus:ring-3 focus:ring-sky/35',
+  'user-invalid:border-error',
+  onSoft ? 'bg-white border-line' : 'bg-input border-cool',
+];
+const common = { id, name, required, autocomplete, 'aria-describedby': hintId };
+---
+<div class:list={['grid gap-2', className]}>
+  <label class="text-xs font-bold uppercase leading-tight tracking-[.06em] text-primary" for={id}>
+    {label}{required && <span class="text-deep" aria-hidden="true"> *</span>}
+  </label>
+  {as === 'select' ? (
+    <select {...common} class:list={[control, 'select-chevron cursor-pointer appearance-none pr-[42px]']}>
+      {options.map((o) => <option>{o}</option>)}
+    </select>
+  ) : as === 'textarea' ? (
+    <textarea {...common} class:list={[control, 'min-h-[120px] resize-y']} placeholder={placeholder} rows={4} maxlength={maxlength}></textarea>
+  ) : (
+    <input {...common} class:list={control} type={type} placeholder={placeholder} inputmode={inputmode} pattern={pattern} maxlength={maxlength} />
+  )}
+  {hint && <p class="text-sm text-muted" id={hintId}>{hint}</p>}
+</div>

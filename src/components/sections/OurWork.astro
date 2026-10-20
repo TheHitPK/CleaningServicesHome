@@ -1,0 +1,72 @@
+---
+// Grid filtrable. Sin JS se ven todos los proyectos y los filtros quedan ocultos.
+import { Image } from 'astro:assets';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { portfolio } from '../../data/content';
+---
+<section class="section" id="our-work" aria-labelledby="work-title" data-filter-root>
+  <div class="container-site">
+    <SectionHeading eyebrow={portfolio.eyebrow} title={portfolio.title} lead={portfolio.lead} layout="centered" id="work-title" />
+
+    <div
+      class="no-scrollbar mb-10 flex gap-2 overflow-x-auto p-1 md:flex-wrap md:justify-center"
+      role="group" aria-label="Filter projects by service" hidden data-filters
+    >
+      {portfolio.filters.map((f, i) => (
+        <button
+          class="min-h-11 shrink-0 rounded-sm border border-line bg-white px-5 text-sm font-semibold text-deep transition-colors duration-150
+                 hover:border-sky aria-pressed:border-deep aria-pressed:bg-deep aria-pressed:text-white"
+          type="button" data-filter={f.id} aria-pressed={i === 0 ? 'true' : 'false'}
+        >{f.label}</button>
+      ))}
+    </div>
+    <p class="sr-only" aria-live="polite" data-filter-status></p>
+
+    <!-- PLACEHOLDER: fotos ilustrativas, reemplazar por trabajos reales -->
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {portfolio.items.map((p) => (
+        <li
+          class="overflow-hidden rounded-lg border border-line bg-white shadow-sm transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-lg"
+          data-type={p.type} data-placeholder
+        >
+          <div class="aspect-4/3 overflow-hidden bg-cool">
+            <Image
+              src={p.image} alt={`Sample visual for ${p.title}`}
+              widths={[360, 480, 640, 800]} sizes="(min-width: 1200px) 384px, (min-width: 960px) calc(33vw - 40px), (min-width: 540px) calc(50vw - 40px), calc(100vw - 40px)"
+              loading="lazy" decoding="async" quality={65} class="size-full object-cover"
+            />
+          </div>
+          <div class="px-6 pt-5 pb-6">
+            <h3 class="mb-1 text-h4">{p.title}</h3>
+            <p class="text-sm text-muted">{portfolio.caption}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-6 text-sm text-muted">{portfolio.note}</p>
+  </div>
+</section>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('[data-filter-root]')) {
+    const bar = root.querySelector<HTMLElement>('[data-filters]')!;
+    const buttons = [...bar.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    const items = [...root.querySelectorAll<HTMLElement>('[data-type]')];
+    const status = root.querySelector<HTMLElement>('[data-filter-status]')!;
+    bar.hidden = false;
+
+    bar.addEventListener('click', (e) => {
+      const btn = (e.target as Element).closest<HTMLButtonElement>('[data-filter]');
+      if (!btn) return;
+      const filter = btn.dataset.filter;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      let shown = 0;
+      for (const item of items) {
+        const visible = filter === 'all' || item.dataset.type === filter;
+        item.hidden = !visible;
+        if (visible) shown++;
+      }
+      status.textContent = `Showing ${shown} project${shown === 1 ? '' : 's'}`;
+    });
+  }
+</script>

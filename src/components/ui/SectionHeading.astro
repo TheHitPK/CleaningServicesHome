@@ -1,0 +1,39 @@
+---
+// Eyebrow + H2 + lead. Layouts: stacked | centered | split. DESIGN_SYSTEM §2.3
+import Eyebrow from './Eyebrow.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  layout?: 'stacked' | 'centered' | 'split';
+  dark?: boolean;
+  id?: string;
+  class?: string;
+}
+
+const { eyebrow, title, lead, layout = 'stacked', dark = false, id, class: className } = Astro.props;
+const centered = layout === 'centered';
+const split = layout === 'split';
+const leadClass = ['text-lead max-w-[60ch]', dark && 'text-white/78'];
+---
+<header
+  class:list={[
+    'mb-12',
+    centered && 'text-center',
+    split && 'grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-end lg:gap-16',
+    className,
+  ]}
+>
+  <div class:list={['grid gap-4', centered ? 'mx-auto max-w-[680px] justify-items-center' : 'justify-items-start']}>
+    {eyebrow && <Eyebrow center={centered} dark={dark}>{eyebrow}</Eyebrow>}
+    <h2 id={id} class:list={[centered ? 'max-w-[22ch]' : 'max-w-[18ch]', dark && 'text-white']}>{title}</h2>
+    {lead && !split && <p class:list={[leadClass, 'mt-1']}>{lead}</p>}
+  </div>
+  {split && (
+    <div class="grid justify-items-start gap-5">
+      {lead && <p class:list={leadClass}>{lead}</p>}
+      <slot name="aside" />
+    </div>
+  )}
+</header>

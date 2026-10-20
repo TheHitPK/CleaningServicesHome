@@ -1,0 +1,59 @@
+---
+import '../styles/global.css';
+import manropeUrl from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+import dmSansUrl from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
+import { site, serviceAreas } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// Solo subset latin: un archivo por familia. Fallback con métricas ajustadas para reducir el salto (CLS).
+const fontFaces = `
+@font-face{font-family:'Manrope Variable';font-style:normal;font-display:swap;font-weight:200 800;src:url(${manropeUrl}) format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2199,U+2212,U+2215}
+@font-face{font-family:'DM Sans Variable';font-style:normal;font-display:swap;font-weight:100 1000;src:url(${dmSansUrl}) format('woff2-variations');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2190-2199,U+2212,U+2215}
+`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HouseCleaningService',
+  name: site.legalName,
+  telephone: site.phone.e164,
+  email: site.email,
+  url: Astro.site?.toString(),
+  areaServed: serviceAreas.map((city) => ({ '@type': 'City', name: `${city}, AZ` })),
+  address: { '@type': 'PostalAddress', addressRegion: 'AZ', addressCountry: 'US' },
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#173A5A" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preload" href={manropeUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={dmSansUrl} as="font" type="font/woff2" crossorigin />
+    <style is:inline set:html={fontFaces} />
+    <slot name="head" />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[1000] focus:rounded-sm focus:bg-primary focus:px-5 focus:py-3 focus:font-bold focus:text-white" href="#main">Skip to content</a>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,37 @@
+---
+// Mensaje del fundador + contadores solapados (estructura Moppers).
+import Eyebrow from '../ui/Eyebrow.astro';
+import Icon from '../icons/Icon.astro';
+import { founder, counters } from '../../data/content';
+---
+<section
+  class="bg-[radial-gradient(circle_at_15%_20%,rgb(122_174_219/.18),transparent_40%),linear-gradient(120deg,var(--color-primary),var(--color-deep))] pt-(--section-y) pb-[calc(var(--section-y)+4rem)] text-center text-white"
+  aria-labelledby="founder-title"
+>
+  <div class="container-site grid max-w-[880px]! justify-items-center gap-8">
+    <Eyebrow center dark>{founder.eyebrow}</Eyebrow>
+    <h2 class="sr-only" id="founder-title">{founder.eyebrow}</h2>
+    <!-- PLACEHOLDER: cita y nombre reales del fundador -->
+    <figure class="grid justify-items-center gap-6" data-placeholder>
+      <Icon name="quote" size={40} class="text-accent" />
+      <blockquote>
+        <p class="font-display text-[clamp(1.25rem,1rem+1.1vw,1.875rem)] leading-normal tracking-[-0.01em] text-white">{founder.quote}</p>
+      </blockquote>
+      <figcaption class="text-sm text-white/78"><strong class="text-white">{founder.name}</strong> · {founder.role}</figcaption>
+    </figure>
+  </div>
+</section>
+
+<div class="container-site relative z-1 -mt-16">
+  <ul class="grid grid-cols-2 rounded-lg bg-white shadow-lg md:grid-cols-4" aria-label="Company facts">
+    {counters.map((c) => (
+      <li
+        class="grid justify-items-center gap-2 px-4 py-8 text-center odd:border-r odd:border-line nth-[-n+2]:border-b nth-[-n+2]:border-line md:border-b-0! md:py-10 md:not-last:border-r md:not-last:border-line"
+        data-placeholder={c.placeholder ? '' : undefined}
+      >
+        <strong class="font-display text-h2 leading-none font-extrabold text-primary">{c.value}</strong>
+        <span class="text-xs leading-tight font-bold tracking-[.12em] text-muted uppercase">{c.label}</span>
+      </li>
+    ))}
+  </ul>
+</div>

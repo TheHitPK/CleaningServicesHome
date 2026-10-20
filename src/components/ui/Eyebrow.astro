@@ -1,0 +1,20 @@
+---
+// Eyebrow estilo Moppers: línea + texto en mayúsculas. DESIGN_SYSTEM §2.2
+// Las clases van completas y literales para que Tailwind las detecte.
+interface Props {
+  center?: boolean;
+  /** Sobre fondo oscuro: texto amarillo y línea blanca */
+  dark?: boolean;
+  class?: string;
+}
+const { center = false, dark = false, class: className } = Astro.props;
+---
+<span
+  class:list={[
+    'inline-flex items-center gap-3 text-eyebrow font-bold uppercase tracking-eyebrow',
+    "before:h-0.5 before:w-10 before:shrink-0 before:content-['']",
+    center && "after:h-0.5 after:w-10 after:shrink-0 after:content-['']",
+    dark ? 'text-accent before:bg-white/50 after:bg-white/50' : 'text-deep before:bg-accent after:bg-accent',
+    className,
+  ]}
+><slot /></span>

@@ -1,0 +1,33 @@
+---
+// PLACEHOLDER: testimonios en lorem hasta tener reseñas reales y autorizadas.
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../icons/Icon.astro';
+import { testimonials } from '../../data/content';
+---
+<section class="section bg-soft" aria-labelledby="testi-title">
+  <div class="container-site">
+    <SectionHeading eyebrow={testimonials.eyebrow} title={testimonials.title} layout="centered" id="testi-title" />
+    <!-- Mobile: scroll-snap horizontal (sin librería de carrusel). Desktop: grid de 3. -->
+    <ul class="no-scrollbar -mx-(--gutter) grid auto-cols-[min(86%,380px)] grid-flow-col snap-x snap-mandatory gap-6 overflow-x-auto px-(--gutter) pt-2 pb-6
+               lg:mx-0 lg:grid-flow-row lg:grid-cols-3 lg:overflow-visible lg:px-0">
+      {testimonials.items.map((t) => (
+        <li class="snap-center rounded-lg border border-line bg-white p-8 shadow-sm" data-placeholder>
+          <figure class="grid h-full gap-5">
+            <div class="flex gap-0.5 text-accent" aria-hidden="true">
+              {Array.from({ length: 5 }, () => <Icon name="sparkle" size={16} />)}
+            </div>
+            <blockquote><p class="text-lead text-primary">{t.quote}</p></blockquote>
+            <figcaption class="mt-auto flex items-center gap-3">
+              <span class="grid size-12 shrink-0 place-items-center rounded-full bg-pale font-display text-sm font-extrabold text-primary" aria-hidden="true">{t.initials}</span>
+              <span>
+                <strong class="block text-primary">{t.name}</strong>
+                <small class="text-sm text-muted">{t.place}</small>
+              </span>
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-6 text-center text-sm text-muted">{testimonials.note}</p>
+  </div>
+</section>

@@ -1,0 +1,65 @@
+---
+import Logo from '../ui/Logo.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../icons/Icon.astro';
+import { nav, sms } from '../../data/site';
+---
+<div class="absolute top-[60px] size-px" aria-hidden="true" data-header-sentinel></div>
+<header class="group/header sticky top-0 z-100 bg-cream transition-shadow data-[scrolled]:shadow-[0_2px_15px_rgb(23_58_90/.08)]" data-header>
+  <div class="container-site flex h-(--header-h) items-center justify-between gap-6">
+    <Logo />
+
+    <nav
+      id="site-nav"
+      aria-label="Main"
+      class="max-lg:absolute max-lg:inset-x-0 max-lg:top-(--header-h) max-lg:hidden max-lg:border-t max-lg:border-line max-lg:bg-white max-lg:shadow-md max-lg:data-[open]:block"
+      data-nav
+    >
+      <ul class="flex gap-8 max-lg:flex-col max-lg:gap-0 max-lg:px-(--gutter) max-lg:pt-3 max-lg:pb-6">
+        {nav.map((item) => (
+          <li>
+            <a
+              class="relative inline-flex min-h-11 items-center text-sm font-semibold text-primary transition-colors hover:text-deep
+                     after:absolute after:inset-x-0 after:bottom-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:content-[''] hover:after:scale-x-100
+                     max-lg:min-h-[52px] max-lg:w-full max-lg:border-b max-lg:border-line max-lg:text-[1.0625rem] max-lg:after:hidden"
+              href={item.href}
+            >{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <Button class="max-lg:hidden" href={sms('Hi Cleaning 4 You! I would like a quote.')} icon="arrow-up-right">
+      Text for a quote
+    </Button>
+
+    <button
+      class="group/toggle grid size-11 place-items-center rounded-sm text-primary lg:hidden"
+      type="button" aria-controls="site-nav" aria-expanded="false" data-nav-toggle
+    >
+      <span class="sr-only">Open menu</span>
+      <Icon name="menu" class="group-aria-expanded/toggle:hidden" />
+      <Icon name="close" class="hidden group-aria-expanded/toggle:block" />
+    </button>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]')!;
+  const sentinel = document.querySelector('[data-header-sentinel]')!;
+  new IntersectionObserver(([e]) => header.toggleAttribute('data-scrolled', !e.isIntersecting)).observe(sentinel);
+
+  const toggle = header.querySelector<HTMLButtonElement>('[data-nav-toggle]')!;
+  const nav = header.querySelector<HTMLElement>('[data-nav]')!;
+  const label = toggle.querySelector('.sr-only')!;
+  const setOpen = (open: boolean): void => {
+    nav.toggleAttribute('data-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    label.textContent = open ? 'Close menu' : 'Open menu';
+  };
+  toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  nav.addEventListener('click', (e) => { if ((e.target as Element).closest('a')) setOpen(false); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.hasAttribute('data-open')) { setOpen(false); toggle.focus(); }
+  });
+</script>

@@ -1,0 +1,24 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import { process } from '../../data/content';
+---
+<section class="section bg-soft" aria-labelledby="steps-title">
+  <div class="container-site">
+    <SectionHeading eyebrow={process.eyebrow} title={process.title} lead={process.lead} layout="centered" id="steps-title" />
+    <ol class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {process.steps.map((step, i) => (
+        <li class="relative grid content-start gap-3 rounded-lg border border-line bg-white px-8 py-10 shadow-sm transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-lg
+                   lg:not-last:after:absolute lg:not-last:after:top-16 lg:not-last:after:-right-6 lg:not-last:after:w-6 lg:not-last:after:border-t-2 lg:not-last:after:border-dashed lg:not-last:after:border-sky lg:not-last:after:content-['']">
+          <!-- Número decorativo (amarillo sobre blanco, ref. 05_process) vía ::before: el paso ya se anuncia en el h3 -->
+          <span
+            class="mb-3 font-display text-5xl leading-none font-extrabold tracking-[-0.02em] text-accent before:content-[attr(data-num)]"
+            data-num={String(i + 1).padStart(2, '0')}
+            aria-hidden="true"
+          ></span>
+          <h3><span class="sr-only">Step {i + 1}: </span>{step.title}</h3>
+          <p class="text-muted">{step.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

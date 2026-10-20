@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopBar from '../components/sections/TopBar.astro';
+import Header from '../components/sections/Header.astro';
+import Hero from '../components/sections/Hero.astro';
+import About from '../components/sections/About.astro';
+import HowItWorks from '../components/sections/HowItWorks.astro';
+import Services from '../components/sections/Services.astro';
+import ServiceTabs from '../components/sections/ServiceTabs.astro';
+import Founder from '../components/sections/Founder.astro';
+import WhyUs from '../components/sections/WhyUs.astro';
+import Testimonials from '../components/sections/Testimonials.astro';
+import OurWork from '../components/sections/OurWork.astro';
+import ServiceAreas from '../components/sections/ServiceAreas.astro';
+import Contact from '../components/sections/Contact.astro';
+import Footer from '../components/sections/Footer.astro';
+import MobileCta from '../components/sections/MobileCta.astro';
+---
+<BaseLayout
+  title="Cleaning 4 You | Professional Cleaning Services in Arizona"
+  description="Move-out, post-construction, residential, commercial and window cleaning across Phoenix, Scottsdale, Tempe and more. Call or text (602) 396-3955."
+>
+  <TopBar />
+  <Header />
+  <main id="main">
+    <Hero />
+    <About />
+    <HowItWorks />
+    <Services />
+    <ServiceTabs />
+    <Founder />
+    <WhyUs />
+    <Testimonials />
+    <OurWork />
+    <ServiceAreas />
+    <Contact />
+  </main>
+  <Footer />
+  <MobileCta />
+</BaseLayout>

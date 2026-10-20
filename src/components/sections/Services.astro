@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../icons/Icon.astro';
+import { services, sms } from '../../data/site';
+import { servicesSection } from '../../data/content';
+---
+<section class="section" id="services" aria-labelledby="services-title">
+  <div class="container-site">
+    <SectionHeading eyebrow={servicesSection.eyebrow} title={servicesSection.title} lead={servicesSection.lead} layout="split" id="services-title">
+      <Button slot="aside" variant="secondary" href="#contact" icon="arrow">{servicesSection.cta}</Button>
+    </SectionHeading>
+
+    <!-- 5 cards: grid de 3 con la última fila centrada (DESIGN_SYSTEM §4.3) -->
+    <ul class="flex flex-wrap justify-center gap-6">
+      {services.map((s) => (
+        <li
+          class:list={[
+            'group/card relative flex basis-full flex-col overflow-hidden rounded-lg border border-line bg-white shadow-sm',
+            'transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-lg',
+            'sm:max-w-[calc((100%-1.5rem)/2)] sm:basis-[calc((100%-1.5rem)/2)]',
+            'lg:max-w-[calc((100%-3rem)/3)] lg:basis-[calc((100%-3rem)/3)]',
+            "before:absolute before:inset-x-0 before:top-0 before:z-1 before:h-1 before:origin-left before:bg-accent before:transition-transform before:duration-400 before:content-['']",
+            s.featured ? 'before:scale-x-100' : 'before:scale-x-0 hover:before:scale-x-100',
+          ]}
+        >
+          <div class="aspect-16/10 overflow-hidden bg-cool">
+            <Image
+              src={s.image} alt={`Illustrative photo for ${s.name}`}
+              widths={[360, 480, 640, 800]} sizes="(min-width: 1200px) 384px, (min-width: 960px) calc(33vw - 40px), (min-width: 540px) calc(50vw - 40px), calc(100vw - 40px)"
+              loading="lazy" decoding="async" quality={65}
+              class="size-full object-cover transition-transform duration-400 group-hover/card:scale-[1.04]"
+            />
+          </div>
+          <div class="grid flex-1 content-start gap-3 px-6 pt-6 pb-8">
+            {s.featured && <span class="text-[.6875rem] leading-none font-bold tracking-[.12em] text-accent-ink uppercase">Popular service</span>}
+            <h3>{s.name}</h3>
+            <p class="text-[.9375rem] text-muted">{servicesSection.descriptions[s.id]}</p>
+            <a
+              class="group/link mt-auto inline-flex min-h-11 items-center gap-2 text-btn font-bold tracking-btn text-deep uppercase"
+              href={sms(`Hi Cleaning 4 You! I would like a quote for ${s.name}.`)}
+            >
+              Request a quote <Icon name="arrow" size={16} class="transition-transform group-hover/link:translate-x-[3px]" />
+            </a>
+          </div>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-6 text-sm text-muted">Photography is illustrative and does not represent verified Cleaning 4 You client projects.</p>
+  </div>
+</section>

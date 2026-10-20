@@ -1,0 +1,38 @@
+---
+import { Image } from 'astro:assets';
+import team from '../../assets/images/team.jpg';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../icons/Icon.astro';
+import { whyUs } from '../../data/content';
+---
+<section class="section" aria-labelledby="why-title">
+  <div class="container-site grid items-center gap-12 lg:grid-cols-[1.15fr_.85fr] lg:gap-16">
+    <div class="grid justify-items-start">
+      <SectionHeading eyebrow={whyUs.eyebrow} title={whyUs.title} lead={whyUs.lead} id="why-title" class="mb-10!" />
+      <ul class="mb-10 grid gap-6 sm:grid-cols-2">
+        {whyUs.features.map((f) => (
+          <li class="flex items-start gap-4">
+            <span class="grid size-12 shrink-0 place-items-center rounded-full bg-accent-100 text-primary">
+              <Icon name={f.icon} size={24} />
+            </span>
+            <div>
+              <h3 class="mb-1 text-h4">{f.title}</h3>
+              <p class="text-sm leading-relaxed text-muted">{f.text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <Button href="#home" icon="arrow">{whyUs.cta}</Button>
+    </div>
+    <!-- Puntos decorativos en CSS (sin imagen) -->
+    <div class="relative isolate aspect-4/5 lg:aspect-auto lg:h-[560px]
+                after:absolute after:-right-4 after:-bottom-4 after:-z-1 after:size-24 after:bg-[radial-gradient(var(--color-accent)_1.4px,transparent_1.4px)] after:bg-size-[12px_12px] after:opacity-70 after:content-['']">
+      <Image
+        src={team} alt="Illustrative photo of a professional cleaner at work"
+        widths={[480, 720, 960]} sizes="(min-width: 960px) 480px, 100vw"
+        loading="lazy" decoding="async" quality={65} class="size-full rounded-lg object-cover"
+      />
+    </div>
+  </div>
+</section>

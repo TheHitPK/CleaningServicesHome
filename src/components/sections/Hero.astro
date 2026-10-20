@@ -1,0 +1,44 @@
+---
+// Hero con la estructura de Moppers v2: foto + overlay, ondas SVG y booking card montada sobre la onda.
+// Ver docs/DESIGN_SYSTEM.md §3.
+import { Picture } from 'astro:assets';
+import heroImg from '../../assets/images/hero.jpg';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Button from '../ui/Button.astro';
+import BookingCard from './BookingCard.astro';
+import { hero } from '../../data/content';
+---
+<section class="relative isolate scroll-mt-(--header-h) text-white" id="home" aria-labelledby="hero-title">
+  <div class="absolute inset-0 -z-10 overflow-hidden bg-primary" aria-hidden="true">
+    <Picture
+      src={heroImg}
+      formats={['avif', 'webp']}
+      widths={[640, 960, 1280, 1600, 1920]}
+      sizes="100vw"
+      alt=""
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      quality={50}
+      class="size-full object-cover object-[70%_40%]"
+      pictureAttributes={{ class: 'block size-full' }}
+    />
+    <div class="absolute inset-0 bg-(image:--hero-overlay-mobile) lg:bg-(image:--hero-overlay)"></div>
+    <svg class="absolute -bottom-px left-0 h-[clamp(60px,9vw,150px)] w-full" viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false">
+      <path class="fill-white opacity-35" d="M0 58C210 132 430 6 724 46c282 38 494 112 716 30v84H0Z" />
+      <path class="fill-white" d="M0 100c262 60 506-38 770-12 248 25 456 72 670 26v46H0Z" />
+    </svg>
+  </div>
+
+  <div class="container-site grid gap-10 lg:min-h-[640px] lg:grid-cols-[1fr_var(--booking-w)] lg:items-end lg:gap-12">
+    <div class="grid max-w-[640px] justify-items-start pt-16 lg:self-center lg:pt-24 lg:pb-34">
+      <Eyebrow dark>{hero.eyebrow}</Eyebrow>
+      <h1 id="hero-title" class="mt-5 mb-6 max-w-[14ch] text-hero font-light text-white [&_strong]:font-extrabold">
+        {hero.title.map((part, i) => (i % 2 ? <strong>{part}</strong> : part))}
+      </h1>
+      <p class="mb-8 max-w-[46ch] text-lead text-white/85">{hero.lead}</p>
+      <Button href="#contact" icon="arrow">{hero.cta}</Button>
+    </div>
+    <BookingCard class="relative z-2 -mb-8 lg:-mb-[200px]" />
+  </div>
+</section>

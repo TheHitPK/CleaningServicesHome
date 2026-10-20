@@ -1,0 +1,18 @@
+---
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../icons/Icon.astro';
+import { serviceAreas } from '../../data/site';
+import { areas } from '../../data/content';
+---
+<section class="section bg-band text-white" id="service-areas" aria-labelledby="areas-title">
+  <div class="container-site">
+    <SectionHeading eyebrow={areas.eyebrow} title={areas.title} lead={areas.lead} layout="centered" dark id="areas-title" />
+    <ul class="mx-auto flex max-w-[960px] flex-wrap justify-center gap-3">
+      {serviceAreas.map((city) => (
+        <li class="inline-flex min-h-10 items-center gap-2 rounded-full border border-white/35 bg-white/6 px-5 text-[.9375rem]">
+          <Icon name="map-pin" size={14} class="text-accent" />{city}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
