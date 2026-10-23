@@ -1,0 +1,29 @@
+---
+// Marca visual para secciones EXTRA (no aprobadas): franja rayada amarillo/navy arriba y abajo
+// + etiqueta con el nombre y el motivo. Solo se usa en /secciones-extra.
+interface Props {
+  name: string;
+  reason: string;
+  file: string;
+}
+const { name, reason, file } = Astro.props;
+const stripes = 'h-3 bg-[repeating-linear-gradient(-45deg,var(--color-accent)_0_14px,var(--color-primary)_14px_28px)]';
+---
+<div class="relative" data-extra-section={name}>
+  <div class={stripes} aria-hidden="true"></div>
+  <div class="sticky top-(--header-h) z-50 border-b-2 border-accent bg-primary-900 text-white">
+    <div class="container-site flex flex-wrap items-center gap-x-4 gap-y-1 py-3">
+      <span class="rounded-sm bg-accent px-2.5 py-1 text-[.6875rem] font-extrabold tracking-[.12em] text-primary uppercase">
+        ⚠ Sección extra · No aprobada
+      </span>
+      <strong class="font-display">{name}</strong>
+      <span class="text-sm text-white/75">{reason}</span>
+      <code class="ml-auto text-xs text-white/60">{file}</code>
+    </div>
+  </div>
+  <!-- Contenido apagado a propósito: se nota que no es parte del sitio aprobado -->
+  <div class="opacity-90 saturate-[.85]">
+    <slot />
+  </div>
+  <div class={stripes} aria-hidden="true"></div>
+</div>

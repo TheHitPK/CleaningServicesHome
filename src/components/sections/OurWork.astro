@@ -1,21 +1,67 @@
 ---
-// Grid filtrable. Sin JS se ven todos los proyectos y los filtros quedan ocultos.
+// Our Work — ref. docs/referencias/contenido-aprobado/07-our-work-videos.jpg + 08-our-work-galeria.jpg
+// Videos verticales (placeholders: abren un <dialog>) + galería filtrable.
+// Sin JS se ven todas las fotos y los filtros quedan ocultos.
 import { Image } from 'astro:assets';
 import SectionHeading from '../ui/SectionHeading.astro';
-import { portfolio } from '../../data/content';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Dialog from '../ui/Dialog.astro';
+import Icon from '../icons/Icon.astro';
+import { portfolio as copy } from '../../data/content';
+
+interface Props {
+  /** false: sin los videos placeholder (solo galería). Lo usa /propuesta. */
+  reels?: boolean;
+}
+const { reels = true } = Astro.props;
 ---
-<section class="section" id="our-work" aria-labelledby="work-title" data-filter-root>
+<section class="section bg-soft" id="our-work" aria-labelledby="work-title" data-filter-root>
   <div class="container-site">
-    <SectionHeading eyebrow={portfolio.eyebrow} title={portfolio.title} lead={portfolio.lead} layout="centered" id="work-title" />
+    <SectionHeading eyebrow={copy.eyebrow} title={copy.title} lead={copy.lead} layout="centered" id="work-title" />
+
+    <!-- PLACEHOLDER: videos antes/después pendientes del cliente -->
+    {reels && <ul class="mx-auto mb-20 grid max-w-[905px] gap-6 max-sm:max-w-[300px] sm:grid-cols-3">
+      {reels && copy.reels.map((r) => (
+        <li data-placeholder>
+          <button
+            class="group/reel block w-full overflow-hidden rounded-lg bg-white text-left shadow-sm transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-lg"
+            type="button" data-dialog-open={r.id} aria-haspopup="dialog"
+          >
+            <span class="relative block aspect-9/14 overflow-hidden bg-cool">
+              <Image
+                src={r.image} alt="" widths={[300, 450, 600]} sizes="(min-width: 640px) 290px, 300px"
+                loading="lazy" decoding="async" quality={60}
+                class="size-full object-cover transition-transform duration-400 group-hover/reel:scale-[1.04]"
+              />
+              <span class="absolute inset-0 bg-[linear-gradient(0deg,rgb(10_34_62/.8),transparent_45%)]"></span>
+              <span class="absolute top-1/2 left-1/2 grid size-14 -translate-1/2 place-items-center rounded-full bg-white/90 text-primary transition-transform group-hover/reel:scale-110">
+                <Icon name="play" size={20} />
+              </span>
+              <span class="absolute inset-x-4 bottom-5 font-display text-[1.0625rem] leading-snug font-bold text-white">
+                {r.title[0]}<br />{r.title[1]}
+              </span>
+            </span>
+            <span class="block px-4 py-3 text-xs text-muted">{copy.reelCaption}</span>
+          </button>
+        </li>
+      ))}
+    </ul>}
+
+    {reels && (
+      <div class="mb-8 grid justify-items-center gap-3 text-center">
+        <Eyebrow center>{copy.galleryEyebrow}</Eyebrow>
+        <h3 class="text-[clamp(1.5rem,1.2rem+1vw,1.875rem)] tracking-[-0.02em]">{copy.galleryTitle}</h3>
+      </div>
+    )}
 
     <div
-      class="no-scrollbar mb-10 flex gap-2 overflow-x-auto p-1 md:flex-wrap md:justify-center"
+      class="no-scrollbar mb-8 flex gap-2 overflow-x-auto p-1 md:flex-wrap md:justify-center"
       role="group" aria-label="Filter projects by service" hidden data-filters
     >
-      {portfolio.filters.map((f, i) => (
+      {copy.filters.map((f, i) => (
         <button
           class="min-h-11 shrink-0 rounded-sm border border-line bg-white px-5 text-sm font-semibold text-deep transition-colors duration-150
-                 hover:border-sky aria-pressed:border-deep aria-pressed:bg-deep aria-pressed:text-white"
+                 hover:border-sky aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-white"
           type="button" data-filter={f.id} aria-pressed={i === 0 ? 'true' : 'false'}
         >{f.label}</button>
       ))}
@@ -23,28 +69,36 @@ import { portfolio } from '../../data/content';
     <p class="sr-only" aria-live="polite" data-filter-status></p>
 
     <!-- PLACEHOLDER: fotos ilustrativas, reemplazar por trabajos reales -->
-    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {portfolio.items.map((p) => (
-        <li
-          class="overflow-hidden rounded-lg border border-line bg-white shadow-sm transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-lg"
-          data-type={p.type} data-placeholder
-        >
-          <div class="aspect-4/3 overflow-hidden bg-cool">
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {copy.items.map((p) => (
+        <li class="overflow-hidden bg-white shadow-sm transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-lg" data-type={p.type} data-placeholder>
+          <div class="aspect-16/10 overflow-hidden bg-cool">
             <Image
               src={p.image} alt={`Sample visual for ${p.title}`}
               widths={[360, 480, 640, 800]} sizes="(min-width: 1200px) 384px, (min-width: 960px) calc(33vw - 40px), (min-width: 540px) calc(50vw - 40px), calc(100vw - 40px)"
               loading="lazy" decoding="async" quality={65} class="size-full object-cover"
             />
           </div>
-          <div class="px-6 pt-5 pb-6">
-            <h3 class="mb-1 text-h4">{p.title}</h3>
-            <p class="text-sm text-muted">{portfolio.caption}</p>
-          </div>
+          {reels ? <h4 class="px-4 py-3.5 text-sm">{p.title}</h4> : <h3 class="px-4 py-3.5 text-sm">{p.title}</h3>}
         </li>
       ))}
     </ul>
-    <p class="mt-6 text-sm text-muted">{portfolio.note}</p>
+    <p class="mt-6 text-sm text-muted">{copy.note}</p>
   </div>
+
+  {copy.reels.map((r) => (
+    <Dialog id={r.id} labelledby={`${r.id}-title`}>
+      <Eyebrow>{copy.reelDialogEyebrow}</Eyebrow>
+      <h3 id={`${r.id}-title`} class="text-[1.5rem]">{r.title.join(' ')}</h3>
+      <div class="mx-auto grid aspect-9/14 max-h-[50vh] w-full max-w-[260px] place-items-center rounded-md bg-[linear-gradient(#284964,#102d49)] p-6 text-center text-white">
+        <div class="grid justify-items-center gap-3">
+          <Icon name="play" size={40} />
+          <p class="text-sm text-white/85">{copy.reelDialogText}</p>
+        </div>
+      </div>
+      <p class="text-center text-sm text-muted">{copy.reelDialogNote}</p>
+    </Dialog>
+  ))}
 </section>
 
 <script>

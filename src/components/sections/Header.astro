@@ -2,12 +2,15 @@
 import Logo from '../ui/Logo.astro';
 import Button from '../ui/Button.astro';
 import Icon from '../icons/Icon.astro';
-import { nav, sms } from '../../data/site';
+import { nav, anchor, QUOTE_ANCHOR } from '../../data/site';
+import { hero } from '../../data/content';
+
+const path = Astro.url.pathname;
 ---
 <div class="absolute top-[60px] size-px" aria-hidden="true" data-header-sentinel></div>
 <header class="group/header sticky top-0 z-100 bg-cream transition-shadow data-[scrolled]:shadow-[0_2px_15px_rgb(23_58_90/.08)]" data-header>
   <div class="container-site flex h-(--header-h) items-center justify-between gap-6">
-    <Logo />
+    <Logo href={anchor('#home', path)} />
 
     <nav
       id="site-nav"
@@ -21,16 +24,17 @@ import { nav, sms } from '../../data/site';
             <a
               class="relative inline-flex min-h-11 items-center text-sm font-semibold text-primary transition-colors hover:text-deep
                      after:absolute after:inset-x-0 after:bottom-2 after:h-0.5 after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:content-[''] hover:after:scale-x-100
+                     aria-[current=location]:text-deep aria-[current=location]:after:scale-x-100 max-lg:aria-[current=location]:font-bold
                      max-lg:min-h-[52px] max-lg:w-full max-lg:border-b max-lg:border-line max-lg:text-[1.0625rem] max-lg:after:hidden"
-              href={item.href}
+              href={anchor(item.href, path)}
             >{item.label}</a>
           </li>
         ))}
       </ul>
     </nav>
 
-    <Button class="max-lg:hidden" href={sms('Hi Cleaning 4 You! I would like a quote.')} icon="arrow-up-right">
-      Text for a quote
+    <Button class="max-lg:hidden" href={anchor(QUOTE_ANCHOR, path)} icon="arrow-up-right">
+      {hero.ctaPrimary}
     </Button>
 
     <button
@@ -45,6 +49,8 @@ import { nav, sms } from '../../data/site';
 </header>
 
 <script>
+  import '../../scripts/quote-links';
+
   const header = document.querySelector<HTMLElement>('[data-header]')!;
   const sentinel = document.querySelector('[data-header-sentinel]')!;
   new IntersectionObserver(([e]) => header.toggleAttribute('data-scrolled', !e.isIntersecting)).observe(sentinel);
@@ -61,5 +67,21 @@ import { nav, sms } from '../../data/site';
   nav.addEventListener('click', (e) => { if ((e.target as Element).closest('a')) setOpen(false); });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && nav.hasAttribute('data-open')) { setOpen(false); toggle.focus(); }
+  });
+
+  // Sección activa en el nav (aria-current="location"); las secciones sin ancla conservan la anterior
+  const links = new Map(
+    [...nav.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')].map((a) => [a.hash.slice(1), a]),
+  );
+  const spy = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      links.forEach((link) => link.removeAttribute('aria-current'));
+      links.get(entry.target.id)?.setAttribute('aria-current', 'location');
+    }
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  links.forEach((_, id) => {
+    const section = document.getElementById(id);
+    if (section) spy.observe(section);
   });
 </script>

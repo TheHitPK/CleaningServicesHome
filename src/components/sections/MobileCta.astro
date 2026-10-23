@@ -1,17 +1,18 @@
 ---
 // Barra fija inferior en mobile: aparece cuando el hero sale de pantalla.
 import Icon from '../icons/Icon.astro';
-import { sms, tel } from '../../data/site';
+import { tel, anchor, QUOTE_ANCHOR } from '../../data/site';
+import { hero } from '../../data/content';
 const item = 'inline-flex min-h-14 items-center justify-center gap-2 text-btn font-bold uppercase tracking-btn';
 ---
 <div
-  class="fixed inset-x-0 bottom-0 z-90 grid translate-y-[110%] grid-cols-[1fr_2fr] bg-primary pb-[env(safe-area-inset-bottom)] shadow-[0_-6px_20px_rgb(15_42_68/.18)] transition-transform duration-400 data-[visible]:translate-y-0 lg:hidden"
+  class="on-dark fixed inset-x-0 bottom-0 z-90 grid translate-y-[110%] grid-cols-[1fr_2fr] bg-primary pb-[env(safe-area-inset-bottom)] shadow-[0_-6px_20px_rgb(15_42_68/.18)] transition-transform duration-400 data-[visible]:translate-y-0 lg:hidden"
   aria-label="Quick contact"
   data-mcta
 >
   <a class:list={[item, 'text-white']} href={tel}><Icon name="phone" size={18} /> Call</a>
-  <a class:list={[item, 'bg-accent text-primary']} href={sms('Hi Cleaning 4 You! I would like a quote.')}>
-    <Icon name="message" size={18} /> Text for a quote
+  <a class:list={[item, 'bg-accent text-primary']} href={anchor(QUOTE_ANCHOR, Astro.url.pathname)}>
+    <Icon name="message" size={18} /> {hero.ctaPrimary}
   </a>
 </div>
 
@@ -22,5 +23,7 @@ const item = 'inline-flex min-h-14 items-center justify-center gap-2 text-btn fo
     new IntersectionObserver(([e]) => bar.toggleAttribute('data-visible', !e.isIntersecting), {
       rootMargin: '-40% 0px 0px 0px',
     }).observe(hero);
+  } else {
+    bar.toggleAttribute('data-visible', true); // páginas sin hero (404): visible desde el inicio
   }
 </script>

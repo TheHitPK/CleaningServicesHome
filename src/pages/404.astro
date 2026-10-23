@@ -1,0 +1,82 @@
+---
+// Página 404: misma identidad que el hero (navy + ondas animadas) y caminos claros de vuelta.
+// Astro la genera como dist/404.html; Netlify, Vercel, Cloudflare Pages y GitHub Pages la sirven solos.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopBar from '../components/sections/TopBar.astro';
+import Header from '../components/sections/Header.astro';
+import Footer from '../components/sections/Footer.astro';
+import MobileCta from '../components/sections/MobileCta.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import Button from '../components/ui/Button.astro';
+import Waves from '../components/ui/Waves.astro';
+import Icon from '../components/icons/Icon.astro';
+import { site, tel, services } from '../data/site';
+import { notFound } from '../data/content';
+
+const quickLinks = [
+  { label: 'Our services', href: '/#services', icon: 'sparkle' },
+  { label: 'Our work', href: '/#our-work', icon: 'search' },
+  { label: 'Get a free quote', href: '/#quote', icon: 'message' },
+  { label: 'Contact', href: '/#contact', icon: 'phone' },
+] as const;
+---
+<BaseLayout
+  title="Page not found | Cleaning 4 You"
+  description="This page doesn't exist. Go back to Cleaning 4 You, professional cleaning services in Arizona."
+  noindex
+>
+  <TopBar />
+  <Header />
+  <main id="main">
+    <section
+      class="on-dark relative isolate overflow-hidden bg-[radial-gradient(circle_at_80%_10%,rgb(122_174_219/.22),transparent_45%),linear-gradient(120deg,var(--color-primary-900),var(--color-deep))] text-white"
+      aria-labelledby="nf-title"
+    >
+      <!-- "404" gigante decorativo detrás del texto -->
+      <span
+        class="pointer-events-none absolute -top-4 right-[-2%] font-display text-[clamp(9rem,28vw,24rem)] leading-none font-extrabold tracking-[-0.06em] text-white/5 select-none max-md:hidden"
+        aria-hidden="true"
+      >404</span>
+
+      <div class="container-site relative grid justify-items-start pt-20 pb-[calc(clamp(60px,9vw,150px)+4rem)] lg:pt-28">
+        <Eyebrow dark>{notFound.eyebrow}</Eyebrow>
+        <h1 id="nf-title" class="mt-5 mb-6 max-w-[16ch] text-hero font-light text-white [&_strong]:font-extrabold">
+          {notFound.title.map((part, i) => (i % 2 ? <strong>{part}</strong> : part))}
+        </h1>
+        <p class="mb-8 max-w-[52ch] text-lead text-white/85">{notFound.lead}</p>
+        <div class="flex w-full flex-wrap gap-3 max-sm:[&>*]:basis-full">
+          <Button href="/" icon="arrow">{notFound.home}</Button>
+          <Button variant="outline" href={tel} iconStart="phone">Call {site.phone.display}</Button>
+        </div>
+      </div>
+      <Waves />
+    </section>
+
+    <section class="section pt-16" aria-labelledby="nf-links">
+      <div class="container-site">
+        <h2 id="nf-links" class="mb-8 text-h3">{notFound.linksTitle}</h2>
+        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {quickLinks.map((l) => (
+            <li>
+              <a
+                class="group/ql flex min-h-16 items-center gap-4 rounded-lg border border-line bg-white px-5 py-4 font-semibold text-primary shadow-sm transition-[transform,box-shadow,border-color] hover:-translate-y-1 hover:border-sky hover:shadow-lg"
+                href={l.href}
+              >
+                <span class="grid size-11 shrink-0 place-items-center rounded-full bg-accent-100 text-primary">
+                  <Icon name={l.icon} size={20} />
+                </span>
+                <span class="flex-1">{l.label}</span>
+                <Icon name="arrow" size={18} class="text-deep transition-transform group-hover/ql:translate-x-1" />
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-10 text-sm text-muted">
+          We offer {services.map((s) => s.name).join(', ').replace(/, ([^,]*)$/, ' and $1')} across {site.region}.
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <MobileCta />
+</BaseLayout>

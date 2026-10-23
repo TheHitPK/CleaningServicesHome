@@ -8,11 +8,15 @@ interface Props {
   lead?: string;
   layout?: 'stacked' | 'centered' | 'split';
   dark?: boolean;
+  /** Título más ancho (24ch) para frases largas */
+  wide?: boolean;
+  /** Sin límite de ancho (títulos que van en una sola línea en desktop) */
+  fullWidth?: boolean;
   id?: string;
   class?: string;
 }
 
-const { eyebrow, title, lead, layout = 'stacked', dark = false, id, class: className } = Astro.props;
+const { eyebrow, title, lead, layout = 'stacked', dark = false, wide = false, fullWidth = false, id, class: className } = Astro.props;
 const centered = layout === 'centered';
 const split = layout === 'split';
 const leadClass = ['text-lead max-w-[60ch]', dark && 'text-white/78'];
@@ -25,9 +29,9 @@ const leadClass = ['text-lead max-w-[60ch]', dark && 'text-white/78'];
     className,
   ]}
 >
-  <div class:list={['grid gap-4', centered ? 'mx-auto max-w-[680px] justify-items-center' : 'justify-items-start']}>
+  <div class:list={['grid gap-4', centered ? (fullWidth ? 'mx-auto justify-items-center' : 'mx-auto max-w-[680px] justify-items-center') : 'justify-items-start']}>
     {eyebrow && <Eyebrow center={centered} dark={dark}>{eyebrow}</Eyebrow>}
-    <h2 id={id} class:list={[centered ? 'max-w-[22ch]' : 'max-w-[18ch]', dark && 'text-white']}>{title}</h2>
+    <h2 id={id} class:list={[fullWidth ? 'max-w-none' : wide ? 'max-w-[24ch]' : centered ? 'max-w-[22ch]' : 'max-w-[18ch]', dark && 'text-white']}>{title}</h2>
     {lead && !split && <p class:list={[leadClass, 'mt-1']}>{lead}</p>}
   </div>
   {split && (

@@ -1,0 +1,25 @@
+---
+// ⑨ Preguntas frecuentes (propuesta). <details> nativo: funciona sin JS.
+// Respuestas sin confirmar → texto de pendiente + data-placeholder (no se inventan).
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../icons/Icon.astro';
+import { faq } from '../../data/content-propuesta';
+---
+<section class="section" aria-labelledby="faq-title">
+  <div class="container-site grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:gap-16">
+    <SectionHeading eyebrow={faq.eyebrow} title={faq.title} id="faq-title" class="mb-0!" />
+    <div class="divide-y divide-line border-y border-line">
+      {faq.items.map((item, i) => (
+        <details class="group/faq" open={i === 0}>
+          <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 font-display text-[1.0625rem] font-bold text-primary [&::-webkit-details-marker]:hidden">
+            {item.q}
+            <Icon name="arrow" size={18} class="shrink-0 rotate-90 text-deep transition-transform group-open/faq:-rotate-90" />
+          </summary>
+          {item.a
+            ? <p class="max-w-[64ch] pb-5">{item.a}</p>
+            : <p class="max-w-[64ch] pb-5 text-muted italic" data-placeholder>{faq.pending}</p>}
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

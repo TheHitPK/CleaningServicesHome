@@ -3,7 +3,7 @@
 Landing page para **Cleaning 4 You LLC**, servicio de limpieza profesional en Arizona.
 Está hecha con **Astro 5 + Tailwind CSS v4 + TypeScript** como sitio 100 % estático, con casi nada de JavaScript y Lighthouse 100 como objetivo.
 
-> **Estado:** concepto de diseño. La mayoría de los textos son *lorem ipsum* y las fotos son ilustrativas. No es el sitio publicado del negocio.
+> **Estado:** concepto de diseño con el **contenido aprobado** (`docs/referencias/contenido-aprobado/`). Las fotos son ilustrativas y los videos están pendientes. No es el sitio publicado del negocio.
 
 ---
 
@@ -26,27 +26,32 @@ npm run dev       # http://localhost:4321
 | `npm run preview` | Sirve `dist/` localmente (úsalo para medir Lighthouse) |
 | `npm run check` | Chequeo de tipos y diagnósticos de Astro |
 
+> En Windows, usa siempre los scripts de npm (pasan por `scripts/astro.ts`): con la carpeta abierta como `c:` en minúscula, Tailwind v4 genera el build sin CSS.
+
 ## Estructura de la página
 
-En orden, siguiendo el layout de referencia (tema *Moppers v2*) con la identidad de Cleaning 4 You:
+Solo las secciones del **contenido aprobado**, en el orden de las capturas de `docs/referencias/contenido-aprobado/`:
 
-| # | Sección | Ancla | Notas |
+| # | Sección | Ancla | Ref. |
 |---|---|---|---|
-| 1 | Top bar | — | Teléfono, email, "Professional Cleaning in Arizona" |
-| 2 | Header sticky | — | Logo, nav, CTA "Text for a quote" |
-| 3 | **Hero** | `#home` | Overlay navy, **ondas SVG** y card "Book a Service" sobre la onda |
-| 4 | About | `#about` | Texto a la izquierda; la card del hero sigue a la derecha |
-| 5 | How it works | — | 3 pasos numerados |
-| 6 | Services | `#services` | 5 cards (Residential, Commercial, Windows, Move In/Out, Post Construction) |
-| 7 | Service details (tabs) | — | Paneles pre-renderizados que se alternan con `hidden` |
-| 8 | Founder's message | — | Cita (placeholder) |
-| 9 | Counters | — | 4 cifras (placeholder salvo "14 años") |
-| 10 | Why choose us | — | 4 beneficios |
-| 11 | Testimonials | — | Se mantiene, con contenido lorem hasta tener reseñas reales |
-| 12 | Our Work | `#our-work` | Grid filtrable por tipo de servicio |
-| 13 | Service Areas | `#service-areas` | Banda navy con chips de ciudades |
-| 14 | Contact / Quote | `#contact` | Formulario que abre un borrador SMS |
-| 15 | Footer | — | Marca, links, servicios, áreas |
+| 1 | Top bar + header sticky | — | 01-hero |
+| 2 | Hero "A Cleaner Space. A Fresh Start." + card "Request a Free Quote" (ondas animadas) | `#home` | 01-hero |
+| 3 | About "More Than Clean…" + 3 atributos | `#about` | 02-about |
+| 4 | How it works (banda navy, 3 pasos) | — | 04-how-it-works |
+| 5 | Services (5 cards; "Learn more" abre un diálogo) | `#services` | 03-servicios |
+| 6 | Our Story "Built on Experience. Driven by Care." | — | 05-our-story |
+| 7 | Who are we? / Mission / Vision / Philosophy | — | 12-folleto |
+| 8 | Why choose us | — | 06-why-choose-us |
+| 9 | Our Work: 3 videos (placeholder) + galería con filtros | `#our-work` | 07 y 08 |
+| 10 | Our Commitment | — | 09-our-commitment |
+| 11 | Get a quote: banner + formulario completo | `#quote` | 10-get-a-quote |
+| 12 | CTA "Ready for a Cleaner, Fresher Space?" | `#contact` | 11-cta-y-footer |
+| 13 | Footer | — | 11-cta-y-footer |
+
+Además:
+- **`/404`** ([src/pages/404.astro](src/pages/404.astro)), con el estilo del hero y accesos rápidos. Lleva `noindex`.
+- **`/secciones-extra`** ([src/pages/secciones-extra.astro](src/pages/secciones-extra.astro)): revisión interna (noindex) de las **secciones extra no aprobadas** (tabs de servicios, fundador + cifras, testimonios, banda de ciudades, contacto en 2 columnas). Cada una lleva una franja "⚠ Sección extra · No aprobada" y ninguna aparece en la home. Ver [src/components/extras/README.md](src/components/extras/README.md).
+- **`/propuesta`** ([src/pages/propuesta.astro](src/pages/propuesta.astro)): **propuesta de estructura** (noindex) para presentar al cliente. Mismo contenido aprobado en el orden en que decide un cliente: Hero → franja de confianza → Services → How it works → Our Work → Why + Commitment → Reseñas (pendientes) → About compacto → FAQ → Get a quote con el CTA final. Cada sección lleva una nota (qué duda responde y qué cambió) que se oculta con "Ocultar notas".
 
 ## Estructura del proyecto
 

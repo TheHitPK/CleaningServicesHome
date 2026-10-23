@@ -1,0 +1,20 @@
+---
+// ⑦ Reseñas (propuesta): hueco reservado. NO hay reseñas inventadas ni estrellas.
+// PLACEHOLDER: reemplazar por reseñas reales y autorizadas (p. ej. de Google Reviews).
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../icons/Icon.astro';
+import { reviews } from '../../data/content-propuesta';
+---
+<section class="section bg-soft" aria-labelledby="reviews-title" data-placeholder>
+  <div class="container-site">
+    <SectionHeading eyebrow={reviews.eyebrow} title={reviews.title} lead={reviews.lead} layout="centered" id="reviews-title" />
+    <ul class="grid gap-6 md:grid-cols-3">
+      {Array.from({ length: reviews.slots }, () => (
+        <li class="grid min-h-48 content-center max-md:[&:nth-child(n+2)]:hidden justify-items-center gap-3 rounded-lg border-2 border-dashed border-field bg-white/60 p-8 text-center">
+          <Icon name="quote" size={28} class="text-accent" />
+          <p class="text-sm font-semibold text-muted">{reviews.slot}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

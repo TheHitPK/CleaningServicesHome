@@ -1,0 +1,12 @@
+---
+// Aviso fijo "Design preview · not a live website" (aparece en todas las capturas aprobadas).
+// PLACEHOLDER: quitarlo de BaseLayout cuando el sitio se publique como sitio real.
+// En mobile se oculta para no tapar la barra CTA fija.
+import { previewFlag } from '../../data/content';
+---
+<div
+  class="pointer-events-none fixed right-4 bottom-4 z-80 rounded-full border border-line bg-white px-4 py-2 text-[.625rem] font-extrabold tracking-[.1em] text-body uppercase shadow-md max-lg:hidden"
+  data-placeholder
+>
+  {previewFlag}
+</div>

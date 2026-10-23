@@ -1,11 +1,18 @@
 ---
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  ⚠️  SECCIÓN EXTRA — NO APROBADA                                    ║
+// ╚══════════════════════════════════════════════════════════════════╝
+// Mensaje del fundador + contadores.
+// No aparece en ninguna captura aprobada.
+// NO se renderiza en la home (src/pages/index.astro). Solo se ve en /secciones-extra,
+// con una franja que la marca. Para usarla en la home hay que aprobarla primero.
 // Mensaje del fundador + contadores solapados (estructura Moppers).
 import Eyebrow from '../ui/Eyebrow.astro';
 import Icon from '../icons/Icon.astro';
-import { founder, counters } from '../../data/content';
+import { founder, counters } from '../../data/content-extras';
 ---
 <section
-  class="bg-[radial-gradient(circle_at_15%_20%,rgb(122_174_219/.18),transparent_40%),linear-gradient(120deg,var(--color-primary),var(--color-deep))] pt-(--section-y) pb-[calc(var(--section-y)+4rem)] text-center text-white"
+  class="on-dark bg-[radial-gradient(circle_at_15%_20%,rgb(122_174_219/.18),transparent_40%),linear-gradient(120deg,var(--color-primary),var(--color-deep))] pt-(--section-y) pb-[calc(var(--section-y)+4rem)] text-center text-white"
   aria-labelledby="founder-title"
 >
   <div class="container-site grid max-w-[880px]! justify-items-center gap-8">

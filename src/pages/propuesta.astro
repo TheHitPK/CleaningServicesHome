@@ -1,0 +1,86 @@
+---
+// ⚠️ PROPUESTA DE ESTRUCTURA — NO APROBADA (noindex, fuera del menú).
+// Reordena el contenido aprobado de la home según las dudas del cliente: 12 secciones → 10.
+// La home (index.astro) NO cambia. Componentes nuevos en src/components/propuesta/,
+// textos nuevos en src/data/content-propuesta.ts. Se puede borrar sin afectar la home.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopBar from '../components/sections/TopBar.astro';
+import Header from '../components/sections/Header.astro';
+import Hero from '../components/sections/Hero.astro';
+import Services from '../components/sections/Services.astro';
+import HowItWorks from '../components/sections/HowItWorks.astro';
+import OurWork from '../components/sections/OurWork.astro';
+import QuoteSection from '../components/sections/QuoteSection.astro';
+import Footer from '../components/sections/Footer.astro';
+import MobileCta from '../components/sections/MobileCta.astro';
+import ProposalNote from '../components/propuesta/ProposalNote.astro';
+import TrustStrip from '../components/propuesta/TrustStrip.astro';
+import WhyCommitment from '../components/propuesta/WhyCommitment.astro';
+import ReviewsSlot from '../components/propuesta/ReviewsSlot.astro';
+import AboutCompact from '../components/propuesta/AboutCompact.astro';
+import Faq from '../components/propuesta/Faq.astro';
+import { notes, intro } from '../data/content-propuesta';
+---
+<BaseLayout
+  title="Propuesta de estructura | Cleaning 4 You"
+  description="Propuesta interna: el contenido aprobado reorganizado según las dudas del cliente."
+  noindex
+>
+  <!-- Aviso de la propuesta (no forma parte del diseño del sitio) -->
+  <div class="border-b-4 border-accent bg-primary-900 py-6 text-white">
+    <div class="container-site grid gap-3">
+      <span class="w-fit rounded-sm bg-accent px-3 py-1.5 text-xs font-extrabold tracking-[.12em] text-primary uppercase">{intro.badge}</span>
+      <p class="font-display text-h4 text-white">{intro.title}</p>
+      <p class="max-w-[80ch] text-sm text-white/80">{intro.text}</p>
+      <div class="flex flex-wrap gap-3">
+        <a class="inline-flex min-h-11 items-center rounded-sm border border-white/60 px-4 text-sm font-bold hover:bg-white hover:text-primary" href="/">{intro.current}</a>
+        <button class="min-h-11 rounded-sm bg-white px-4 text-sm font-bold text-primary" type="button" data-notes-toggle data-show={intro.show} data-hide={intro.hide}>{intro.hide}</button>
+      </div>
+    </div>
+  </div>
+
+  <TopBar />
+  <Header />
+  <main id="main">
+    <ProposalNote n={1} {...notes.hero} />
+    <Hero />
+    <TrustStrip />
+    <ProposalNote n={2} {...notes.trust} above />
+    <ProposalNote n={3} {...notes.services} />
+    <Services />
+    <ProposalNote n={4} {...notes.how} />
+    <HowItWorks />
+    <ProposalNote n={5} {...notes.work} />
+    <OurWork reels={false} />
+    <ProposalNote n={6} {...notes.why} />
+    <WhyCommitment />
+    <ProposalNote n={7} {...notes.reviews} />
+    <ReviewsSlot />
+    <ProposalNote n={8} {...notes.about} />
+    <AboutCompact />
+    <ProposalNote n={9} {...notes.faq} />
+    <Faq />
+    <ProposalNote n={10} {...notes.quote} />
+    <QuoteSection withCta />
+  </main>
+  <Footer />
+  <MobileCta />
+
+  <!-- Acceso fijo al botón de notas (desktop; en mobile está la barra CTA) -->
+  <button
+    class="fixed bottom-4 left-4 z-80 rounded-full bg-primary-900 px-4 py-2 text-xs font-bold text-white shadow-md max-lg:hidden"
+    type="button" data-notes-toggle data-show={intro.show} data-hide={intro.hide}
+  >{intro.hide}</button>
+</BaseLayout>
+
+<script>
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-notes-toggle]');
+  const apply = (clean: boolean): void => {
+    root.toggleAttribute('data-clean', clean);
+    buttons.forEach((b) => {
+      b.textContent = (clean ? b.dataset.show : b.dataset.hide) ?? '';
+    });
+  };
+  buttons.forEach((b) => b.addEventListener('click', () => apply(!root.hasAttribute('data-clean'))));
+</script>

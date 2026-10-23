@@ -1,22 +1,32 @@
 ---
+// How it works — ref. docs/referencias/contenido-aprobado/04-how-it-works.jpg
+// Banda navy con foto de fondo (lazy) + 3 pasos con ícono en círculo amarillo.
+import { Image } from 'astro:assets';
+import team from '../../assets/images/team.jpg';
 import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../icons/Icon.astro';
 import { process } from '../../data/content';
 ---
-<section class="section bg-soft" aria-labelledby="steps-title">
+<section class="on-dark section relative isolate overflow-hidden text-center text-white" aria-labelledby="steps-title">
+  <div class="absolute inset-0 -z-10 bg-primary" aria-hidden="true">
+    <Image
+      src={team} alt="" widths={[640, 1024, 1600]} sizes="100vw"
+      loading="lazy" decoding="async" quality={50}
+      class="size-full object-cover object-[center_40%]"
+    />
+    <div class="absolute inset-0 bg-[linear-gradient(90deg,rgb(19_47_86/.94),rgb(23_58_90/.94))]"></div>
+  </div>
+
   <div class="container-site">
-    <SectionHeading eyebrow={process.eyebrow} title={process.title} lead={process.lead} layout="centered" id="steps-title" />
-    <ol class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {process.steps.map((step, i) => (
-        <li class="relative grid content-start gap-3 rounded-lg border border-line bg-white px-8 py-10 shadow-sm transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-lg
-                   lg:not-last:after:absolute lg:not-last:after:top-16 lg:not-last:after:-right-6 lg:not-last:after:w-6 lg:not-last:after:border-t-2 lg:not-last:after:border-dashed lg:not-last:after:border-sky lg:not-last:after:content-['']">
-          <!-- Número decorativo (amarillo sobre blanco, ref. 05_process) vía ::before: el paso ya se anuncia en el h3 -->
-          <span
-            class="mb-3 font-display text-5xl leading-none font-extrabold tracking-[-0.02em] text-accent before:content-[attr(data-num)]"
-            data-num={String(i + 1).padStart(2, '0')}
-            aria-hidden="true"
-          ></span>
-          <h3><span class="sr-only">Step {i + 1}: </span>{step.title}</h3>
-          <p class="text-muted">{step.text}</p>
+    <SectionHeading eyebrow={process.eyebrow} title={process.title} layout="centered" dark fullWidth id="steps-title" />
+    <ol class="grid gap-12 md:grid-cols-3 md:gap-10">
+      {process.steps.map((step) => (
+        <li class="grid justify-items-center gap-3">
+          <span class="mb-2 grid size-14 place-items-center rounded-full bg-accent text-primary" aria-hidden="true">
+            <Icon name={step.icon} size={24} />
+          </span>
+          <h3 class="text-white">{step.title}</h3>
+          <p class="max-w-[34ch] text-[.9375rem] text-white/80">{step.text}</p>
         </li>
       ))}
     </ol>

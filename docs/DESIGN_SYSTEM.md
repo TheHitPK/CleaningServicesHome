@@ -370,7 +370,7 @@ Todas comparten: fondo blanco, `border: var(--border)`, `--r-lg`, `--shadow-sm` 
 
 | Card | Anatomía | Detalle |
 |---|---|---|
-| **ServiceCard** | Imagen 16:10 → (tag) → H3 → descripción → `btn--link` | Línea superior de 4 px en `--c-accent` que se anima de `scaleX(0)` a `1` en hover; siempre visible en las cards `featured` |
+| **ServiceCard** | Imagen 16:10 → (tag) → H3 → descripción → `btn--link` | Línea superior de 4 px en `--c-accent` que se anima de `scaleX(0)` a `1` **solo en hover o foco de teclado** (`:focus-within`), en todas las cards. Las `featured` se distinguen solo por el tag "Popular service" |
 | **StepCard** | Número (`01`) → H3 → texto | Número en `--fs-h2`, peso 800, `--c-accent`; en desktop, conector punteado entre cards |
 | **FeatureCard** | Icon badge 56 px → H3 → texto de 1 línea | Badge circular `--c-accent-100` con ícono `--c-primary` |
 | **TestimonialCard** | Comillas → texto → avatar 48 px + nombre + ciudad | Lleva `data-placeholder` hasta que haya reseñas reales |
@@ -387,7 +387,7 @@ Todas comparten: fondo blanco, `border: var(--border)`, `--r-lg`, `--shadow-sm` 
 .card--service::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px;
   background: var(--c-accent); transform: scaleX(0); transform-origin: left;
   transition: transform var(--dur-slow) var(--ease); }
-.card--service:hover::before, .card--service.is-featured::before { transform: scaleX(1); }
+.card--service:hover::before, .card--service:focus-within::before { transform: scaleX(1); }
 ```
 
 Si la card entera es clickeable, el `<a>` va en el H3 y usa `::after { position:absolute; inset:0 }`. No se envuelve la card completa en `<a>`.
@@ -609,7 +609,7 @@ Capturas del demo anterior (`cleaning4you_demo_actualizada.html` / `cleaning4you
 | Captura | Sección | Qué se conserva | Qué cambia o se corrige |
 |---|---|---|---|
 | `01_hero.jpg` | Header + Hero | Header blanco cálido con logo horizontal (ícono + "CLEANING / 4 YOU" en dos líneas), nav centrado, CTA amarillo "TEXT FOR A QUOTE ↗"; eyebrow amarillo espaciado; H1 blanco muy grande; foto de interior moderno con overlay oscuro a la izquierda; 2 CTA (amarillo sólido + outline blanco) | Se agregan las **ondas SVG** y la **booking card** de Moppers; el H1 pasa a la mezcla de pesos 300/800; el contenido va en lorem |
-| `02_services.jpg` | Services | H2 navy enorme alineado a la izquierda + sub gris; cards con imagen arriba y **borde superior amarillo de 4 px** en las destacadas; título navy y descripción gris | Se agrega el eyebrow; las 5 cards en grid 3 + 2 |
+| `02_services.jpg` | Services | H2 navy enorme alineado a la izquierda + sub gris; cards con imagen arriba y **borde superior amarillo de 4 px** (decisión: solo en hover, no fijo en las destacadas); título navy y descripción gris | Se agrega el eyebrow; las 5 cards en grid 3 + 2 |
 | `03_tabs_bug.jpg` | Service details (tabs) | Pills redondeadas (la activa en navy con texto blanco y las inactivas blancas con borde); panel blanco grande con botón `secondary` "Request a Quote ↗" | **Bug:** `{EYEBROW}`, `{title}` y `{desc}` sin interpolar, imagen rota y hueco vacío enorme. Se resuelve con paneles pre-renderizados en build e imagen con `aspect-ratio` fijo |
 | `04_portfolio.jpg` | Our Work | Grid de 3 con imagen alta (~220 px), título navy y caption gris "Sample visual · replace with actual completed work"; nota legal pequeña al pie | Se agregan filtros con `aria-pressed` y conteo con `aria-live` |
 | `05_process.jpg` | How it works | Cards blancas con borde sutil y **número grande amarillo** (01/02/03), título navy y texto gris | Fondo `--c-soft` para separarla de Services. En amarillo solo el número, que es grande (≥ 48 px) |
@@ -687,6 +687,8 @@ Las variables de layout que no generan utilidades viven en `:root`: `--section-y
 | Filtros | `sections/OurWork.astro` | `aria-pressed:bg-deep` |
 | Menú mobile | `sections/Header.astro` | `max-lg:hidden max-lg:data-[open]:block`; íconos con `group-aria-expanded/toggle:` |
 | Hero | `sections/Hero.astro` | Ondas con `fill-white opacity-35` / `fill-white`; card con `lg:-mb-[200px]` |
+| Ondas animadas | `sections/Hero.astro` + `@theme` | Un `<svg>` por onda, `w-[120%] -left-[10%] origin-bottom`. `animate-wave-back` (19 s) y `animate-wave-front` (13 s), `ease-in-out alternate` en direcciones opuestas: vaivén de ±3.5 % / ±2.5 % en X y una leve respiración en Y. Solo `transform` (GPU). `motion-reduce:animate-none` |
+| Gota del logo | `ui/Logo.astro` + `@theme` | En hover/foco del logo (`group/logo`): `animate-drip` (900 ms, la gota sube, cae, se aplasta y rebota con `origin-bottom`) y `animate-twinkle` (la estrella crece y gira 90°). `[transform-box:fill-box]` para que el origen sea la propia figura. Una sola vez por hover, `motion-reduce:animate-none!` |
 
 ### 8.4 Reglas
 
@@ -695,3 +697,46 @@ Las variables de layout que no generan utilidades viven en `:root`: `--section-y
 3. **Valores arbitrarios** (`text-[.8125rem]`, `max-w-[640px]`) solo para medidas puntuales de layout. Si un valor se repite 3 veces, se vuelve token.
 4. **`@apply` solo en `@layer base`.** Para reutilizar, crea un componente.
 5. **El estado se maneja con atributos y no con clases.** El JS cambia `aria-*`, `data-*` o `hidden`, y Tailwind los estiliza con variantes.
+
+---
+
+## 9. Auditoría UI/UX (ui-ux-pro-max) — decisiones aplicadas
+
+Auditoría del 2026-10-20 contra la referencia rápida de la skill (prioridades 1–9). Se verifica con pruebas de interacción por el protocolo de DevTools (29/29) y con Lighthouse (A11y 100).
+
+| # | Regla | Decisión |
+|---|---|---|
+| 1 | Primer clic sin feedback | En **escritorio** (`hover: hover` + `pointer: fine`) los links `sms:` no abren nada: `src/scripts/sms-links.ts` los redirige al formulario de contacto, preselecciona el servicio (`data-service`) o precarga detalles (`data-prefill`). Al enviar un formulario en escritorio se muestra `FormResult` con el mensaje listo para copiar. En mobile se abre el SMS y se avisa "Opening your messages app…". |
+| 2 | `focus-appearance` (3:1) | Foco `outline-deep` sobre fondos claros y `outline-sky` dentro de `.on-dark` (top bar, hero, founder, areas, footer, barra mobile). `.on-light` lo restablece dentro de cards blancas en zonas oscuras. |
+| 3 | `primary-action` | Un solo CTA amarillo por bloque. En el hero, el amarillo es el de la booking card; el CTA del copy es **outline** "Call (602) 396-3955". |
+| 4 | `error-placement`, `error-clarity`, `focus-management` | Error debajo de cada campo (prop `error` de `Field`), vinculado con `aria-describedby` y `aria-invalid`. Se valida al salir del campo y el error se limpia al corregir. Al enviar: resumen en `role="status"` y foco en el primer campo inválido. |
+| 5 | `nav-state-active` | `aria-current="location"` en el link de la sección visible (IntersectionObserver), con estilo `aria-[current=location]:`. |
+| 6 | `focus-not-obscured` | En mobile, `scroll-padding-bottom` deja libre el espacio de la barra CTA fija. |
+| 7 | Honestidad | Los testimonios de relleno no muestran estrellas (sería una calificación inventada). |
+| 8 | Expectativa del botón | "Book now" pasa a ser **"Text my request"**: no hay reserva, se arma un SMS. |
+| 9 | Contraste de los controles (1.4.11) | El borde de los inputs usa el token `--color-field` `#7F93A6` (3.2:1 sobre blanco). El hover y el foco van en `deep`. |
+| 10 | `cursor-pointer` | Regla base `button:not(:disabled), [role=tab] { cursor: pointer }`, porque el preflight de Tailwind v4 lo quita. |
+| 11 | Tamaño de los targets | Links del footer con `min-h-10` en mobile. |
+| 12 | Afordancia de los chips | Los chips de ciudades **son links**: piden servicio en esa ciudad (SMS en mobile; en escritorio precargan "City: X" en el formulario). |
+
+
+---
+
+## 10. Contenido aprobado (2026-10-22)
+
+Las 12 capturas de `docs/referencias/contenido-aprobado/` definen **qué secciones van y con qué textos** (copy literal en `src/data/content.ts`). Orden de la home: Hero → About → How it works → Services → Our Story → Mission/Vision (folleto) → Why choose us → Our Work → Our Commitment → Get a quote → CTA → Footer.
+
+| Sección | Patrón visual |
+|---|---|
+| How it works | Banda navy con foto de fondo (overlay al 94 %), 3 pasos centrados con ícono en círculo `bg-accent` |
+| Services | 5 cards. "Learn more" / "Explore service" abren un `<dialog>` ("Service page · coming next") con un CTA que preselecciona el servicio en `#quote` |
+| Our Story | Split 50/50: foto a sangre + panel navy con degradado y CTA outline |
+| Mission (folleto) | Esquina con franjas diagonales gold/navy + "techo" (`clip-path` triangular gold con un triángulo navy adentro) con el lema. Todo en CSS. En mobile el lema se angosta para quedar dentro del triángulo |
+| Our Work | Videos 9:14 con botón play (abren un `<dialog>` placeholder) + galería con filtros `aria-pressed` |
+| Get a quote | Banner con foto + overlay; formulario de 4 columnas montado encima (`-mt-28`), con `Field dense` en desktop. En mobile, el botón va después de "Additional Details" |
+| CTA | Degradado navy → deep → `#3973A2`; botones `light` + `outline` |
+| Aviso de vista previa | Pill fija abajo a la derecha (solo desktop), con `data-placeholder`. Se quita al publicar |
+
+**Secciones extra (no aprobadas):** `src/components/extras/`, marcadas con `ExtraMarker` (franja rayada `accent`/`primary` + etiqueta). Solo se ven en `/secciones-extra`.
+
+**Desvío del audit (§9 #3):** las capturas aprobadas muestran 2 CTA en el hero ("Get a free quote" amarillo + "Explore services" outline). Se respetó el contenido aprobado, así que en el primer viewport hay 2 botones amarillos (header y hero) más el de la card.

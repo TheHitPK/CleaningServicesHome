@@ -3,13 +3,16 @@ import '../styles/global.css';
 import manropeUrl from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
 import dmSansUrl from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
 import { site, serviceAreas } from '../data/site';
+import PreviewFlag from '../components/ui/PreviewFlag.astro';
 
 interface Props {
   title: string;
   description: string;
+  /** Páginas que no deben indexarse (404) */
+  noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 
 // Solo subset latin: un archivo por familia. Fallback con métricas ajustadas para reducir el salto (CLS).
@@ -36,7 +39,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <meta name="theme-color" content="#173A5A" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
@@ -55,5 +58,6 @@ const jsonLd = {
   <body>
     <a class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[1000] focus:rounded-sm focus:bg-primary focus:px-5 focus:py-3 focus:font-bold focus:text-white" href="#main">Skip to content</a>
     <slot />
+    <PreviewFlag />
   </body>
 </html>

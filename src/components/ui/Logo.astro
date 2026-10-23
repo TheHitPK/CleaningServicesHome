@@ -9,11 +9,21 @@ interface Props {
 const { variant = 'default', href = '#home', class: className } = Astro.props;
 const light = variant === 'light';
 ---
-<a class:list={['inline-flex min-h-11 items-center gap-3', className]} href={href} aria-label="Cleaning 4 You — home">
-  <svg class="h-auto w-[52px] shrink-0 lg:w-[58px]" viewBox="0 0 100 78" aria-hidden="true" focusable="false">
+<a class:list={['group/logo inline-flex min-h-11 items-center gap-3', className]} href={href} aria-label="Cleaning 4 You — home">
+  <svg class="h-auto w-[52px] shrink-0 overflow-visible lg:w-[58px]" viewBox="0 0 100 78" aria-hidden="true" focusable="false">
     <path class="fill-accent" d="M50 2 98 38H84.5L50 12.4 15.5 38H2Z" />
-    <path class:list={[light ? 'fill-sky' : 'fill-deep']} d="M50 22c-.9 0-1.4.5-1.8 1.3L37.6 46.6a14.6 14.6 0 1 0 24.8 0L51.8 23.3C51.4 22.5 50.9 22 50 22Z" />
-    <path class:list={[light ? 'fill-primary-900' : 'fill-white']} d="m50 40.5 1.3 8.4 7.9 1.6-7.9 1.6L50 60.5l-1.3-8.4-7.9-1.6 7.9-1.6Z" />
+    <!-- Gota + destello: en hover/foco la gota "cae y rebota" y la estrella destella (keyframes drip/twinkle en global.css).
+         transform-box: fill-box → el origen es la propia gota (base) y la estrella (centro), no el viewBox. -->
+    <g class="origin-bottom [transform-box:fill-box] group-hover/logo:animate-drip group-focus-visible/logo:animate-drip motion-reduce:animate-none!">
+      <path class:list={[light ? 'fill-sky' : 'fill-deep']} d="M50 22c-.9 0-1.4.5-1.8 1.3L37.6 46.6a14.6 14.6 0 1 0 24.8 0L51.8 23.3C51.4 22.5 50.9 22 50 22Z" />
+      <path
+        class:list={[
+          'origin-center [transform-box:fill-box] group-hover/logo:animate-twinkle group-focus-visible/logo:animate-twinkle motion-reduce:animate-none!',
+          light ? 'fill-primary-900' : 'fill-white',
+        ]}
+        d="m50 40.5 1.3 8.4 7.9 1.6-7.9 1.6L50 60.5l-1.3-8.4-7.9-1.6 7.9-1.6Z"
+      />
+    </g>
   </svg>
   <span
     class:list={['font-display text-lg leading-[1.05] font-extrabold uppercase tracking-[.04em] lg:text-xl', light ? 'text-white' : 'text-deep']}

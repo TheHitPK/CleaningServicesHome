@@ -1,4 +1,11 @@
 ---
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  ⚠️  SECCIÓN EXTRA — NO APROBADA                                    ║
+// ╚══════════════════════════════════════════════════════════════════╝
+// Tabs de detalle por servicio.
+// No aparece en ninguna captura aprobada.
+// NO se renderiza en la home (src/pages/index.astro). Solo se ve en /secciones-extra,
+// con una franja que la marca. Para usarla en la home hay que aprobarla primero.
 // Todos los paneles se renderizan en build; el JS solo alterna `hidden`.
 // Sin JS se ven todos los paneles en lista (progressive enhancement).
 import { Image } from 'astro:assets';
@@ -7,7 +14,7 @@ import Eyebrow from '../ui/Eyebrow.astro';
 import Button from '../ui/Button.astro';
 import Icon from '../icons/Icon.astro';
 import { site, sms, tel } from '../../data/site';
-import { serviceTabs } from '../../data/content';
+import { serviceTabs } from '../../data/content-extras';
 ---
 <section class="section bg-soft" aria-labelledby="tabs-title" data-tabs>
   <div class="container-site">
@@ -45,7 +52,7 @@ import { serviceTabs } from '../../data/content';
                 </li>
               ))}
             </ul>
-            <Button variant="secondary" href={sms(`Hi Cleaning 4 You! I would like a quote for ${t.title}.`)} icon="arrow-up-right">Request a quote</Button>
+            <Button variant="secondary" href={sms(`Hi Cleaning 4 You! I would like a quote for ${t.title}.`)} data-service={t.title} icon="arrow-up-right">Request a quote</Button>
           </div>
           <div class="aspect-4/3 overflow-hidden rounded-md bg-cool">
             <Image

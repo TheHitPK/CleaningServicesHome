@@ -8,7 +8,7 @@ import { about } from '../../data/content';
 <section class="section pt-[calc(var(--section-y)+2rem)] lg:pt-(--section-y)" id="about" aria-labelledby="about-title">
   <div class="container-site lg:grid lg:grid-cols-[1fr_var(--booking-w)] lg:gap-12">
     <div class="grid max-w-[640px] justify-items-start gap-5">
-      <SectionHeading eyebrow={about.eyebrow} title={about.title} id="about-title" class="mb-2!" />
+      <SectionHeading eyebrow={about.eyebrow} title={about.title} id="about-title" wide class="mb-2!" />
       {about.body.map((p) => <p class="text-lead">{p}</p>)}
       <Button variant="link" href="#services" icon="arrow">{about.link}</Button>
     </div>

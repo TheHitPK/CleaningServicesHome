@@ -1,4 +1,7 @@
 ---
+// HOME — solo secciones APROBADAS, en el orden de docs/referencias/contenido-aprobado/.
+// Las secciones NO aprobadas viven en src/components/extras/ y NO se importan aquí
+// (se revisan en /secciones-extra). Ver src/components/extras/README.md.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TopBar from '../components/sections/TopBar.astro';
 import Header from '../components/sections/Header.astro';
@@ -6,35 +9,35 @@ import Hero from '../components/sections/Hero.astro';
 import About from '../components/sections/About.astro';
 import HowItWorks from '../components/sections/HowItWorks.astro';
 import Services from '../components/sections/Services.astro';
-import ServiceTabs from '../components/sections/ServiceTabs.astro';
-import Founder from '../components/sections/Founder.astro';
+import OurStory from '../components/sections/OurStory.astro';
+import Mission from '../components/sections/Mission.astro';
 import WhyUs from '../components/sections/WhyUs.astro';
-import Testimonials from '../components/sections/Testimonials.astro';
 import OurWork from '../components/sections/OurWork.astro';
-import ServiceAreas from '../components/sections/ServiceAreas.astro';
-import Contact from '../components/sections/Contact.astro';
+import Commitment from '../components/sections/Commitment.astro';
+import QuoteSection from '../components/sections/QuoteSection.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
 import Footer from '../components/sections/Footer.astro';
 import MobileCta from '../components/sections/MobileCta.astro';
 ---
 <BaseLayout
   title="Cleaning 4 You | Professional Cleaning Services in Arizona"
-  description="Move-out, post-construction, residential, commercial and window cleaning across Phoenix, Scottsdale, Tempe and more. Call or text (602) 396-3955."
+  description="Move in / move out, post-construction, residential, commercial and window cleaning across Phoenix, Scottsdale, Tempe and more. Call or text (602) 396-3955."
 >
   <TopBar />
   <Header />
   <main id="main">
-    <Hero />
-    <About />
-    <HowItWorks />
-    <Services />
-    <ServiceTabs />
-    <Founder />
-    <WhyUs />
-    <Testimonials />
-    <OurWork />
-    <ServiceAreas />
-    <Contact />
+    <Hero />          <!-- 01-hero.jpg -->
+    <About />         <!-- 02-about.jpg -->
+    <HowItWorks />    <!-- 04-how-it-works.jpg -->
+    <Services />      <!-- 03-servicios.jpg -->
+    <OurStory />      <!-- 05-our-story.jpg -->
+    <Mission />       <!-- 12-folleto-mision-vision.jpg -->
+    <WhyUs />         <!-- 06-why-choose-us.jpg -->
+    <OurWork />       <!-- 07-our-work-videos.jpg + 08-our-work-galeria.jpg -->
+    <Commitment />    <!-- 09-our-commitment.jpg -->
+    <QuoteSection />  <!-- 10-get-a-quote.jpg -->
+    <CtaBand />       <!-- 11-cta-y-footer.jpg -->
   </main>
-  <Footer />
+  <Footer />          <!-- 11-cta-y-footer.jpg -->
   <MobileCta />
 </BaseLayout>

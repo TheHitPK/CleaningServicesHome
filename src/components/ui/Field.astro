@@ -1,5 +1,7 @@
 ---
-// Input / select / textarea con label visible. DESIGN_SYSTEM §2.4
+// Input / select / textarea con label visible y error en línea. DESIGN_SYSTEM §2.4
+import Icon from '../icons/Icon.astro';
+
 interface Props {
   name: string;
   label: string;
@@ -10,43 +12,61 @@ interface Props {
   required?: boolean;
   options?: readonly string[];
   hint?: string;
+  /** Mensaje que se muestra debajo del campo cuando no es válido (causa + cómo corregirlo) */
+  error?: string;
   autocomplete?: string;
   inputmode?: 'text' | 'numeric' | 'tel' | 'email';
   pattern?: string;
+  minlength?: number;
   maxlength?: number;
   /** Fondo blanco (para formularios sobre bg-soft) */
   onSoft?: boolean;
+  /** Más compacto en desktop (grids de 4 columnas). En mobile sigue en 16px para evitar el zoom de iOS. */
+  dense?: boolean;
   class?: string;
 }
 
 const {
   name, label, id, as = 'input', type = 'text', placeholder, required = false,
-  options = [], hint, autocomplete, inputmode, pattern, maxlength, onSoft = false, class: className,
+  options = [], hint, error, autocomplete, inputmode, pattern, minlength, maxlength,
+  onSoft = false, dense = false, class: className,
 } = Astro.props;
 
 const hintId = hint ? `${id}-hint` : undefined;
+const errorId = error ? `${id}-error` : undefined;
+const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+
 const control = [
-  'w-full min-h-[50px] rounded-sm border px-[15px] py-[13px] text-base leading-snug text-primary',
+  'w-full min-h-[50px] rounded-sm border border-field px-[15px] py-[13px] text-base leading-snug text-primary',
   'placeholder:text-muted placeholder:opacity-100',
   'transition-[border-color,background-color,box-shadow] duration-150',
-  'hover:border-sky focus:border-deep focus:bg-white focus:outline-none focus:ring-3 focus:ring-sky/35',
-  'user-invalid:border-error',
-  onSoft ? 'bg-white border-line' : 'bg-input border-cool',
+  'hover:border-deep focus:border-deep focus:bg-white focus:outline-none focus:ring-3 focus:ring-sky/40',
+  'aria-invalid:border-error aria-invalid:focus:ring-error/25',
+  onSoft ? 'bg-white' : 'bg-input',
+  dense && 'lg:px-3 lg:text-[.9375rem]',
 ];
-const common = { id, name, required, autocomplete, 'aria-describedby': hintId };
+const common = { id, name, required, autocomplete, 'aria-describedby': describedBy };
 ---
 <div class:list={['grid gap-2', className]}>
   <label class="text-xs font-bold uppercase leading-tight tracking-[.06em] text-primary" for={id}>
     {label}{required && <span class="text-deep" aria-hidden="true"> *</span>}
   </label>
   {as === 'select' ? (
-    <select {...common} class:list={[control, 'select-chevron cursor-pointer appearance-none pr-[42px]']}>
+    <select {...common} class:list={[control, 'select-chevron cursor-pointer appearance-none pr-[42px]', dense && 'lg:pr-8 lg:bg-[position:right_10px_center]']}>
       {options.map((o) => <option>{o}</option>)}
     </select>
   ) : as === 'textarea' ? (
     <textarea {...common} class:list={[control, 'min-h-[120px] resize-y']} placeholder={placeholder} rows={4} maxlength={maxlength}></textarea>
   ) : (
-    <input {...common} class:list={control} type={type} placeholder={placeholder} inputmode={inputmode} pattern={pattern} maxlength={maxlength} />
+    <input
+      {...common} class:list={control} type={type} placeholder={placeholder}
+      inputmode={inputmode} pattern={pattern} minlength={minlength} maxlength={maxlength}
+    />
   )}
   {hint && <p class="text-sm text-muted" id={hintId}>{hint}</p>}
+  {error && (
+    <p class="flex items-center gap-1.5 text-sm font-medium text-error" id={errorId} hidden>
+      <Icon name="alert" size={16} class="shrink-0" />{error}
+    </p>
+  )}
 </div>

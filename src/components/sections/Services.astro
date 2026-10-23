@@ -1,16 +1,18 @@
 ---
+// Services — ref. docs/referencias/contenido-aprobado/03-servicios.jpg
+// "Learn more" abre un <dialog> (igual que el demo): aún no hay páginas por servicio.
 import { Image } from 'astro:assets';
 import SectionHeading from '../ui/SectionHeading.astro';
 import Button from '../ui/Button.astro';
+import Dialog from '../ui/Dialog.astro';
+import Eyebrow from '../ui/Eyebrow.astro';
 import Icon from '../icons/Icon.astro';
-import { services, sms } from '../../data/site';
-import { servicesSection } from '../../data/content';
+import { services, QUOTE_ANCHOR } from '../../data/site';
+import { servicesSection as copy } from '../../data/content';
 ---
 <section class="section" id="services" aria-labelledby="services-title">
   <div class="container-site">
-    <SectionHeading eyebrow={servicesSection.eyebrow} title={servicesSection.title} lead={servicesSection.lead} layout="split" id="services-title">
-      <Button slot="aside" variant="secondary" href="#contact" icon="arrow">{servicesSection.cta}</Button>
-    </SectionHeading>
+    <SectionHeading eyebrow={copy.eyebrow} title={copy.title} lead={copy.lead} layout="split" id="services-title" />
 
     <!-- 5 cards: grid de 3 con la última fila centrada (DESIGN_SYSTEM §4.3) -->
     <ul class="flex flex-wrap justify-center gap-6">
@@ -22,7 +24,8 @@ import { servicesSection } from '../../data/content';
             'sm:max-w-[calc((100%-1.5rem)/2)] sm:basis-[calc((100%-1.5rem)/2)]',
             'lg:max-w-[calc((100%-3rem)/3)] lg:basis-[calc((100%-3rem)/3)]',
             "before:absolute before:inset-x-0 before:top-0 before:z-1 before:h-1 before:origin-left before:bg-accent before:transition-transform before:duration-400 before:content-['']",
-            s.featured ? 'before:scale-x-100' : 'before:scale-x-0 hover:before:scale-x-100',
+            // Línea amarilla solo en hover (o foco de teclado dentro de la card), en todas las cards
+            'before:scale-x-0 hover:before:scale-x-100 focus-within:before:scale-x-100',
           ]}
         >
           <div class="aspect-16/10 overflow-hidden bg-cool">
@@ -36,17 +39,31 @@ import { servicesSection } from '../../data/content';
           <div class="grid flex-1 content-start gap-3 px-6 pt-6 pb-8">
             {s.featured && <span class="text-[.6875rem] leading-none font-bold tracking-[.12em] text-accent-ink uppercase">Popular service</span>}
             <h3>{s.name}</h3>
-            <p class="text-[.9375rem] text-muted">{servicesSection.descriptions[s.id]}</p>
-            <a
-              class="group/link mt-auto inline-flex min-h-11 items-center gap-2 text-btn font-bold tracking-btn text-deep uppercase"
-              href={sms(`Hi Cleaning 4 You! I would like a quote for ${s.name}.`)}
+            <p class="text-[.9375rem] text-muted">{copy.descriptions[s.id]}</p>
+            <button
+              class="group/link mt-auto inline-flex min-h-11 items-center gap-2 justify-self-start text-btn font-bold tracking-btn text-deep uppercase"
+              type="button" data-dialog-open={`svc-${s.id}`} aria-haspopup="dialog"
             >
-              Request a quote <Icon name="arrow" size={16} class="transition-transform group-hover/link:translate-x-[3px]" />
-            </a>
+              {s.featured ? copy.linkFeatured : copy.link}
+              <Icon name="arrow-up-right" size={16} class="transition-transform group-hover/link:translate-x-[3px]" />
+              <span class="sr-only">: {s.name}</span>
+            </button>
           </div>
         </li>
       ))}
     </ul>
-    <p class="mt-6 text-sm text-muted">Photography is illustrative and does not represent verified Cleaning 4 You client projects.</p>
+    <p class="mt-6 text-sm text-muted">{copy.disclaimer}</p>
   </div>
+
+  {services.map((s) => (
+    <Dialog id={`svc-${s.id}`} labelledby={`svc-${s.id}-title`}>
+      <Eyebrow>{copy.dialogEyebrow}</Eyebrow>
+      <h3 id={`svc-${s.id}-title`} class="text-[1.5rem]">{s.name}</h3>
+      <p>{copy.descriptions[s.id]}</p>
+      <p class="text-sm text-muted">{copy.dialogText}</p>
+      <Button variant="secondary" href={QUOTE_ANCHOR} data-service={s.name} data-dialog-close icon="arrow" class="mt-2 justify-self-start">
+        {copy.dialogCta}
+      </Button>
+    </Dialog>
+  ))}
 </section>

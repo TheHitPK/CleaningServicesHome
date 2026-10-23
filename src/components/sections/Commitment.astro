@@ -1,0 +1,20 @@
+---
+// Our Commitment — ref. docs/referencias/contenido-aprobado/09-our-commitment.jpg
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../icons/Icon.astro';
+import { commitment } from '../../data/content';
+---
+<section class="section" aria-labelledby="commitment-title">
+  <div class="container-site">
+    <SectionHeading eyebrow={commitment.eyebrow} title={commitment.title} lead={commitment.lead} layout="centered" id="commitment-title" />
+    <ul class="mx-auto grid max-w-[910px] gap-6 md:grid-cols-2">
+      {commitment.cards.map((c) => (
+        <li class="grid content-start gap-3 rounded-lg border border-line bg-white p-8 shadow-sm">
+          <Icon name={c.icon} size={28} class="mb-1 text-accent" />
+          <h3>{c.title}</h3>
+          <p class="text-[.9375rem]">{c.text}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
