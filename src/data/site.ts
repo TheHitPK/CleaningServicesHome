@@ -1,10 +1,10 @@
 // Datos REALES del negocio. Única fuente: ningún componente los escribe a mano.
 import type { ImageMetadata } from 'astro';
-import residential from '../assets/images/residential.jpg';
-import commercial from '../assets/images/commercial.jpg';
-import windows from '../assets/images/windows.jpg';
-import moveOut from '../assets/images/move-out.jpg';
-import postConstruction from '../assets/images/post-construction.jpg';
+import residential from '../assets/images/services/residential/living-room-vacuuming.jpg';
+import commercial from '../assets/images/services/commercial/kennel-floor-logo.jpg';
+import windows from '../assets/images/services/windows/patio-doors.jpg';
+import moveOut from '../assets/images/services/move-out/empty-kitchen.jpg';
+import postConstruction from '../assets/images/services/post-construction/floor-mopping.jpg';
 
 export const site = {
   name: 'Cleaning 4 You',
@@ -30,12 +30,13 @@ const onePagePaths = new Set(['/', '/propuesta', '/propuesta/']);
 export const anchor = (hash: `#${string}`, pathname: string): string =>
   onePagePaths.has(pathname) ? hash : `/${hash}`;
 
-// Menú de las capturas aprobadas (ref. 01-hero.jpg): sin "Service Areas"
+// Menú en el mismo orden en que aparecen las secciones en la home
 export const nav = [
   { label: 'Home', href: '#home' },
-  { label: 'About Us', href: '#about' },
   { label: 'Services', href: '#services' },
   { label: 'Our Work', href: '#our-work' },
+  { label: 'About Us', href: '#about' },
+  { label: 'Service Areas', href: '#service-areas' },
   { label: 'Contact', href: '#contact' },
 ] as const;
 
@@ -50,17 +51,22 @@ export interface Service {
   /** Nombre corto para el footer (ref. 11-cta-y-footer.jpg) */
   short: string;
   image: ImageMetadata;
+  /** Encuadre de la foto dentro de la card */
+  imageClass?: string;
   featured?: boolean;
 }
 
 // Orden de las cards (ref. 03-servicios.jpg)
 export const services: Service[] = [
   { id: 'residential', name: 'Residential Cleaning', short: 'Residential Cleaning', image: residential },
-  { id: 'commercial', name: 'Commercial Cleaning', short: 'Commercial Cleaning', image: commercial },
+  { id: 'commercial', name: 'Commercial Cleaning', short: 'Commercial Cleaning', image: commercial, imageClass: 'object-bottom' },
   { id: 'windows', name: 'Window Cleaning', short: 'Window Cleaning', image: windows },
   { id: 'move-out', name: 'Move In / Move Out Cleaning', short: 'Move In / Move Out', image: moveOut, featured: true },
-  { id: 'post-construction', name: 'Post Construction Cleaning', short: 'Post Construction', image: postConstruction, featured: true },
+  { id: 'post-construction', name: 'Post Construction Cleaning', short: 'Post Construction', image: postConstruction, imageClass: 'object-top', featured: true },
 ];
+
+// Orden de la home y del footer: primero los servicios destacados (sort estable)
+export const servicesByPriority: Service[] = [...services].sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
 
 // Orden de los <select> de los formularios (igual que el demo: primero los servicios destacados)
 export const serviceOptions: readonly string[] = [

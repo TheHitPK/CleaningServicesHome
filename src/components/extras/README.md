@@ -5,11 +5,8 @@ Se construyeron antes de recibir las capturas finales y se conservan aquí, sepa
 
 | Componente | Qué es | Por qué no está aprobada | Textos |
 |---|---|---|---|
-| `ServiceTabs.astro` | Tabs con el detalle de cada servicio | No aparece en las capturas | `content-extras.ts` → `serviceTabs` |
 | `Founder.astro` | Mensaje del fundador + 4 cifras | No aparece en las capturas | `founder`, `counters` |
 | `Testimonials.astro` | 3 testimonios | No aparece; no hay reseñas reales | `testimonials` |
-| `ServiceAreas.astro` | Banda navy con chips de ciudades | Las ciudades solo van en el footer | `areas` |
-| `Contact.astro` | Formulario de contacto en 2 columnas | Reemplazado por `sections/QuoteSection.astro` | `contact` |
 
 ## Cómo identificarlas
 

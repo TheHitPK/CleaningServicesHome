@@ -1,20 +1,13 @@
 ---
-// Footer — ref. docs/referencias/contenido-aprobado/11-cta-y-footer.jpg
 import Logo from '../ui/Logo.astro';
 import Icon from '../icons/Icon.astro';
-import { site, services, tel, anchor, QUOTE_ANCHOR } from '../../data/site';
-import { footer, hero } from '../../data/content';
+import { site, servicesByPriority, nav, tel, anchor } from '../../data/site';
+import { footer } from '../../data/content';
 
 const path = Astro.url.pathname;
 const link = 'inline-flex min-h-10 lg:min-h-8 items-center gap-2 transition-colors duration-150 hover:text-accent';
 const title = 'mb-4 text-h4 text-white';
-const quickLinks = [
-  { label: 'Home', href: anchor('#home', path) },
-  { label: 'About Us', href: anchor('#about', path) },
-  { label: 'Our Work', href: anchor('#our-work', path) },
-  { label: 'Contact', href: anchor('#contact', path) },
-  { label: hero.ctaPrimary.replace(/\b\w/g, (c) => c.toUpperCase()), href: anchor(QUOTE_ANCHOR, path) },
-];
+const pages = nav.map((item) => ({ label: item.label, href: anchor(item.href, path) }));
 ---
 <footer class="on-dark bg-primary-900 pt-20 pb-[calc(2rem+56px)] text-sm text-white/72 lg:pb-8">
   <div class="container-site">
@@ -26,22 +19,23 @@ const quickLinks = [
         <a class={link} href={`mailto:${site.email}`}><Icon name="mail" size={16} class="text-accent" /> {site.email}</a>
       </div>
       <nav aria-labelledby="ft-links">
-        <h2 class={title} id="ft-links">{footer.quickLinksTitle}</h2>
-        <ul class="grid gap-1">{quickLinks.map((l) => <li><a class={link} href={l.href}>{l.label}</a></li>)}</ul>
+        <h2 class={title} id="ft-links">{footer.pagesTitle}</h2>
+        <ul class="grid gap-1">{pages.map((l) => <li><a class={link} href={l.href}>{l.label}</a></li>)}</ul>
       </nav>
       <nav aria-labelledby="ft-services">
-        <h2 class={title} id="ft-services">{footer.servicesTitle}</h2>
-        <ul class="grid gap-1">{services.map((s) => <li><a class={link} href={anchor('#services', path)}>{s.short}</a></li>)}</ul>
+        <h2 class={title} id="ft-services">{footer.servicesNavTitle}</h2>
+        <ul class="grid gap-1">{servicesByPriority.map((s) => <li><a class={link} href={anchor('#services', path)}>{s.name}</a></li>)}</ul>
       </nav>
       <div>
         <h2 class={title}>{footer.areasTitle}</h2>
-        <p class="leading-relaxed">{footer.areasText}</p>
+        <p class="leading-relaxed">{footer.areasList}</p>
       </div>
     </div>
 
-    <div class="mt-16 flex flex-wrap justify-between gap-x-8 gap-y-3 border-t border-white/12 pt-6 text-[.8125rem]">
-      <span>© {new Date().getFullYear()} {site.legalName}. All Rights Reserved.</span>
-      <span>{footer.bottomNote}</span>
+    <div class="mt-16 flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-white/12 pt-6 text-[.8125rem]">
+      <span>© {new Date().getFullYear()} {site.legalName}. {footer.rights}</span>
+      <span>{footer.callOrText} <a class="font-bold text-accent" href={tel}>{site.phone.display}</a></span>
+      <span>{footer.conceptNote}</span>
     </div>
   </div>
 </footer>

@@ -3,15 +3,28 @@
 // Los textos de las secciones NO aprobadas están aparte, en content-extras.ts.
 import type { ImageMetadata } from 'astro';
 import type { IconName } from '../components/icons/icons';
-import type { ServiceId } from './site';
-import residential from '../assets/images/residential.jpg';
-import deepClean from '../assets/images/deep-clean.jpg';
-import moveOut from '../assets/images/move-out.jpg';
-import postConstruction from '../assets/images/post-construction.jpg';
-import windows from '../assets/images/windows.jpg';
-import kitchen from '../assets/images/kitchen.jpg';
-import office from '../assets/images/office.jpg';
-import heroImg from '../assets/images/hero.jpg';
+import { site, services, serviceAreas, type ServiceId } from './site';
+// Tabs
+import tabRegular from '../assets/images/services/residential/bedroom-bed-making.jpg';
+import tabDeep from '../assets/images/services/deep-cleaning/kitchen-hood-dusting.jpg';
+import tabMove from '../assets/images/services/move-out/empty-dining-room.jpg';
+import tabPost from '../assets/images/services/post-construction/kitchen-crew.jpg';
+import tabCommercial from '../assets/images/services/commercial/kennel-floor-logo.jpg';
+import tabWindows from '../assets/images/services/windows/window-shutters.jpg';
+// Our Work: portadas de los videos
+import reelMove from '../assets/images/services/deep-cleaning/cabinet-vacuuming.jpg';
+import reelPost from '../assets/images/services/post-construction/cabinet-vacuuming-no-logo.png';
+import reelDeep from '../assets/images/services/deep-cleaning/ceiling-fan.jpg';
+// Our Work: álbum
+import workMove from '../assets/images/services/move-out/kitchen-counters-logo.jpg';
+import workPost from '../assets/images/services/post-construction/new-kitchen-logo.jpg';
+import workResidential from '../assets/images/our-work/kitchen-05.jpg';
+import workPostDetails from '../assets/images/services/post-construction/carpet-vacuuming-logo.jpg';
+import workMoveKitchen from '../assets/images/our-work/sink-01.jpg';
+import workCommercial from '../assets/images/services/commercial/lobby-floor-logo.jpg';
+import workLiving from '../assets/images/our-work/living-room-02.jpg';
+import workBathroom from '../assets/images/our-work/bathroom-01.jpg';
+import workFamilyRoom from '../assets/images/our-work/living-room-01.jpg';
 
 type Feature = { icon: IconName; title: string; text: string };
 
@@ -81,6 +94,30 @@ export const servicesSection = {
   dialogText: 'This is a preview of the Home Page. The detailed page for this service will be designed separately, including its description and room-by-room checklist where available.',
   dialogCta: 'Request a quote',
   disclaimer: 'Photography is illustrative and does not represent verified Cleaning 4 You client projects. Individual service pages are planned for the final website.',
+  // Layout actual de la home: las cards llevan directo al formulario
+  requestQuote: 'Request a quote',
+};
+
+// Tabs de detalle por servicio. PLACEHOLDER: el cliente todavía no entregó estos textos (no se inventan)
+const LOREM_M = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+const LOREM_L = `${LOREM_M} Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`;
+const tabItems = ['Lorem ipsum dolor sit', 'Consectetur adipiscing elit', 'Sed do eiusmod tempor', 'Ut labore et dolore magna'];
+
+export const serviceTabs = {
+  eyebrow: 'The details that matter',
+  title: 'Find the right clean for your space.',
+  lead: LOREM_M,
+  noteTitle: 'Service details available upon request.',
+  noteText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. A full room-by-room checklist for this service has not yet been supplied.',
+  footerTitle: 'Ready to talk about your project?',
+  tabs: [
+    { id: 'regular', label: 'Regular Cleaning', eyebrow: 'Recurring care', title: 'Regular Cleaning', text: LOREM_L, items: tabItems, image: tabRegular },
+    { id: 'deep', label: 'Deep Cleaning', eyebrow: 'Top to bottom', title: 'Deep Cleaning', text: LOREM_L, items: tabItems, image: tabDeep },
+    { id: 'move', label: 'Move In / Out', eyebrow: 'Next chapter', title: 'Move In / Move Out Cleaning', text: LOREM_L, items: tabItems, image: tabMove },
+    { id: 'post', label: 'Post Construction', eyebrow: 'Finishing touches', title: 'Post Construction Cleaning', text: LOREM_L, items: tabItems, image: tabPost },
+    { id: 'commercial', label: 'Commercial', eyebrow: 'Workspaces', title: 'Commercial Cleaning', text: LOREM_L, items: tabItems, image: tabCommercial },
+    { id: 'windows', label: 'Windows', eyebrow: 'Let the light in', title: 'Window Cleaning', text: LOREM_L, items: tabItems, image: tabWindows },
+  ] satisfies { id: string; label: string; eyebrow: string; title: string; text: string; items: string[]; image: ImageMetadata }[],
 };
 
 // ⑤ Our Story — ref. 05-our-story.jpg
@@ -139,11 +176,11 @@ export type ProjectType = 'move' | 'post' | 'residential' | 'commercial';
 export const portfolio = {
   eyebrow: 'Our work',
   title: 'See the Difference.',
-  lead: 'A glimpse into the kind of transformations a detailed clean can make. This preview uses sample imagery until real project videos and photos are provided.',
+  lead: 'A glimpse into the kind of transformations a detailed clean can make.',
   reels: [
-    { id: 'reel-move', title: ['Move Out', 'Transformation'], image: residential },
-    { id: 'reel-post', title: ['Post Construction', 'Cleaning'], image: postConstruction },
-    { id: 'reel-deep', title: ['Deep Cleaning', 'Results'], image: deepClean },
+    { id: 'reel-move', title: ['Move Out', 'Transformation'], image: reelMove },
+    { id: 'reel-post', title: ['Post Construction', 'Cleaning'], image: reelPost },
+    { id: 'reel-deep', title: ['Deep Cleaning', 'Results'], image: reelDeep },
   ] satisfies { id: string; title: [string, string]; image: ImageMetadata }[],
   reelCaption: 'Vertical video placement · 9:16',
   reelDialogEyebrow: 'Our work · video placeholder',
@@ -159,14 +196,16 @@ export const portfolio = {
     { id: 'commercial', label: 'Commercial' },
   ] as const,
   items: [
-    { type: 'move', title: 'Move Out Cleaning', image: moveOut },
-    { type: 'post', title: 'Post Construction Cleaning', image: windows },
-    { type: 'residential', title: 'Residential Cleaning', image: heroImg },
-    { type: 'post', title: 'Post Construction Details', image: postConstruction },
-    { type: 'move', title: 'Move Out — Kitchen', image: kitchen },
-    { type: 'commercial', title: 'Commercial Cleaning', image: office },
-  ] satisfies { type: ProjectType; title: string; image: ImageMetadata }[],
-  note: 'Sample visuals only. Before/after videos will be added when the client supplies authorized original footage. No fictitious project claims or video playback.',
+    { type: 'move', title: 'Move Out Cleaning', image: workMove, imageClass: 'object-bottom' },
+    { type: 'post', title: 'Post Construction Cleaning', image: workPost },
+    { type: 'residential', title: 'Residential Cleaning', image: workResidential },
+    { type: 'post', title: 'Post Construction Details', image: workPostDetails, imageClass: 'object-bottom' },
+    { type: 'move', title: 'Move Out — Kitchen', image: workMoveKitchen },
+    { type: 'commercial', title: 'Commercial Cleaning', image: workCommercial },
+    { type: 'residential', title: 'Residential — Living Room', image: workLiving },
+    { type: 'residential', title: 'Residential — Bathroom', image: workBathroom },
+    { type: 'residential', title: 'Residential — Family Room', image: workFamilyRoom },
+  ] satisfies { type: ProjectType; title: string; image: ImageMetadata; imageClass?: string }[],
 };
 
 // ⑨ Our Commitment — ref. 09-our-commitment.jpg
@@ -204,6 +243,65 @@ export const footer = {
   areasTitle: 'Service Areas',
   areasText: 'Phoenix, Scottsdale, Tempe, Chandler, Gilbert, Fountain Hills, Cave Creek, Carefree, Payson, Maricopa & Casa Grande, Arizona.',
   bottomNote: 'Website design concept · Not a published business site',
+  // Footer actual de la home y de las páginas internas
+  pagesTitle: 'Pages',
+  servicesNavTitle: 'Services',
+  areasList: `${serviceAreas.join(', ')}, Arizona.`,
+  rights: 'All rights reserved.',
+  callOrText: 'Call or text',
+  conceptNote: 'Website concept · Not a live business website',
+};
+
+// Franja de confianza — solo datos confirmados
+export const trust = {
+  title: 'Why clients trust Cleaning 4 You',
+  items: [
+    { icon: 'sparkle', value: `${site.yearsOfExperience} Years`, label: 'of hands-on cleaning experience' },
+    { icon: 'map-pin', value: `${serviceAreas.length} Arizona Cities`, label: 'from Phoenix to Casa Grande' },
+    { icon: 'check', value: 'Free Quotes', label: 'personalized to your space' },
+    { icon: 'phone', value: 'Call or Text', label: site.phone.display },
+  ] satisfies { icon: IconName; value: string; label: string }[],
+};
+
+// Reseñas — hueco reservado hasta tener reseñas reales y autorizadas (no se inventan)
+export const reviews = {
+  eyebrow: 'Client reviews',
+  title: 'What Our Clients Say',
+  lead: 'Real reviews from Cleaning 4 You clients will appear here, for example linked from Google Reviews.',
+  slot: 'Verified client review · pending',
+  slots: 3,
+};
+
+// FAQ — las respuestas salen de textos ya aprobados; las null esperan al cliente
+export const faq = {
+  eyebrow: 'FAQ',
+  title: 'Questions Before You Book?',
+  pending: 'Answer pending confirmation from Cleaning 4 You.',
+  items: [
+    { q: 'How do I get a quote?', a: `${process.steps[0].text} ${process.steps[1].text}` },
+    { q: 'Is the quote free?', a: quote.note.split('. ').slice(0, 2).join('. ') + '.' },
+    { q: 'Which areas do you serve?', a: footer.areasText },
+    { q: 'What types of cleaning do you offer?', a: services.map((s) => s.name).join(', ') + '.' },
+    { q: 'Do you bring your own supplies and equipment?', a: null },
+    { q: 'Are you licensed and insured?', a: null },
+    { q: 'How far in advance should I book?', a: null },
+  ] satisfies { q: string; a: string | null }[],
+};
+
+// Where we work
+export const areas = {
+  eyebrow: 'Where we work',
+  title: 'Proudly serving Arizona communities',
+  lead: 'Ask us about cleaning services in your city.',
+};
+
+// Formulario de contacto en 2 columnas
+export const contact = {
+  eyebrow: 'Get in touch',
+  title: 'Ready for a fresh start?',
+  lead: 'Our team will help you with service information and scheduling.',
+  submit: 'Text my request',
+  note: 'Opens a text message to our team on your phone. Nothing is sent to a server.',
 };
 
 // Aviso fijo de vista previa (aparece en todas las capturas aprobadas). Quitar al publicar.

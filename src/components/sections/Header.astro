@@ -5,11 +5,17 @@ import Icon from '../icons/Icon.astro';
 import { nav, anchor, QUOTE_ANCHOR } from '../../data/site';
 import { hero } from '../../data/content';
 
+interface Props {
+  /** false: sin el link a Service Areas, para páginas que no tienen esa sección. Lo usa /propuesta. */
+  areas?: boolean;
+}
+const { areas = true } = Astro.props;
 const path = Astro.url.pathname;
+const items = nav.filter((item) => areas || item.href !== '#service-areas');
 ---
 <div class="absolute top-[60px] size-px" aria-hidden="true" data-header-sentinel></div>
 <header class="group/header sticky top-0 z-100 bg-cream transition-shadow data-[scrolled]:shadow-[0_2px_15px_rgb(23_58_90/.08)]" data-header>
-  <div class="container-site flex h-(--header-h) items-center justify-between gap-6">
+  <div class="container-site flex h-(--header-h) items-center justify-between gap-4">
     <Logo href={anchor('#home', path)} />
 
     <nav
@@ -18,8 +24,8 @@ const path = Astro.url.pathname;
       class="max-lg:absolute max-lg:inset-x-0 max-lg:top-(--header-h) max-lg:hidden max-lg:border-t max-lg:border-line max-lg:bg-white max-lg:shadow-md max-lg:data-[open]:block"
       data-nav
     >
-      <ul class="flex gap-8 max-lg:flex-col max-lg:gap-0 max-lg:px-(--gutter) max-lg:pt-3 max-lg:pb-6">
-        {nav.map((item) => (
+      <ul class="flex gap-3 whitespace-nowrap min-[1200px]:gap-8 max-lg:flex-col max-lg:gap-0 max-lg:px-(--gutter) max-lg:pt-3 max-lg:pb-6">
+        {items.map((item) => (
           <li>
             <a
               class="relative inline-flex min-h-11 items-center text-sm font-semibold text-primary transition-colors hover:text-deep

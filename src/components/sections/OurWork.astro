@@ -68,22 +68,20 @@ const { reels = true } = Astro.props;
     </div>
     <p class="sr-only" aria-live="polite" data-filter-status></p>
 
-    <!-- PLACEHOLDER: fotos ilustrativas, reemplazar por trabajos reales -->
     <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {copy.items.map((p) => (
-        <li class="overflow-hidden bg-white shadow-sm transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-lg" data-type={p.type} data-placeholder>
+        <li class="overflow-hidden bg-white shadow-sm transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-lg" data-type={p.type}>
           <div class="aspect-16/10 overflow-hidden bg-cool">
             <Image
-              src={p.image} alt={`Sample visual for ${p.title}`}
+              src={p.image} alt={p.title}
               widths={[360, 480, 640, 800]} sizes="(min-width: 1200px) 384px, (min-width: 960px) calc(33vw - 40px), (min-width: 540px) calc(50vw - 40px), calc(100vw - 40px)"
-              loading="lazy" decoding="async" quality={65} class="size-full object-cover"
+              loading="lazy" decoding="async" quality={65} class:list={['size-full object-cover', p.imageClass]}
             />
           </div>
           {reels ? <h4 class="px-4 py-3.5 text-sm">{p.title}</h4> : <h3 class="px-4 py-3.5 text-sm">{p.title}</h3>}
         </li>
       ))}
     </ul>
-    <p class="mt-6 text-sm text-muted">{copy.note}</p>
   </div>
 
   {copy.reels.map((r) => (

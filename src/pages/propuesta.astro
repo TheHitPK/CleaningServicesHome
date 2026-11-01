@@ -1,24 +1,24 @@
 ---
 // ⚠️ PROPUESTA DE ESTRUCTURA — NO APROBADA (noindex, fuera del menú).
 // Reordena el contenido aprobado de la home según las dudas del cliente: 12 secciones → 10.
-// La home (index.astro) NO cambia. Componentes nuevos en src/components/propuesta/,
-// textos nuevos en src/data/content-propuesta.ts. Se puede borrar sin afectar la home.
+// Conserva la versión anterior de Services, Quote y Footer en src/components/propuesta/.
+// Sus notas están en src/data/content-propuesta.ts. Se puede borrar sin afectar la home.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TopBar from '../components/sections/TopBar.astro';
 import Header from '../components/sections/Header.astro';
 import Hero from '../components/sections/Hero.astro';
-import Services from '../components/sections/Services.astro';
+import Services from '../components/propuesta/ServicesCards.astro';
 import HowItWorks from '../components/sections/HowItWorks.astro';
 import OurWork from '../components/sections/OurWork.astro';
-import QuoteSection from '../components/sections/QuoteSection.astro';
-import Footer from '../components/sections/Footer.astro';
+import QuoteSection from '../components/propuesta/QuoteSection.astro';
+import Footer from '../components/propuesta/FooterOriginal.astro';
 import MobileCta from '../components/sections/MobileCta.astro';
 import ProposalNote from '../components/propuesta/ProposalNote.astro';
-import TrustStrip from '../components/propuesta/TrustStrip.astro';
-import WhyCommitment from '../components/propuesta/WhyCommitment.astro';
-import ReviewsSlot from '../components/propuesta/ReviewsSlot.astro';
+import TrustStrip from '../components/sections/TrustStrip.astro';
+import WhyCommitment from '../components/sections/WhyCommitment.astro';
+import ReviewsSlot from '../components/sections/ReviewsSlot.astro';
 import AboutCompact from '../components/propuesta/AboutCompact.astro';
-import Faq from '../components/propuesta/Faq.astro';
+import Faq from '../components/sections/Faq.astro';
 import { notes, intro } from '../data/content-propuesta';
 ---
 <BaseLayout
@@ -40,7 +40,7 @@ import { notes, intro } from '../data/content-propuesta';
   </div>
 
   <TopBar />
-  <Header />
+  <Header areas={false} />
   <main id="main">
     <ProposalNote n={1} {...notes.hero} />
     <Hero />

@@ -1,0 +1,39 @@
+---
+// Formulario de contacto en 2 columnas.
+import SectionHeading from '../ui/SectionHeading.astro';
+import Button from '../ui/Button.astro';
+import Field from '../ui/Field.astro';
+import FormResult from '../ui/FormResult.astro';
+import { site, serviceOptions, sms, tel } from '../../data/site';
+import { contact, formErrors } from '../../data/content';
+---
+<section class="section" id="contact" aria-labelledby="contact-title">
+  <div class="container-site grid scroll-mt-(--header-h) gap-12 md:grid-cols-2 md:gap-16" id="quote">
+    <div class="grid content-center justify-items-start">
+      <SectionHeading eyebrow={contact.eyebrow} title={contact.title} lead={contact.lead} id="contact-title" class="mb-8!" />
+      <div class="flex w-full flex-wrap gap-3 max-sm:[&>*]:basis-full">
+        <Button variant="secondary" href={tel} iconStart="phone">Call now</Button>
+        <Button href={sms()} iconStart="message">Send a text</Button>
+      </div>
+      <p class="mt-8 grid gap-1">
+        <a class="font-display text-2xl leading-tight font-extrabold text-primary hover:text-deep" href={tel}>{site.phone.display}</a>
+        <span class="text-muted">Call or text us</span>
+      </p>
+    </div>
+
+    <form id="quote-form" class="grid gap-5 rounded-lg border border-line bg-soft px-6 py-8 md:p-10" data-sms-form aria-label="Quote request" novalidate>
+      <Field onSoft id="ct-name" name="name" label="Your name" placeholder="Full name" required autocomplete="name" error={formErrors.name} />
+      <Field onSoft id="ct-zip" name="zip" label="ZIP code" inputmode="numeric" pattern="[0-9]{5}" maxlength={5} placeholder="Your Arizona ZIP code" required autocomplete="postal-code" error={formErrors.zip} />
+      <Field onSoft id="ct-service" name="service" label="Cleaning service" as="select" options={serviceOptions} />
+      <Field onSoft id="ct-details" name="details" label="Project details (optional)" as="textarea" placeholder="Tell us a little about your space" maxlength={500} />
+      <Button type="submit" block icon="arrow-up-right">{contact.submit}</Button>
+      <p class="text-sm data-[tone=error]:text-error data-[tone=info]:text-deep empty:hidden" role="status" aria-live="polite" data-form-status></p>
+      <FormResult />
+      <p class="text-[.8125rem] leading-normal text-muted">{contact.note}</p>
+    </form>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/sms-form';
+</script>

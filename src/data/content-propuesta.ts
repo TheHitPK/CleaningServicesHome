@@ -1,46 +1,5 @@
 // ⚠️ PROPUESTA DE ESTRUCTURA — NO APROBADA. Solo la usa /propuesta.
-// Textos NUEVOS que la propuesta agrega. Todo lo demás reutiliza el copy aprobado de content.ts.
-// Regla: nada inventado. Lo que sale de datos confirmados (site.ts / content.ts) se marca "confirmed";
-// lo que el cliente tiene que responder queda como pendiente y lleva data-placeholder.
-import type { IconName } from '../components/icons/icons';
-import { site, services, serviceAreas } from './site';
-import { process, quote, footer } from './content';
-
-// ② Franja de confianza — solo datos confirmados
-export const trust = {
-  title: 'Why clients trust Cleaning 4 You',
-  items: [
-    { icon: 'sparkle', value: `${site.yearsOfExperience} Years`, label: 'of hands-on cleaning experience' },
-    { icon: 'map-pin', value: `${serviceAreas.length} Arizona Cities`, label: 'from Phoenix to Casa Grande' },
-    { icon: 'check', value: 'Free Quotes', label: 'personalized to your space' },
-    { icon: 'phone', value: 'Call or Text', label: site.phone.display },
-  ] satisfies { icon: IconName; value: string; label: string }[],
-};
-
-// ⑦ Reseñas — hueco reservado hasta tener reseñas reales y autorizadas (no se inventan)
-export const reviews = {
-  eyebrow: 'Client reviews',
-  title: 'What Our Clients Say',
-  lead: 'Real reviews from Cleaning 4 You clients will appear here, for example linked from Google Reviews.',
-  slot: 'Verified client review · pending',
-  slots: 3,
-};
-
-// ⑨ FAQ — las respuestas "confirmed" salen de textos ya aprobados; el resto espera al cliente
-export const faq = {
-  eyebrow: 'FAQ',
-  title: 'Questions Before You Book?',
-  pending: 'Answer pending confirmation from Cleaning 4 You.',
-  items: [
-    { q: 'How do I get a quote?', a: `${process.steps[0].text} ${process.steps[1].text}` },
-    { q: 'Is the quote free?', a: quote.note.split('. ').slice(0, 2).join('. ') + '.' },
-    { q: 'Which areas do you serve?', a: footer.areasText },
-    { q: 'What types of cleaning do you offer?', a: services.map((s) => s.name).join(', ') + '.' },
-    { q: 'Do you bring your own supplies and equipment?', a: null },
-    { q: 'Are you licensed and insured?', a: null },
-    { q: 'How far in advance should I book?', a: null },
-  ] satisfies { q: string; a: string | null }[],
-};
+// Textos propios de la página de propuesta. Las secciones que pasaron a la home tienen su copy en content.ts.
 
 // Notas de la propuesta (en español: son para el cliente, no para el visitante del sitio)
 export type ChangeKind = 'igual' | 'movida' | 'fusion' | 'nueva';

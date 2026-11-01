@@ -10,7 +10,8 @@ Landing de una sola página para **Cleaning 4 You LLC**, empresa de limpieza pro
 - **Identidad:** la de Cleaning 4 You (logo de techo dorado con gota azul y la paleta oficial). **Nunca** uses colores, logos, fotos ni textos de Moppers. Solo tomamos de ahí el layout.
 - **Contenido APROBADO:** las 12 capturas de [docs/referencias/contenido-aprobado/](docs/referencias/contenido-aprobado/) definen **qué secciones van y con qué textos**. El copy está literal en `src/data/content.ts` (sin lorem). Los datos del negocio (teléfono, email, servicios, ciudades) salen **solo** de `src/data/site.ts`.
 - **Secciones EXTRA (no aprobadas):** las que no están en esas capturas viven aparte en `src/components/extras/` (textos en `src/data/content-extras.ts`), **no se importan en la home** y se revisan en `/secciones-extra`, marcadas con `ExtraMarker`. Ver `src/components/extras/README.md`. Nunca importes un componente de `extras/` en `index.astro` sin aprobación.
-- **Propuesta de estructura (no aprobada):** `/propuesta` reordena el contenido aprobado según las dudas del cliente (12 → 10 secciones, con reseñas y FAQ) y marca cada sección con una nota (`ProposalNote`). Componentes nuevos en `src/components/propuesta/`, textos nuevos en `src/data/content-propuesta.ts`. **La home no cambia** hasta que el cliente apruebe la propuesta.
+- **Estructura de la home (aprobada por el cliente):** Hero, TrustStrip, WhyCommitment, Services, ServiceTabs, HowItWorks, OurWork (videos + álbum), ReviewsSlot, About, Faq, ServiceAreas, Contact y Footer. Los textos de ServiceTabs siguen en lorem, y las reseñas y 3 respuestas del FAQ están pendientes: llevan `data-placeholder`.
+- **Propuesta de estructura:** `/propuesta` se conserva como referencia con sus notas (`ProposalNote`). Sus versiones anteriores de Services, Quote, Footer y About están en `src/components/propuesta/`; sus notas, en `src/data/content-propuesta.ts`.
 - **Sistema de diseño:** [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) es la fuente de verdad visual. Si algo no está ahí, primero se agrega al documento y después se implementa.
 - **Look aprobado:** las capturas de [docs/referencias/](docs/referencias/) (demo anterior) y las de `contenido-aprobado/` definen el estilo de cada sección. Su tabla de lectura está en `DESIGN_SYSTEM.md` §6. El hero no sigue esas capturas: sigue la estructura de Moppers.
 - **Decisiones cerradas:** los formularios son **maqueta**: sin backend, arman un borrador `sms:` (mobile) o muestran el mensaje para copiar (escritorio). Los testimonios pasaron a **extra** porque no aparecen en el contenido aprobado.
@@ -56,30 +57,30 @@ Reglas concretas:
 ```
 src/
   assets/
-    images/              # fotos (las procesa astro:assets). Hoy son placeholders.
+    images/              # fotos (las procesa astro:assets). Material del cliente por sección; ver MATERIAL.md.
+    videos/              # videos del cliente, todavía sin conectar; ver MATERIAL.md.
     brand/               # logo-full.svg, logo-mark.svg
   components/
     ui/                  # Button, Eyebrow, SectionHeading, Field, Logo
     icons/               # Icon*.astro (SVG inline, stroke=currentColor)
-    sections/            # APROBADAS (orden de la home): TopBar, Header, Hero (+BookingCard), About,
-                         # HowItWorks, Services, OurStory, Mission, WhyUs, OurWork, Commitment,
-                         # QuoteSection, CtaBand, Footer · utilidades: MobileCta
-    extras/              # ⚠️ NO APROBADAS: ServiceTabs, Founder, Testimonials, ServiceAreas, Contact
+    sections/            # Home (orden en index.astro) · utilidades: MobileCta · sin uso en la home:
+                         # OurStory, Mission, WhyUs, Commitment, CtaBand
+    extras/              # ⚠️ NO APROBADAS: Founder, Testimonials
                          # + ExtraMarker (franja de aviso) + README.md
-    propuesta/           # ⚠️ PROPUESTA: ProposalNote, TrustStrip, WhyCommitment, ReviewsSlot,
-                         # AboutCompact, Faq (solo los usa /propuesta)
+    propuesta/           # Solo /propuesta: ProposalNote, AboutCompact, ServicesCards,
+                         # QuoteSection, FooterOriginal
   data/
     site.ts              # datos REALES: teléfono, email, ciudades, servicios, nav
     content.ts           # copy APROBADO, literal de las capturas (una const por sección, con su ref.)
     content-extras.ts    # ⚠️ textos lorem de las secciones extra (no aprobadas)
-    content-propuesta.ts # ⚠️ textos nuevos de /propuesta (FAQ, franja de confianza, notas)
+    content-propuesta.ts # notas de /propuesta
   layouts/
     BaseLayout.astro     # <head>, SEO, fuentes, skip-link, JSON-LD LocalBusiness
   pages/
     index.astro          # solo compone secciones, sin lógica ni estilos
     404.astro            # página 404 (noindex): franja navy con ondas + accesos rápidos
     secciones-extra.astro # revisión interna (noindex): secciones extra marcadas como NO APROBADAS
-    propuesta.astro      # propuesta de estructura (noindex) con notas por sección
+    propuesta.astro      # propuesta de estructura (noindex) con notas por sección; se conserva como referencia
   scripts/
     sms-form.ts          # lógica compartida de los formularios maqueta
     quote-links.ts       # links a #quote (preseleccionan servicio) y sms: en escritorio → formulario

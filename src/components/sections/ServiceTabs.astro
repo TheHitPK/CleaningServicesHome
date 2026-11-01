@@ -1,0 +1,114 @@
+---
+// Tabs de detalle por servicio.
+// Todos los paneles se renderizan en build; el JS solo alterna `hidden`.
+// Sin JS se ven todos los paneles en lista (progressive enhancement).
+import { Image } from 'astro:assets';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Button from '../ui/Button.astro';
+import Icon from '../icons/Icon.astro';
+import { site, sms, tel } from '../../data/site';
+import { serviceTabs } from '../../data/content';
+---
+<!-- PLACEHOLDER: textos de los tabs pendientes del cliente -->
+<section class="section bg-soft" aria-labelledby="tabs-title" data-tabs data-placeholder>
+  <div class="container-site">
+    <SectionHeading eyebrow={serviceTabs.eyebrow} title={serviceTabs.title} lead={serviceTabs.lead} id="tabs-title" />
+
+    <div
+      class="no-scrollbar -mx-1 mb-8 flex snap-x snap-proximity gap-3 overflow-x-auto p-1 mask-r-from-90% lg:flex-wrap lg:mask-none"
+      role="tablist" aria-label="Cleaning services" hidden data-tablist
+    >
+      {serviceTabs.tabs.map((t, i) => (
+        <button
+          class="min-h-11 shrink-0 snap-start rounded-full border border-line bg-white px-5 text-sm font-semibold text-primary transition-colors duration-150
+                 hover:border-sky aria-selected:border-primary aria-selected:bg-primary aria-selected:text-white"
+          type="button" role="tab"
+          id={`tab-${t.id}`} aria-controls={`panel-${t.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}
+        >{t.label}</button>
+      ))}
+    </div>
+
+    <div class="overflow-hidden rounded-lg bg-white shadow-md">
+      {serviceTabs.tabs.map((t) => (
+        <div
+          class="grid gap-8 border-b border-line px-6 py-8 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:gap-x-12 lg:gap-y-10 lg:p-12"
+          role="tabpanel" id={`panel-${t.id}`} aria-labelledby={`tab-${t.id}`} tabindex="0"
+        >
+          <div class="grid content-start justify-items-start gap-4">
+            <Eyebrow>{t.eyebrow}</Eyebrow>
+            <h3 class="text-[clamp(1.5rem,1.2rem+1vw,2rem)] tracking-[-0.03em]">{t.title}</h3>
+            <p>{t.text}</p>
+            <ul class="mb-2 grid gap-2">
+              {t.items.map((item) => (
+                <li class="flex items-center gap-2 font-medium text-primary">
+                  <Icon name="check-small" size={18} class="shrink-0 text-deep" />{item}
+                </li>
+              ))}
+            </ul>
+            <Button variant="secondary" href={sms(`Hi Cleaning 4 You! I would like a quote for ${t.title}.`)} data-service={t.title} icon="arrow-up-right">Request a quote</Button>
+          </div>
+          <div class="aspect-4/3 overflow-hidden rounded-md bg-cool">
+            <Image
+              src={t.image} alt={t.title}
+              widths={[480, 720, 960]} sizes="(min-width: 960px) 540px, 100vw"
+              loading="lazy" decoding="async" quality={65} class="size-full object-cover"
+            />
+          </div>
+          <div class="grid gap-1 rounded-md border-l-4 border-accent bg-soft px-6 py-5 lg:col-span-full">
+            <strong class="text-primary">{serviceTabs.noteTitle}</strong>
+            <p class="text-sm">{serviceTabs.noteText}</p>
+          </div>
+        </div>
+      ))}
+
+      <div class="flex flex-wrap items-center justify-between gap-5 p-6 lg:px-12">
+        <div>
+          <p class="font-display text-h4 font-bold text-primary">{serviceTabs.footerTitle}</p>
+          <p>Call or text <a class="font-bold text-deep" href={tel}>{site.phone.display}</a></p>
+        </div>
+        <Button href={tel} iconStart="phone">Call Cleaning 4 You</Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('[data-tabs]')) {
+    const list = root.querySelector<HTMLElement>('[data-tablist]')!;
+    const tabs = [...list.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+
+    const select = (index: number, focus = false): void => {
+      tabs.forEach((tab, i) => {
+        const on = i === index;
+        tab.setAttribute('aria-selected', String(on));
+        tab.tabIndex = on ? 0 : -1;
+        panels[i].hidden = !on;
+      });
+      if (focus) {
+        tabs[index].focus();
+        tabs[index].scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+    };
+
+    list.hidden = false;
+    select(0);
+
+    list.addEventListener('click', (e) => {
+      const tab = (e.target as Element).closest<HTMLButtonElement>('[role="tab"]');
+      if (tab) select(tabs.indexOf(tab));
+    });
+    list.addEventListener('keydown', (e) => {
+      const current = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+      const keys: Record<string, number> = {
+        ArrowRight: (current + 1) % tabs.length,
+        ArrowLeft: (current - 1 + tabs.length) % tabs.length,
+        Home: 0,
+        End: tabs.length - 1,
+      };
+      if (e.key in keys) { e.preventDefault(); select(keys[e.key], true); }
+    });
+  }
+</script>
