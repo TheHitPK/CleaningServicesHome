@@ -1,0 +1,72 @@
+---
+// Get a quote — ref. docs/referencias/contenido-aprobado/10-get-a-quote.jpg
+// Banner con foto + overlay navy y el formulario completo montado encima (4 columnas en desktop).
+// Formulario maqueta: valida y arma un SMS (mobile) o muestra el mensaje para copiar (escritorio).
+import { Image } from 'astro:assets';
+import bannerImg from '../../assets/images/post-construction.jpg';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Field from '../ui/Field.astro';
+import Button from '../ui/Button.astro';
+import FormResult from '../ui/FormResult.astro';
+import { serviceOptions, tel, sms } from '../../data/site';
+import { quote, cta, formErrors } from '../../data/content';
+
+interface Props {
+  /** true: absorbe el CTA final (título "Ready for…", botones Call/Text e id #contact). Lo usa /propuesta. */
+  withCta?: boolean;
+}
+const { withCta = false } = Astro.props;
+---
+<section id="quote" class="scroll-mt-(--header-h)" aria-labelledby="quote-title">
+  <div class="on-dark relative isolate overflow-hidden pt-20 pb-40 text-white">
+    <div class="absolute inset-0 -z-10 bg-primary" aria-hidden="true">
+      <Image
+        src={bannerImg} alt="" widths={[640, 1024, 1600]} sizes="100vw"
+        loading="lazy" decoding="async" quality={50} class="size-full object-cover"
+      />
+      <div class="absolute inset-0 bg-[linear-gradient(90deg,rgb(23_58_90/.93),rgb(23_58_90/.72))]"></div>
+    </div>
+    <div class="container-site grid scroll-mt-[calc(var(--header-h)+5rem)] justify-items-start gap-4" id={withCta ? 'contact' : undefined}>
+      <Eyebrow dark>{withCta ? cta.eyebrow : quote.eyebrow}</Eyebrow>
+      <h2 id="quote-title" class="max-w-[16ch] text-white">{withCta ? cta.title : quote.title}</h2>
+      <p class="max-w-[60ch] text-lead text-white/85">{quote.lead}</p>
+      {withCta && (
+        <div class="mt-2 flex w-full flex-wrap items-center gap-x-6 gap-y-3 text-white/85">
+          <span class="text-sm">{cta.lead}</span>
+          <Button variant="light" size="sm" href={tel} iconStart="phone">Call now</Button>
+          <Button variant="outline" size="sm" href={sms()} iconStart="message">Send a text</Button>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <div class="container-site relative z-1 -mt-28 pb-(--section-y)">
+    <form
+      id="quote-form"
+      class="mx-auto grid max-w-[1140px] gap-4 rounded-lg bg-white p-6 shadow-lg sm:grid-cols-2 sm:p-8 lg:grid-cols-4"
+      data-sms-form aria-labelledby="quote-title" novalidate
+    >
+      <Field dense id="qt-name" name="name" label="Full Name" placeholder="Full name" required autocomplete="name" error={formErrors.name} />
+      <Field dense id="qt-phone" name="phone" label="Phone Number" type="tel" inputmode="tel" placeholder="(000) 000-0000" required minlength={10} maxlength={20} autocomplete="tel" error={formErrors.phone} />
+      <Field dense id="qt-email" name="email" label="Email Address" type="email" inputmode="email" placeholder="Email address" autocomplete="email" error={formErrors.email} />
+      <Field dense id="qt-city" name="city" label="City / ZIP Code" placeholder="Arizona city / ZIP" required autocomplete="address-level2" error={formErrors.city} />
+      <Field dense id="qt-service" name="service" label="Service Needed" as="select" options={serviceOptions} />
+      <Field dense id="qt-size" name="size" label="Property Size (optional)" placeholder="Approx. square footage" />
+      <Field dense id="qt-date" name="date" label="Preferred Date (optional)" type="date" />
+      <!-- En mobile el botón va después de "Additional Details" -->
+      <div class="flex items-end max-lg:order-2">
+        <Button type="submit" block icon="arrow-up-right">{quote.submit}</Button>
+      </div>
+      <Field dense id="qt-details" name="details" label="Additional Details" as="textarea" placeholder="Tell us about your cleaning needs" maxlength={500} class="sm:col-span-2" />
+      <div class="grid content-end gap-3 max-lg:order-3 sm:col-span-2">
+        <p class="text-sm data-[tone=error]:text-error data-[tone=info]:text-deep empty:hidden" role="status" aria-live="polite" data-form-status></p>
+        <FormResult />
+      </div>
+      <p class="text-[.8125rem] leading-normal text-muted max-lg:order-4 sm:col-span-2 lg:col-span-4">{quote.note}</p>
+    </form>
+  </div>
+</section>
+
+<script>
+  import '../../scripts/sms-form';
+</script>

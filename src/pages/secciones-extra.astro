@@ -1,0 +1,42 @@
+---
+// Página interna de REVISIÓN (noindex, fuera del menú): muestra las secciones EXTRA
+// —no aprobadas— marcadas con ExtraMarker, para decidir si se usan o se borran.
+// No forma parte del sitio público. Se puede borrar sin afectar la home.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/sections/Header.astro';
+import Footer from '../components/sections/Footer.astro';
+import ExtraMarker from '../components/extras/ExtraMarker.astro';
+import Founder from '../components/extras/Founder.astro';
+import Testimonials from '../components/extras/Testimonials.astro';
+
+const extras = [
+  { name: "Founder's message + cifras", reason: 'No aparece en las capturas aprobadas.', file: 'extras/Founder.astro', Component: Founder },
+  { name: 'Testimonials', reason: 'No aparece en las capturas aprobadas; no hay reseñas reales.', file: 'extras/Testimonials.astro', Component: Testimonials },
+];
+---
+<BaseLayout
+  title="Secciones extra (no aprobadas) | Cleaning 4 You"
+  description="Página interna de revisión con las secciones que no forman parte del contenido aprobado."
+  noindex
+>
+  <Header />
+  <main id="main">
+    <section class="section bg-soft pb-12">
+      <div class="container-site grid gap-4">
+        <span class="w-fit rounded-sm bg-accent px-3 py-1.5 text-xs font-extrabold tracking-[.12em] text-primary uppercase">Página interna de revisión</span>
+        <h1 class="text-h2">Secciones extra — no aprobadas</h1>
+        <p class="max-w-[70ch] text-lead">
+          Estas {extras.length} secciones se construyeron antes de recibir el contenido aprobado y <strong>no se muestran en la home</strong>.
+          Se conservan separadas en <code>src/components/extras/</code> por si el cliente decide usar alguna.
+          Para aprobar una, hay que pasarla a <code>sections/</code> e importarla en <code>index.astro</code>.
+        </p>
+      </div>
+    </section>
+    {extras.map(({ name, reason, file, Component }) => (
+      <ExtraMarker name={name} reason={reason} file={file}>
+        <Component />
+      </ExtraMarker>
+    ))}
+  </main>
+  <Footer />
+</BaseLayout>

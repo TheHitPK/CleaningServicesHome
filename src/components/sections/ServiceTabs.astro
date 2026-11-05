@@ -1,4 +1,5 @@
 ---
+// Tabs de detalle por servicio.
 // Todos los paneles se renderizan en build; el JS solo alterna `hidden`.
 // Sin JS se ven todos los paneles en lista (progressive enhancement).
 import { Image } from 'astro:assets';
@@ -11,7 +12,10 @@ import { serviceTabs } from '../../data/content';
 ---
 <section class="section bg-soft" aria-labelledby="tabs-title" data-tabs>
   <div class="container-site">
-    <SectionHeading eyebrow={serviceTabs.eyebrow} title={serviceTabs.title} lead={serviceTabs.lead} id="tabs-title" />
+    <SectionHeading eyebrow={serviceTabs.eyebrow} title={serviceTabs.title} id="tabs-title" class="mb-6!" />
+    <div class="mb-10 grid max-w-[64ch] gap-3">
+      {serviceTabs.lead.map((p) => <p class="text-lead">{p}</p>)}
+    </div>
 
     <div
       class="no-scrollbar -mx-1 mb-8 flex snap-x snap-proximity gap-3 overflow-x-auto p-1 mask-r-from-90% lg:flex-wrap lg:mask-none"
@@ -38,25 +42,26 @@ import { serviceTabs } from '../../data/content';
             <Eyebrow>{t.eyebrow}</Eyebrow>
             <h3 class="text-[clamp(1.5rem,1.2rem+1vw,2rem)] tracking-[-0.03em]">{t.title}</h3>
             <p>{t.text}</p>
+            <p class="font-display font-bold text-primary">{t.listTitle}</p>
             <ul class="mb-2 grid gap-2">
               {t.items.map((item) => (
-                <li class="flex items-center gap-2 font-medium text-primary">
-                  <Icon name="check-small" size={18} class="shrink-0 text-deep" />{item}
+                <li class="flex items-start gap-2 font-medium text-primary">
+                  <Icon name="check-small" size={18} class="mt-1 shrink-0 text-deep" />{item}
                 </li>
               ))}
             </ul>
-            <Button variant="secondary" href={sms(`Hi Cleaning 4 You! I would like a quote for ${t.title}.`)} icon="arrow-up-right">Request a quote</Button>
+            <Button variant="secondary" href={sms(`Hi Cleaning 4 You! I would like a quote for ${t.title}.`)} data-service={t.title} icon="arrow-up-right">Request a quote</Button>
           </div>
           <div class="aspect-4/3 overflow-hidden rounded-md bg-cool">
             <Image
-              src={t.image} alt={`Illustrative example of ${t.title.toLowerCase()}; not a verified customer project`}
+              src={t.image} alt={t.title}
               widths={[480, 720, 960]} sizes="(min-width: 960px) 540px, 100vw"
               loading="lazy" decoding="async" quality={65} class="size-full object-cover"
             />
           </div>
           <div class="grid gap-1 rounded-md border-l-4 border-accent bg-soft px-6 py-5 lg:col-span-full">
             <strong class="text-primary">{serviceTabs.noteTitle}</strong>
-            <p class="text-sm">{serviceTabs.noteText}</p>
+            <p class="text-sm">{t.note}</p>
           </div>
         </div>
       ))}
@@ -64,7 +69,8 @@ import { serviceTabs } from '../../data/content';
       <div class="flex flex-wrap items-center justify-between gap-5 p-6 lg:px-12">
         <div>
           <p class="font-display text-h4 font-bold text-primary">{serviceTabs.footerTitle}</p>
-          <p>Call or text <a class="font-bold text-deep" href={tel}>{site.phone.display}</a></p>
+          <p class="mt-1">{serviceTabs.footerText}</p>
+          <p class="mt-1">Call or text <a class="font-bold text-deep" href={tel}>{site.phone.display}</a></p>
         </div>
         <Button href={tel} iconStart="phone">Call Cleaning 4 You</Button>
       </div>

@@ -1,0 +1,41 @@
+---
+// Reseñas con el diseño entregado (comillas, 5 estrellas, avatar con inicial, nombre y fecha).
+// PLACEHOLDER: las reseñas son de muestra y van marcadas como "Sample review"; reemplazar por reseñas
+// reales y autorizadas (p. ej. de Google Reviews). El último hueco queda reservado.
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../icons/Icon.astro';
+import { reviews } from '../../data/content';
+
+const avatars = ['bg-accent-100', 'bg-pale'];
+const card = 'flex flex-col items-center gap-5 rounded-lg border-2 border-dashed bg-white p-8 text-center';
+---
+<section class="section bg-soft" aria-labelledby="reviews-title">
+  <div class="container-site">
+    <SectionHeading eyebrow={reviews.eyebrow} title={reviews.title} lead={reviews.lead} layout="centered" id="reviews-title" />
+    <ul class="grid gap-6 md:grid-cols-3">
+      {reviews.items.map((r, i) => (
+        <li class:list={[card, 'relative border-primary']} data-placeholder>
+          <span class="absolute top-3 right-3 rounded-sm bg-cool px-2 py-1 text-[.6875rem] font-bold tracking-[.08em] text-muted uppercase">{reviews.sampleLabel}</span>
+          <Icon name="quote" size={32} class="text-accent" />
+          <span class="flex gap-1 text-accent" role="img" aria-label="5 out of 5 stars">
+            {Array.from({ length: 5 }, () => <Icon name="star" size={22} class="fill-current" />)}
+          </span>
+          <blockquote><p class="text-lead text-primary">{r.quote}</p></blockquote>
+          <p class="mt-auto flex items-center gap-4 text-left">
+            <span class:list={['grid size-12 shrink-0 place-items-center rounded-full font-display text-lg font-extrabold text-primary', avatars[i % avatars.length]]} aria-hidden="true">{r.name[0]}</span>
+            <span class="border-l border-line pl-4">
+              <strong class="block font-display text-primary">{r.name}</strong>
+              <span class="text-sm text-muted">{r.when}</span>
+            </span>
+          </p>
+        </li>
+      ))}
+      {Array.from({ length: reviews.slots - reviews.items.length }, () => (
+        <li class:list={[card, 'min-h-48 justify-center border-field bg-white/60 max-md:hidden']} data-placeholder>
+          <Icon name="quote" size={28} class="text-accent" />
+          <p class="text-sm font-semibold text-muted">{reviews.slot}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

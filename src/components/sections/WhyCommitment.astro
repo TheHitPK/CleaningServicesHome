@@ -1,0 +1,44 @@
+---
+// Why choose us + Our Commitment fusionadas. Copy aprobado sin cambios.
+import SectionHeading from '../ui/SectionHeading.astro';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Icon from '../icons/Icon.astro';
+import { whyUs, commitment } from '../../data/content';
+---
+<section class="section" aria-labelledby="why-title">
+  <div class="container-site grid items-center gap-12 lg:grid-cols-[1.15fr_.85fr] lg:gap-16">
+    <div class="grid justify-items-start">
+      <SectionHeading eyebrow={whyUs.eyebrow} title={whyUs.title} lead={whyUs.lead} id="why-title" class="mb-10!" />
+      <ul class="grid gap-6 sm:grid-cols-2">
+        {whyUs.features.map((f) => (
+          <li class="flex items-start gap-4">
+            <span class="grid size-12 shrink-0 place-items-center rounded-full bg-accent-100 text-primary">
+              <Icon name={f.icon} size={22} />
+            </span>
+            <div>
+              <h3 class="mb-1 text-h4">{f.title}</h3>
+              <p class="text-sm leading-relaxed text-muted">{f.text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="on-dark grid gap-6 rounded-lg bg-[linear-gradient(140deg,var(--color-primary),var(--color-deep))] p-8 text-white shadow-lg sm:p-10">
+      <Eyebrow dark>{commitment.eyebrow}</Eyebrow>
+      <h3 class="text-h3 text-white">{commitment.title}</h3>
+      <p class="text-white/80">{commitment.lead}</p>
+      <ul class="grid gap-5">
+        {commitment.cards.map((c) => (
+          <li class="flex items-start gap-4 border-t border-white/15 pt-5">
+            <Icon name={c.icon} size={24} class="mt-0.5 shrink-0 text-accent" />
+            <div>
+              <h4 class="mb-1 text-white">{c.title}</h4>
+              <p class="text-sm text-white/75">{c.text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

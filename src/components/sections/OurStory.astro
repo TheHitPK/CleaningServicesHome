@@ -1,0 +1,30 @@
+---
+// Our Story — ref. docs/referencias/contenido-aprobado/05-our-story.jpg
+// Split: foto a la izquierda (a sangre) + panel navy con degradado a la derecha.
+import { Image } from 'astro:assets';
+import team from '../../assets/images/team.jpg';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Button from '../ui/Button.astro';
+import { QUOTE_ANCHOR } from '../../data/site';
+import { story } from '../../data/content';
+---
+<section class="on-dark grid bg-primary text-white lg:grid-cols-[1fr_1.05fr]" aria-labelledby="story-title">
+  <!-- PLACEHOLDER: reemplazar por una foto aprobada del dueño o del equipo -->
+  <div class="relative min-h-[320px] lg:min-h-[460px]" data-placeholder>
+    <Image
+      src={team} alt="Illustrative professional cleaning team photo"
+      widths={[480, 720, 960, 1200]} sizes="(min-width: 960px) 50vw, 100vw"
+      loading="lazy" decoding="async" quality={65}
+      class="absolute inset-0 size-full object-cover"
+    />
+  </div>
+  <div class="grid content-center justify-items-start gap-5 bg-[linear-gradient(120deg,var(--color-primary),var(--color-deep))] px-(--gutter) py-16 lg:px-16 lg:py-20">
+    <Eyebrow dark>{story.eyebrow}</Eyebrow>
+    <h2 id="story-title" class="text-white">
+      {story.title.map((line) => <span class="block">{line}</span>)}
+    </h2>
+    {story.body.map((p) => <p class="max-w-[62ch] text-white/85">{p}</p>)}
+    <Button variant="outline" href={QUOTE_ANCHOR} icon="arrow-up-right" class="mt-2">{story.cta}</Button>
+    <p class="text-sm text-white/65" data-placeholder>{story.photoNote}</p>
+  </div>
+</section>

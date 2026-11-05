@@ -8,10 +8,13 @@ Landing de una sola página para **Cleaning 4 You LLC**, empresa de limpieza pro
 - **Referencia de layout y estructura:** el tema *Moppers v2* (slashcreative.co/themes/moppers-version-2).
   El **hero tiene que replicar su estructura**: overlay en degradado sobre la foto, ondas SVG en el borde inferior y la card "Book a Service" a la derecha, montada sobre la onda y metida en la sección siguiente.
 - **Identidad:** la de Cleaning 4 You (logo de techo dorado con gota azul y la paleta oficial). **Nunca** uses colores, logos, fotos ni textos de Moppers. Solo tomamos de ahí el layout.
-- **Contenido:** casi todo es **lorem ipsum** por ahora. Los datos reales del negocio (teléfono, email, servicios, ciudades) salen **solo** de `src/data/site.ts`.
+- **Contenido APROBADO:** las 12 capturas de [docs/referencias/contenido-aprobado/](docs/referencias/contenido-aprobado/) definen **qué secciones van y con qué textos**. El copy está literal en `src/data/content.ts` (sin lorem). Los datos del negocio (teléfono, email, servicios, ciudades) salen **solo** de `src/data/site.ts`.
+- **Secciones EXTRA (no aprobadas):** las que no están en esas capturas viven aparte en `src/components/extras/` (textos en `src/data/content-extras.ts`), **no se importan en la home** y se revisan en `/secciones-extra`, marcadas con `ExtraMarker`. Ver `src/components/extras/README.md`. Nunca importes un componente de `extras/` en `index.astro` sin aprobación.
+- **Estructura de la home (aprobada por el cliente):** Hero, TrustStrip, WhyCommitment, Services, ServiceTabs, HowItWorks, OurWork (videos + álbum), ReviewsSlot, About, Faq, ServiceAreas, Contact y Footer. Las reseñas y 3 respuestas del FAQ están pendientes: llevan `data-placeholder`.
+- **Propuesta de estructura:** `/propuesta` se conserva como referencia con sus notas (`ProposalNote`). Sus versiones anteriores de Services, Quote, Footer y About están en `src/components/propuesta/`; sus notas, en `src/data/content-propuesta.ts`.
 - **Sistema de diseño:** [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) es la fuente de verdad visual. Si algo no está ahí, primero se agrega al documento y después se implementa.
-- **Look aprobado:** las capturas de [docs/referencias/](docs/referencias/) (demo anterior) definen el estilo de cada sección. Su tabla de lectura está en `DESIGN_SYSTEM.md` §6. El hero no sigue esas capturas: sigue la estructura de Moppers.
-- **Decisiones cerradas:** los testimonios **se quedan** (con lorem hasta tener reseñas reales). Los formularios son **maqueta**: sin backend, solo arman un borrador `sms:`.
+- **Look aprobado:** las capturas de [docs/referencias/](docs/referencias/) (demo anterior) y las de `contenido-aprobado/` definen el estilo de cada sección. Su tabla de lectura está en `DESIGN_SYSTEM.md` §6. El hero no sigue esas capturas: sigue la estructura de Moppers.
+- **Decisiones cerradas:** los formularios son **maqueta**: sin backend, arman un borrador `sms:` (mobile) o muestran el mensaje para copiar (escritorio). Los testimonios pasaron a **extra** porque no aparecen en el contenido aprobado.
 
 ## Stack (no cambiar sin preguntar)
 
@@ -54,28 +57,39 @@ Reglas concretas:
 ```
 src/
   assets/
-    images/              # fotos (las procesa astro:assets). Hoy son placeholders.
+    images/              # fotos (las procesa astro:assets). Material del cliente por sección; ver MATERIAL.md.
+    videos/              # videos del cliente, todavía sin conectar; ver MATERIAL.md.
     brand/               # logo-full.svg, logo-mark.svg
   components/
     ui/                  # Button, Eyebrow, SectionHeading, Field, Logo
     icons/               # Icon*.astro (SVG inline, stroke=currentColor)
-    sections/            # TopBar, Header, Hero, About, HowItWorks, Services, ServiceTabs,
-                         # Founder (+ contadores), WhyUs, Testimonials, OurWork,
-                         # ServiceAreas, Contact, Footer, BookingCard, MobileCta
+    sections/            # Home (orden en index.astro) · utilidades: MobileCta · sin uso en la home:
+                         # OurStory, Mission, WhyUs, Commitment, CtaBand
+    extras/              # ⚠️ NO APROBADAS: Founder, Testimonials
+                         # + ExtraMarker (franja de aviso) + README.md
+    propuesta/           # Solo /propuesta: ProposalNote, AboutCompact, ServicesCards,
+                         # QuoteSection, FooterOriginal
   data/
     site.ts              # datos REALES: teléfono, email, ciudades, servicios, nav
-    content.ts           # textos lorem ipsum de cada sección (el contenido real va reemplazándolos)
+    content.ts           # copy APROBADO, literal de las capturas (una const por sección, con su ref.)
+    content-extras.ts    # ⚠️ textos lorem de las secciones extra (no aprobadas)
+    content-propuesta.ts # notas de /propuesta
   layouts/
     BaseLayout.astro     # <head>, SEO, fuentes, skip-link, JSON-LD LocalBusiness
   pages/
     index.astro          # solo compone secciones, sin lógica ni estilos
+    404.astro            # página 404 (noindex): franja navy con ondas + accesos rápidos
+    secciones-extra.astro # revisión interna (noindex): secciones extra marcadas como NO APROBADAS
+    propuesta.astro      # propuesta de estructura (noindex) con notas por sección; se conserva como referencia
   scripts/
     sms-form.ts          # lógica compartida de los formularios maqueta
+    quote-links.ts       # links a #quote (preseleccionan servicio) y sms: en escritorio → formulario
                          # (nav, tabs, filtros y barra mobile viven en el <script> de su componente)
   styles/
     global.css           # @import "tailwindcss" + @theme (tokens) + @utility propias + base
 scripts/
-  check-placeholders.ts  # post-build: avisa si quedan lorem/placeholders (Node ejecuta TS nativo)
+  astro.ts               # wrapper del CLI de Astro: normaliza `c:` → `C:` en Windows (ver Comandos)
+  check-placeholders.ts  # post-build: avisa si quedan lorem/placeholders y FALLA si una página salió sin CSS
 docs/
   DESIGN_SYSTEM.md
   referencias/           # capturas del demo anterior (look aprobado)
@@ -89,6 +103,12 @@ docs/
 - **Clases literales:** Tailwind solo detecta clases escritas completas en el código. Nunca las armes con template strings (`` `before:${x}` ``). Para variantes usa un `Record<Variant, string>` con strings completos (ver `Button.astro`) y `class:list`.
 - **Abstracción:** la repetición de clases se resuelve con **componentes** (`Button`, `Field`, `Eyebrow`, `SectionHeading`) y no con `@apply`. `@apply` solo se usa en `@layer base`.
 - **Utilidades propias** (`@utility` en `global.css`): `container-site`, `section` (padding vertical + `scroll-margin-top`), `no-scrollbar` y `select-chevron`.
+- **Barras invertidas en atributos .astro:** Astro las elimina. `pattern="\d{5}"` se renderiza como `d{5}` (este bug rompió la validación del ZIP). Usa clases de caracteres sin escapes: `pattern="[0-9]{5}"`.
+- **Links al formulario:** el formulario de cotización es `#quote-form` (sección `#quote`). Los links a `#quote` con `data-service` preseleccionan el servicio. Los `sms:` en escritorio no abren nada, así que `src/scripts/quote-links.ts` los lleva al formulario.
+- **Diálogos:** `ui/Dialog.astro` (`<dialog>` nativo). Se abren con `data-dialog-open="<id>"`; los links internos con `data-dialog-close` cierran el diálogo antes de navegar.
+- **Páginas que no son la home:** los links a secciones usan `anchor("#x", Astro.url.pathname)` de `site.ts` (`#x` en la home, `/#x` en el resto). `BaseLayout` acepta `noindex`.
+- **Foco:** las secciones oscuras llevan la clase `on-dark` (foco sky) y las cards blancas dentro de ellas, `on-light` (foco deep).
+- **Formularios:** cada campo validable recibe `error="..."` (causa + cómo corregirlo, en `formErrors` de `content.ts`) y el formulario incluye `<FormResult />` para escritorio.
 - **Estado desde JS:** el JS cambia atributos (`hidden`, `aria-selected`, `aria-pressed`, `aria-expanded`, `data-open`, `data-visible`) y Tailwind los estiliza con variantes (`aria-selected:bg-primary`, `data-[open]:block`). El JS no toca clases.
 - **Datos:** ningún componente escribe a mano el teléfono, email o lista de servicios. Todo se importa de `src/data/site.ts`.
 - **Templates:** nunca concatenes strings con placeholders tipo `{title}`. Usa interpolación de Astro en build. Para contenido que cambia en cliente (tabs), renderiza **todos los paneles en el HTML** y alterna `hidden`. Así no hay JS que pueda dejar `{EYEBROW}` en pantalla (fue un bug del demo anterior).
@@ -123,6 +143,8 @@ npm run build      # genera dist/
 npm run preview    # sirve dist/ para correr Lighthouse
 npm run check      # astro check (tipos y diagnósticos)
 ```
+
+**Windows:** los scripts de npm pasan por `scripts/astro.ts`. Si la terminal abre el proyecto como `c:...` (minúscula, típico de VS Code), Tailwind v4 genera el build **sin CSS**; el wrapper lo evita. No llames `npx astro build` directo. Si igual pasa, `check-placeholders.ts` hace fallar el build.
 
 ## Antes de cambiar algo grande
 

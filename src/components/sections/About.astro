@@ -1,31 +1,52 @@
 ---
-// Comparte el grid del hero: la columna derecha queda libre para la booking card que baja desde el hero.
-import SectionHeading from '../ui/SectionHeading.astro';
-import Button from '../ui/Button.astro';
+// About: foto + historia, con el texto de "Who are we?" integrado, y Mission / Vision / Philosophy abajo.
+import { Image } from 'astro:assets';
+import team from '../../assets/images/about/team-job-site-walk-alt.png';
+import Eyebrow from '../ui/Eyebrow.astro';
 import Icon from '../icons/Icon.astro';
-import { about } from '../../data/content';
+import { about, story, mission } from '../../data/content';
+
+const [who, ...blocks] = mission.blocks;
+const [origin, years, details] = story.body;
+const paragraphs = [origin, years, who.text, details];
 ---
-<section class="section pt-[calc(var(--section-y)+2rem)] lg:pt-(--section-y)" id="about" aria-labelledby="about-title">
-  <div class="container-site lg:grid lg:grid-cols-[1fr_var(--booking-w)] lg:gap-12">
-    <div class="grid max-w-[640px] justify-items-start gap-5">
-      <SectionHeading eyebrow={about.eyebrow} title={about.title} id="about-title" class="mb-2!" />
-      {about.body.map((p) => <p class="text-lead">{p}</p>)}
-      <Button variant="link" href="#services" icon="arrow">{about.link}</Button>
-    </div>
-  </div>
+<section class="section scroll-mt-(--header-h)" id="about" aria-labelledby="about-title">
   <div class="container-site">
-    <ul class="mt-16 grid gap-6 md:grid-cols-3 lg:mt-20">
-      {about.highlights.map((h) => (
-        <li class="flex items-start gap-4 md:[&+&]:border-l md:[&+&]:border-line md:[&+&]:pl-6">
-          <span class="grid size-14 shrink-0 place-items-center rounded-full bg-accent-100 text-primary">
-            <Icon name={h.icon} size={26} />
-          </span>
-          <div>
-            <h3 class="mb-1 text-h4">{h.title}</h3>
-            <p class="text-sm leading-relaxed text-muted">{h.text}</p>
-          </div>
+    <div class="grid items-center gap-12 lg:grid-cols-[.9fr_1.1fr] lg:gap-16">
+      <div class="relative aspect-4/3 overflow-hidden rounded-lg lg:aspect-4/5">
+        <Image
+          src={team} alt="Cleaning 4 You team walking through a construction site"
+          widths={[480, 720, 960]} sizes="(min-width: 960px) 480px, 100vw"
+          loading="lazy" decoding="async" quality={65} class="absolute inset-0 size-full object-cover"
+        />
+      </div>
+      <div class="grid justify-items-start gap-5">
+        <Eyebrow>{about.eyebrow}</Eyebrow>
+        <h2 id="about-title" class="max-w-[18ch]">
+          {story.title.map((line) => <span class="block">{line}</span>)}
+        </h2>
+        {paragraphs.map((p) => <p class="max-w-[62ch] text-lead">{p}</p>)}
+        <ul class="mt-3 grid w-full gap-4 sm:grid-cols-3">
+          {about.highlights.map((h) => (
+            <li class="flex items-center gap-3">
+              <span class="grid size-11 shrink-0 place-items-center rounded-full bg-accent-100 text-primary">
+                <Icon name={h.icon} size={20} />
+              </span>
+              <span class="text-sm leading-snug font-semibold text-primary">{h.title}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <ul class="mt-16 grid gap-6 md:grid-cols-3">
+      {blocks.map((b) => (
+        <li class="grid content-start gap-3 rounded-lg border border-line border-t-4 border-t-accent bg-white p-6 shadow-sm">
+          <h3 class="text-h4">{b.title}</h3>
+          <p class="text-sm leading-relaxed">{b.text}</p>
         </li>
       ))}
     </ul>
+    <p class="mt-8 text-center font-display text-h4 text-primary">{mission.tagline}</p>
   </div>
 </section>

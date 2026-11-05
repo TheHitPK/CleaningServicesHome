@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build && node scripts/check-placeholders.ts",
-    "preview": "astro preview",
-    "check": "astro check"
+    "dev": "node scripts/astro.ts dev",
+    "build": "node scripts/astro.ts build && node scripts/check-placeholders.ts",
+    "preview": "node scripts/astro.ts preview",
+    "check": "node scripts/astro.ts check"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.3.0",

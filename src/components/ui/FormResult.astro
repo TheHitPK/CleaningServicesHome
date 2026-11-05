@@ -1,0 +1,21 @@
+---
+// Panel que se muestra en escritorio al enviar un formulario maqueta:
+// las computadoras no abren SMS, así que se muestra el mensaje listo para copiar.
+import Icon from '../icons/Icon.astro';
+import { site, tel } from '../../data/site';
+---
+<div class="grid gap-3 rounded-md border border-line border-l-4 border-l-accent bg-white p-5" data-form-result hidden>
+  <p class="font-display text-h4 font-bold text-primary" tabindex="-1" data-form-result-title>Your request is ready</p>
+  <p class="text-sm">
+    Text messages can't be sent from this computer. Send this message to
+    <a class="font-bold text-deep underline-offset-4 hover:underline" href={tel}>{site.phone.display}</a>
+    from your phone, or give us a call.
+  </p>
+  <pre class="max-h-48 overflow-auto rounded-sm bg-soft p-3 font-sans text-sm whitespace-pre-wrap text-primary" data-form-message></pre>
+  <button
+    class="inline-flex min-h-11 items-center gap-2 justify-self-start rounded-sm border border-deep px-4 text-btn font-bold tracking-btn text-deep uppercase transition-colors hover:bg-deep hover:text-white"
+    type="button" data-copy
+  >
+    <Icon name="copy" size={16} /><span data-copy-label>Copy message</span>
+  </button>
+</div>

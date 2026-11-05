@@ -24,6 +24,7 @@
   --color-body: #4E6478;
   --color-muted: #5F7385;        /* 4.9:1 sobre blanco */
   --color-line: #DDE7EE;
+  --color-field: #7F93A6;        /* borde de inputs: 3.2:1 sobre blanco (WCAG 1.4.11) */
   --color-input: #F5F7F9;
   --color-cream: #FEFFF9;        /* fondo del header */
   --color-band: #182D48;         /* banda Service Areas */
@@ -65,6 +66,42 @@
   --ease-brand: cubic-bezier(.2, .7, .2, 1);
   --default-transition-duration: 220ms;
   --default-transition-timing-function: cubic-bezier(.2, .7, .2, 1);
+
+  /* Ondas del hero: vaivén lento y apenas perceptible. Solo transform → se compone en GPU.
+     Duraciones distintas y dirección opuesta para que no se vea mecánico. */
+  --animate-wave-back: wave-back 19s ease-in-out -7s infinite alternate;
+  --animate-wave-front: wave-front 13s ease-in-out infinite alternate;
+
+  @keyframes wave-back {
+    from { transform: translateX(-3.5%) scaleY(1); }
+    to   { transform: translateX(3.5%) scaleY(1.14); }
+  }
+  @keyframes wave-front {
+    from { transform: translateX(2.5%) scaleY(1.05); }
+    to   { transform: translateX(-2.5%) scaleY(.95); }
+  }
+
+  /* Gota del logo en hover: se estira, cae, se aplasta al "tocar" y rebota. La estrella destella en el impacto. */
+  --animate-drip: drip 900ms cubic-bezier(.3, .7, .3, 1) 1;
+  --animate-twinkle: twinkle 900ms ease-out 1;
+
+  @keyframes drip {
+    0%   { transform: translateY(0) scale(1, 1); }
+    25%  { transform: translateY(-3px) scale(.94, 1.08); }
+    50%  { transform: translateY(4px) scale(1.1, .88); }
+    68%  { transform: translateY(-1.5px) scale(.97, 1.04); }
+    84%  { transform: translateY(.5px) scale(1.02, .98); }
+    100% { transform: translateY(0) scale(1, 1); }
+  }
+  @keyframes dialog-in {
+    from { opacity: 0; transform: translateY(12px) scale(.98); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes twinkle {
+    0%, 40% { transform: scale(1) rotate(0deg); }
+    58%     { transform: scale(1.55) rotate(45deg); }
+    100%    { transform: scale(1) rotate(90deg); }
+  }
 }
 
 /* Variables de layout (no generan utilidades) */
@@ -109,8 +146,21 @@
   h3 { @apply text-h3 font-bold tracking-[-0.01em]; }
   h4 { @apply text-h4 font-bold; }
   p  { text-wrap: pretty; }
-  :focus-visible { @apply outline-3 outline-offset-3 outline-sky; }
+  /* Foco ≥ 3:1 contra el fondo (WCAG 2.2): deep sobre claro, sky sobre oscuro.
+     .on-dark marca secciones oscuras; .on-light restablece dentro de ellas (p. ej. la booking card). */
+  :focus-visible { @apply outline-3 outline-offset-3 outline-deep; }
+  .on-dark :focus-visible { @apply outline-sky; }
+  .on-dark .on-light :focus-visible { @apply outline-deep; }
+
+  /* Preflight de Tailwind v4 deja los botones con cursor default */
+  button:not(:disabled), [role='tab'] { cursor: pointer; }
+
   [hidden] { display: none !important; }
+
+  /* En mobile la barra CTA fija (56px) no debe tapar el elemento enfocado */
+  @media (width < 960px) {
+    html { scroll-padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {

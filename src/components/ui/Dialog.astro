@@ -1,0 +1,53 @@
+---
+// Diálogo modal nativo (<dialog>): foco atrapado, Esc y fondo inerte los da el navegador.
+// Se abre con cualquier botón que tenga data-dialog-open="<id>". Cierra con ×, Esc o clic en el fondo.
+// Los links dentro con data-dialog-close cierran el diálogo antes de navegar.
+import Icon from '../icons/Icon.astro';
+
+interface Props {
+  id: string;
+  labelledby: string;
+  class?: string;
+}
+const { id, labelledby, class: className } = Astro.props;
+---
+<dialog
+  id={id}
+  aria-labelledby={labelledby}
+  class:list={[
+    'on-light m-auto w-[min(540px,calc(100%-2rem))] rounded-lg bg-white p-0 text-body shadow-[0_30px_90px_rgb(5_30_62/.4)]',
+    'backdrop:bg-primary-900/80 open:animate-[dialog-in_220ms_var(--ease-brand)] motion-reduce:open:animate-none',
+    className,
+  ]}
+  data-dialog
+>
+  <div class="relative grid gap-4 p-8 sm:p-9">
+    <button
+      class="absolute top-3 right-3 grid size-11 place-items-center rounded-sm text-primary transition-colors hover:bg-soft"
+      type="button" aria-label="Close" data-dialog-dismiss
+    >
+      <Icon name="close" />
+    </button>
+    <slot />
+  </div>
+</dialog>
+
+<script>
+  document.addEventListener('click', (event) => {
+    const target = event.target as Element;
+
+    const opener = target.closest<HTMLElement>('[data-dialog-open]');
+    if (opener) {
+      (document.getElementById(opener.dataset.dialogOpen!) as HTMLDialogElement | null)?.showModal();
+      return;
+    }
+
+    const dialog = target.closest<HTMLDialogElement>('dialog[data-dialog]');
+    if (target.closest('[data-dialog-dismiss], [data-dialog-close]')) {
+      dialog?.close();
+      return;
+    }
+    // Clic en el fondo (el propio <dialog>, fuera de su contenido)
+    if (target instanceof HTMLDialogElement && target.matches('[data-dialog]')) target.close();
+  });
+</script>
