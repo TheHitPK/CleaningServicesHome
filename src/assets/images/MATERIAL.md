@@ -58,3 +58,6 @@ Fotos de la carpeta "Material WhatsApp". Todavía no están conectadas a la pág
 | `services/windows/patio-doors.jpg` | fae1f163-d77a-48a8-a545-886737b0f8a1.jpg |
 | `services/windows/sliding-door.jpg` | 7f37809a-6025-41f7-bc9b-9fc6b482aa4d.jpg |
 | `services/windows/window-shutters.jpg` | 6616da8c-54df-4bb2-be83-217f850691cd.jpg |
+| `hero/kitchen-island-enhanced.png` | Cocina moderna con isla y lámparas colgantes.png (versión mejorada) |
+| `services/residential/bedroom-pillows-enhanced.png` | Dormitorio acogedor con decoración vaquera.png (versión mejorada) |
+| `services/commercial/kennel-floor-enhanced.png` | Limpieza profesional en clínica veterinaria.png (versión mejorada) |

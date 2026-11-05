@@ -5,15 +5,15 @@ import type { ImageMetadata } from 'astro';
 import type { IconName } from '../components/icons/icons';
 import { site, services, serviceAreas, type ServiceId } from './site';
 // Tabs
-import tabRegular from '../assets/images/services/residential/bedroom-bed-making.jpg';
+import tabRegular from '../assets/images/services/residential/bedroom-pillows-enhanced.png';
 import tabDeep from '../assets/images/services/deep-cleaning/kitchen-hood-dusting.jpg';
 import tabMove from '../assets/images/services/move-out/empty-dining-room.jpg';
 import tabPost from '../assets/images/services/post-construction/kitchen-crew.jpg';
-import tabCommercial from '../assets/images/services/commercial/kennel-floor-logo.jpg';
+import tabCommercial from '../assets/images/services/commercial/kennel-floor-enhanced.png';
 import tabWindows from '../assets/images/services/windows/window-shutters.jpg';
 // Our Work: portadas de los videos
 import reelMove from '../assets/images/services/deep-cleaning/cabinet-vacuuming.jpg';
-import reelPost from '../assets/images/services/post-construction/cabinet-vacuuming-no-logo.png';
+import reelPost from '../assets/images/services/post-construction/carpet-vacuuming-logo.jpg';
 import reelDeep from '../assets/images/services/deep-cleaning/ceiling-fan.jpg';
 // Our Work: álbum
 import workMove from '../assets/images/services/move-out/kitchen-counters-logo.jpg';
@@ -98,26 +98,64 @@ export const servicesSection = {
   requestQuote: 'Request a quote',
 };
 
-// Tabs de detalle por servicio. PLACEHOLDER: el cliente todavía no entregó estos textos (no se inventan)
-const LOREM_M = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
-const LOREM_L = `${LOREM_M} Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`;
-const tabItems = ['Lorem ipsum dolor sit', 'Consectetur adipiscing elit', 'Sed do eiusmod tempor', 'Ut labore et dolore magna'];
+// Tabs de detalle por servicio — textos entregados por el cliente
+const INCLUDED = "What's Included:";
+const APPROACH = 'Our Approach:';
 
 export const serviceTabs = {
   eyebrow: 'The details that matter',
-  title: 'Find the right clean for your space.',
-  lead: LOREM_M,
-  noteTitle: 'Service details available upon request.',
-  noteText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. A full room-by-room checklist for this service has not yet been supplied.',
-  footerTitle: 'Ready to talk about your project?',
+  title: 'Find the Right Clean for Your Space.',
+  lead: [
+    "Every space has different cleaning needs. Whether you're looking for regular home maintenance, a detailed deep clean, or specialized cleaning after a move or construction project, we're here to help.",
+    'Explore our services and find the right solution for your property.',
+  ],
+  noteTitle: 'Additional Information:',
+  footerTitle: 'Ready to Talk About Your Cleaning Needs?',
+  footerText: 'Our team is here to help you find the right cleaning solution for your space.',
   tabs: [
-    { id: 'regular', label: 'Regular Cleaning', eyebrow: 'Recurring care', title: 'Regular Cleaning', text: LOREM_L, items: tabItems, image: tabRegular },
-    { id: 'deep', label: 'Deep Cleaning', eyebrow: 'Top to bottom', title: 'Deep Cleaning', text: LOREM_L, items: tabItems, image: tabDeep },
-    { id: 'move', label: 'Move In / Out', eyebrow: 'Next chapter', title: 'Move In / Move Out Cleaning', text: LOREM_L, items: tabItems, image: tabMove },
-    { id: 'post', label: 'Post Construction', eyebrow: 'Finishing touches', title: 'Post Construction Cleaning', text: LOREM_L, items: tabItems, image: tabPost },
-    { id: 'commercial', label: 'Commercial', eyebrow: 'Workspaces', title: 'Commercial Cleaning', text: LOREM_L, items: tabItems, image: tabCommercial },
-    { id: 'windows', label: 'Windows', eyebrow: 'Let the light in', title: 'Window Cleaning', text: LOREM_L, items: tabItems, image: tabWindows },
-  ] satisfies { id: string; label: string; eyebrow: string; title: string; text: string; items: string[]; image: ImageMetadata }[],
+    {
+      id: 'regular', label: 'Regular Cleaning', eyebrow: 'Recurring care', title: 'Regular Cleaning', image: tabRegular,
+      text: 'Keep your home fresh, tidy, and comfortable with our regular cleaning service. Designed for ongoing maintenance, this service helps preserve the cleanliness of your home through essential cleaning tasks.',
+      listTitle: INCLUDED,
+      items: ['Dusting surfaces, ceiling fans, and ledges.', 'Sweeping, vacuuming, and mopping floors.', 'Cleaning kitchen surfaces and appliance exteriors.', 'Cleaning and sanitizing bathrooms.'],
+      note: 'Ideal for homes that have already received a deep cleaning and need consistent maintenance to stay fresh and welcoming.',
+    },
+    {
+      id: 'deep', label: 'Deep Cleaning', eyebrow: 'Detailed home care', title: 'Deep Cleaning', image: tabDeep,
+      text: 'Sometimes your home needs extra attention. Our deep cleaning service targets accumulated dust, grease, and buildup in areas that may be overlooked during regular cleaning.',
+      listTitle: INCLUDED,
+      items: ['Detailed cleaning of baseboards, blinds, and door frames.', 'Cleaning underneath and behind furniture.', 'Thorough kitchen and bathroom cleaning.', 'Extra attention to hard-to-reach areas.'],
+      note: "Recommended for first-time cleanings, seasonal refreshes, or homes that haven't received a thorough cleaning in a while.",
+    },
+    {
+      id: 'move', label: 'Move In / Out', eyebrow: 'A fresh start', title: 'Move In / Move Out Cleaning', image: tabMove,
+      text: "Moving is a big step, and cleaning shouldn't add to the stress. Our move-in and move-out cleaning service helps prepare properties for their next occupants, with attention to the areas that matter most.",
+      listTitle: INCLUDED,
+      items: ['Interior cleaning of cabinets, drawers, and closets.', 'Cleaning kitchen appliances inside and out.', 'Detailed cleaning of bathrooms and living spaces.', 'Cleaning interior windows, frames, and baseboards.'],
+      note: 'Ideal for homeowners, renters, property managers, and real estate professionals preparing a property for its next chapter.',
+    },
+    {
+      id: 'post', label: 'Post Construction', eyebrow: 'After the build', title: 'Post Construction Cleaning', image: tabPost,
+      text: "Construction may be finished, but the space isn't ready until it's clean. Our post-construction cleaning service helps remove construction dust, residue, and debris while preparing newly built or renovated properties for their next stage.",
+      listTitle: INCLUDED,
+      items: ['Removal of construction dust and surface residue.', 'Detailed cleaning of fixtures, cabinets, and appliances.', 'Cleaning of floors, windows, and interior surfaces.', 'Rough, Detail, and Final cleaning phases.'],
+      note: "Designed for newly constructed and renovated residential or commercial properties. The cleaning scope is tailored to each project's needs.",
+    },
+    {
+      id: 'commercial', label: 'Commercial', eyebrow: 'Professional spaces', title: 'Commercial Cleaning', image: tabCommercial,
+      text: 'A clean business environment makes a lasting impression. Cleaning 4 You provides professional cleaning solutions to help businesses maintain welcoming, organized, and presentable spaces.',
+      listTitle: APPROACH,
+      items: ['Cleaning solutions tailored to your business.', 'Attention to frequently used areas.', 'A focus on cleanliness and presentation.', 'Personalized service based on property needs.'],
+      note: 'Contact our team to discuss your commercial space and receive a personalized cleaning quote.',
+    },
+    {
+      id: 'windows', label: 'Windows', eyebrow: 'Clearer views', title: 'Window Cleaning', image: tabWindows,
+      text: 'Clean windows make a difference in how a space looks and feels. Our window cleaning service helps improve the appearance of your property and lets natural light shine through.',
+      listTitle: APPROACH,
+      items: ['Attention to glass clarity and presentation.', 'Cleaning solutions based on window conditions.', "Service tailored to your property's needs.", 'Personalized quotes for each project.'],
+      note: 'Contact us to discuss your windows, property type, and specific cleaning requirements.',
+    },
+  ] satisfies { id: string; label: string; eyebrow: string; title: string; text: string; listTitle: string; items: string[]; note: string; image: ImageMetadata }[],
 };
 
 // ⑤ Our Story — ref. 05-our-story.jpg
@@ -270,6 +308,12 @@ export const reviews = {
   lead: 'Real reviews from Cleaning 4 You clients will appear here, for example linked from Google Reviews.',
   slot: 'Verified client review · pending',
   slots: 3,
+  // PLACEHOLDER: reseñas de muestra con el diseño entregado; reemplazar por reseñas reales y autorizadas
+  sampleLabel: 'Sample review',
+  items: [
+    { quote: 'A clean, comfortable home makes such a difference. Every room looked refreshed and carefully maintained.', name: 'Mark Thompson', when: '1 month ago' },
+    { quote: 'The team was thorough and paid attention to every detail. The space looked fresh and ready for its next chapter.', name: 'Jason Miller', when: '3 days ago' },
+  ],
 };
 
 // FAQ — las respuestas salen de textos ya aprobados; las null esperan al cliente

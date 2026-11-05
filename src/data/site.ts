@@ -1,10 +1,10 @@
 // Datos REALES del negocio. Única fuente: ningún componente los escribe a mano.
 import type { ImageMetadata } from 'astro';
 import residential from '../assets/images/services/residential/living-room-vacuuming.jpg';
-import commercial from '../assets/images/services/commercial/kennel-floor-logo.jpg';
+import commercial from '../assets/images/services/commercial/kennel-floor-enhanced.png';
 import windows from '../assets/images/services/windows/patio-doors.jpg';
 import moveOut from '../assets/images/services/move-out/empty-kitchen.jpg';
-import postConstruction from '../assets/images/services/post-construction/floor-mopping.jpg';
+import postConstruction from '../assets/images/services/post-construction/cabinet-vacuuming-no-logo.png';
 
 export const site = {
   name: 'Cleaning 4 You',
@@ -59,10 +59,10 @@ export interface Service {
 // Orden de las cards (ref. 03-servicios.jpg)
 export const services: Service[] = [
   { id: 'residential', name: 'Residential Cleaning', short: 'Residential Cleaning', image: residential },
-  { id: 'commercial', name: 'Commercial Cleaning', short: 'Commercial Cleaning', image: commercial, imageClass: 'object-bottom' },
+  { id: 'commercial', name: 'Commercial Cleaning', short: 'Commercial Cleaning', image: commercial },
   { id: 'windows', name: 'Window Cleaning', short: 'Window Cleaning', image: windows },
   { id: 'move-out', name: 'Move In / Move Out Cleaning', short: 'Move In / Move Out', image: moveOut, featured: true },
-  { id: 'post-construction', name: 'Post Construction Cleaning', short: 'Post Construction', image: postConstruction, imageClass: 'object-top', featured: true },
+  { id: 'post-construction', name: 'Post Construction Cleaning', short: 'Post Construction', image: postConstruction, imageClass: 'object-[center_30%]', featured: true },
 ];
 
 // Orden de la home y del footer: primero los servicios destacados (sort estable)
