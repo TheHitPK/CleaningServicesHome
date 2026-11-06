@@ -5,7 +5,7 @@ import SectionHeading from '../ui/SectionHeading.astro';
 import Icon from '../icons/Icon.astro';
 import { faq } from '../../data/content';
 ---
-<section class="section" aria-labelledby="faq-title">
+<section class="section pt-[calc(var(--section-y)/2)]" aria-labelledby="faq-title">
   <div class="container-site grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:gap-16">
     <SectionHeading eyebrow={faq.eyebrow} title={faq.title} id="faq-title" class="mb-0!" />
     <div class="divide-y divide-line border-y border-line">
