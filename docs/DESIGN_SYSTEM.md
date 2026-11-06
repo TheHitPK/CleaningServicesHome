@@ -148,7 +148,7 @@ Largo de línea máximo: párrafos `65ch`, H2 `18ch`, H1 `14ch`.
   --sp-5: 1.25rem; --sp-6: 1.5rem;  --sp-8: 2rem;    --sp-10: 2.5rem;
   --sp-12: 3rem;   --sp-16: 4rem;   --sp-20: 5rem;   --sp-24: 6rem;
 
-  --section-y: clamp(4rem, 2.5rem + 6vw, 7.5rem);   /* 64 → 120 px */
+  --section-y: clamp(3.5rem, 2.25rem + 4vw, 6rem);   /* 56 → 96 px */
   --gutter:    clamp(1rem, .5rem + 2.5vw, 1.75rem);  /* 16 → 28 px */
   --container: 1200px;
   --container-narrow: 760px;
@@ -671,7 +671,7 @@ Las variables de layout que no generan utilidades viven en `:root`: `--section-y
 | Utilidad | Qué hace |
 |---|---|
 | `container-site` | `width: min(100% - 2·gutter, 1200px)` centrado |
-| `section` | `padding-block: var(--section-y)` + `scroll-margin-top: var(--header-h)` |
+| `section` | `padding-block: var(--section-y)` + `scroll-margin-top: var(--header-h)`. Si la sección anterior tiene el mismo fondo, se agrega `pt-[calc(var(--section-y)/2)]` para no sumar dos rellenos completos |
 | `no-scrollbar` | Oculta la barra en filas con scroll horizontal (tabs, filtros, testimonios) |
 | `select-chevron` | Flecha SVG de los `<select>` |
 

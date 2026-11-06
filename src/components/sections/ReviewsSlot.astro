@@ -9,7 +9,7 @@ import { reviews } from '../../data/content';
 const avatars = ['bg-accent-100', 'bg-pale'];
 const card = 'flex flex-col items-center gap-5 rounded-lg border-2 border-dashed bg-white p-8 text-center';
 ---
-<section class="section bg-soft" aria-labelledby="reviews-title">
+<section class="section pt-[calc(var(--section-y)/2)] bg-soft" aria-labelledby="reviews-title">
   <div class="container-site">
     <SectionHeading eyebrow={reviews.eyebrow} title={reviews.title} lead={reviews.lead} layout="centered" id="reviews-title" />
     <ul class="grid gap-6 md:grid-cols-3">

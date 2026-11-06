@@ -7,7 +7,7 @@ import Icon from '../icons/Icon.astro';
 import { servicesByPriority, QUOTE_ANCHOR } from '../../data/site';
 import { servicesSection as copy } from '../../data/content';
 ---
-<section class="section" id="services" aria-labelledby="services-title">
+<section class="section pt-[calc(var(--section-y)/2)]" id="services" aria-labelledby="services-title">
   <div class="container-site">
     <SectionHeading eyebrow={copy.eyebrow} title={copy.title} lead={copy.lead} layout="split" id="services-title">
       <Button slot="aside" variant="secondary" href={QUOTE_ANCHOR} icon="arrow">{copy.requestQuote}</Button>

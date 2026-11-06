@@ -8,7 +8,7 @@ import { site, services, serviceAreas, type ServiceId } from './site';
 import tabRegular from '../assets/images/services/residential/bedroom-pillows-enhanced.png';
 import tabDeep from '../assets/images/services/deep-cleaning/kitchen-hood-dusting.jpg';
 import tabMove from '../assets/images/services/move-out/empty-dining-room.jpg';
-import tabPost from '../assets/images/services/post-construction/kitchen-crew.jpg';
+import tabPost from '../assets/images/services/post-construction/cabinet-vacuuming-no-logo.png';
 import tabCommercial from '../assets/images/services/commercial/kennel-floor-enhanced.png';
 import tabWindows from '../assets/images/services/windows/window-shutters.jpg';
 // Our Work: portadas de los videos

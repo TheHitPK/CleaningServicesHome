@@ -4,7 +4,7 @@ import residential from '../assets/images/services/residential/living-room-vacuu
 import commercial from '../assets/images/services/commercial/kennel-floor-enhanced.png';
 import windows from '../assets/images/services/windows/patio-doors.jpg';
 import moveOut from '../assets/images/services/move-out/empty-kitchen.jpg';
-import postConstruction from '../assets/images/services/post-construction/cabinet-vacuuming-no-logo.png';
+import postConstruction from '../assets/images/services/post-construction/kitchen-crew-alt.png';
 
 export const site = {
   name: 'Cleaning 4 You',
@@ -62,7 +62,7 @@ export const services: Service[] = [
   { id: 'commercial', name: 'Commercial Cleaning', short: 'Commercial Cleaning', image: commercial },
   { id: 'windows', name: 'Window Cleaning', short: 'Window Cleaning', image: windows },
   { id: 'move-out', name: 'Move In / Move Out Cleaning', short: 'Move In / Move Out', image: moveOut, featured: true },
-  { id: 'post-construction', name: 'Post Construction Cleaning', short: 'Post Construction', image: postConstruction, imageClass: 'object-[center_30%]', featured: true },
+  { id: 'post-construction', name: 'Post Construction Cleaning', short: 'Post Construction', image: postConstruction, imageClass: 'object-[center_45%]', featured: true },
 ];
 
 // Orden de la home y del footer: primero los servicios destacados (sort estable)

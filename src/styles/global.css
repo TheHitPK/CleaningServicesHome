@@ -106,7 +106,7 @@
 
 /* Variables de layout (no generan utilidades) */
 :root {
-  --section-y: clamp(4rem, 2.5rem + 6vw, 7.5rem);
+  --section-y: clamp(3.5rem, 2.25rem + 4vw, 6rem);
   --gutter: clamp(1rem, .5rem + 2.5vw, 1.75rem);
   --header-h: 70px;
   --booking-w: 400px;
