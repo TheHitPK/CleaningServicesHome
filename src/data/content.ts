@@ -313,6 +313,7 @@ export const reviews = {
   items: [
     { quote: 'A clean, comfortable home makes such a difference. Every room looked refreshed and carefully maintained.', name: 'Mark Thompson', when: '1 month ago' },
     { quote: 'The team was thorough and paid attention to every detail. The space looked fresh and ready for its next chapter.', name: 'Jason Miller', when: '3 days ago' },
+    { quote: 'They were on time, friendly and left our kitchen and bathrooms spotless. Booking was quick and easy.', name: 'Laura Bennett', when: '2 weeks ago' },
   ],
 };
 
@@ -327,7 +328,11 @@ export const faq = {
     { q: 'Which areas do you serve?', a: footer.areasText },
     { q: 'What types of cleaning do you offer?', a: services.map((s) => s.name).join(', ') + '.' },
     { q: 'Do you bring your own supplies and equipment?', a: null },
-    { q: 'Are you licensed and insured?', a: null },
+    // Texto del cliente (2026-11-05)
+    {
+      q: 'Are you licensed and insured?',
+      a: 'Yes! Cleaning 4 You is fully licensed and insured, giving you peace of mind when choosing our services. We are committed to providing professional, reliable cleaning services while treating your home or business with care and attention to every detail.',
+    },
     { q: 'How far in advance should I book?', a: null },
   ] satisfies { q: string; a: string | null }[],
 };
