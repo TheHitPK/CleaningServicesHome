@@ -1,7 +1,7 @@
 ---
 // About: foto + historia, con el texto de "Who are we?" integrado, y Mission / Vision / Philosophy abajo.
 import { Image } from 'astro:assets';
-import team from '../../assets/images/about/team-job-site-walk-alt.png';
+import team from '../../assets/images/about/portrait-studio.jpg';
 import Eyebrow from '../ui/Eyebrow.astro';
 import Icon from '../icons/Icon.astro';
 import { about, story, mission } from '../../data/content';
@@ -13,11 +13,11 @@ const paragraphs = [origin, years, who.text, details];
 <section class="section scroll-mt-(--header-h)" id="about" aria-labelledby="about-title">
   <div class="container-site">
     <div class="grid items-center gap-12 lg:grid-cols-[.9fr_1.1fr] lg:gap-16">
-      <div class="relative aspect-4/3 overflow-hidden rounded-lg lg:aspect-4/5">
+      <div class="relative aspect-4/5 overflow-hidden rounded-lg bg-cool max-lg:mx-auto max-lg:w-full max-lg:max-w-md">
         <Image
-          src={team} alt="Cleaning 4 You team walking through a construction site"
+          src={team} alt="Portrait of a Cleaning 4 You team member"
           widths={[480, 720, 960]} sizes="(min-width: 960px) 480px, 100vw"
-          loading="lazy" decoding="async" quality={65} class="absolute inset-0 size-full object-cover"
+          loading="lazy" decoding="async" quality={65} class="absolute inset-0 size-full object-cover object-top"
         />
       </div>
       <div class="grid justify-items-start gap-5">

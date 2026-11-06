@@ -2,7 +2,7 @@
 // How it works — ref. docs/referencias/contenido-aprobado/04-how-it-works.jpg
 // Banda navy con foto de fondo (lazy) + 3 pasos con ícono en círculo amarillo.
 import { Image } from 'astro:assets';
-import team from '../../assets/images/services/post-construction/floor-mopping.jpg';
+import team from '../../assets/images/hero/kitchen-marble-island.jpg';
 import SectionHeading from '../ui/SectionHeading.astro';
 import Icon from '../icons/Icon.astro';
 import { process } from '../../data/content';
@@ -12,9 +12,9 @@ import { process } from '../../data/content';
     <Image
       src={team} alt="" widths={[640, 1024, 1600]} sizes="100vw"
       loading="lazy" decoding="async" quality={50}
-      class="size-full object-cover object-[center_60%]"
+      class="size-full object-cover object-center"
     />
-    <div class="absolute inset-0 bg-[linear-gradient(90deg,rgb(19_47_86/.94),rgb(23_58_90/.94))]"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(90deg,rgb(19_47_86/.86),rgb(23_58_90/.82))]"></div>
   </div>
 
   <div class="container-site">

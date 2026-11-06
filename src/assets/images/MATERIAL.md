@@ -6,6 +6,7 @@ Fotos de la carpeta "Material WhatsApp". Todavía no están conectadas a la pág
 |---|---|
 | `about/cleaner-living-room.jpg` | 6cc2513b-8f7d-4511-930e-3263bab988cb.jpg |
 | `about/team-job-site-walk-alt.png` | imagen enviada por chat (9.png) |
+| `about/portrait-studio.jpg` | imagen enviada por chat (21.jpg) |
 | `about/team-job-site-walk.jpg` | 39011301-2ba2-4334-bbe9-a7d48d325450.jpg |
 | `hero/kitchen-island-wide.jpg` | c1085745-1bb3-496c-bbd4-39907c0930d6.jpg |
 | `hero/kitchen-marble-island.jpg` | 7190fd18-b2e7-4a13-b9a9-fe3b94f2445b.jpg |
