@@ -11,9 +11,14 @@ import tabPost from '../assets/images/services/post-construction/cabinet-vacuumi
 import tabCommercial from '../assets/images/services/commercial/kennel-floor-enhanced.png';
 import tabWindows from '../assets/images/services/windows/window-shutters.jpg';
 // Our Work: portadas de los videos
-import reelMove from '../assets/images/services/deep-cleaning/cabinet-vacuuming.jpg';
-import reelPost from '../assets/images/services/post-construction/carpet-vacuuming-logo.jpg';
-import reelDeep from '../assets/images/services/deep-cleaning/ceiling-fan.jpg';
+// Portadas de los videos: un fotograma de cada video (extraído en Chrome, ver our-work/reels/)
+import reelMove from '../assets/images/our-work/reels/move-out-cover.jpg';
+import reelPost from '../assets/images/our-work/reels/post-construction-cover.jpg';
+import reelDeep from '../assets/images/our-work/reels/deep-cleaning-cover.jpg';
+// Videos del cliente (Our Work): Vite los copia a dist/_astro con hash; se descargan solo al reproducir.
+import videoMove from '../assets/videos/our-work/kitchens/apartment-walkthrough.mp4?url';
+import videoPost from '../assets/videos/our-work/kitchens/island-walkthrough.mp4?url';
+import videoDeep from '../assets/videos/our-work/details/ceiling-fan.mp4?url';
 // Our Work: álbum
 import workMove from '../assets/images/services/move-out/kitchen-counters-logo.jpg';
 import workPost from '../assets/images/services/post-construction/new-kitchen-logo.jpg';
@@ -215,14 +220,12 @@ export const portfolio = {
   title: 'See the Difference.',
   lead: 'A glimpse into the kind of transformations a detailed clean can make.',
   reels: [
-    { id: 'reel-move', title: ['Move Out', 'Transformation'], image: reelMove },
-    { id: 'reel-post', title: ['Post Construction', 'Cleaning'], image: reelPost },
-    { id: 'reel-deep', title: ['Deep Cleaning', 'Results'], image: reelDeep },
-  ] satisfies { id: string; title: [string, string]; image: ImageMetadata }[],
-  reelCaption: 'Vertical video placement · 9:16',
-  reelDialogEyebrow: 'Our work · video placeholder',
-  reelDialogText: 'Vertical before & after video will appear here once the real footage is supplied.',
-  reelDialogNote: 'Planned format: portrait video with a before, cleaning process, and after reveal. No sample footage has been represented as a real project.',
+    { id: 'reel-move', title: ['Move Out', 'Transformation'], image: reelMove, video: videoMove },
+    { id: 'reel-post', title: ['Post Construction', 'Cleaning'], image: reelPost, video: videoPost },
+    { id: 'reel-deep', title: ['Deep Cleaning', 'Results'], image: reelDeep, video: videoDeep },
+  ] satisfies { id: string; title: [string, string]; image: ImageMetadata; video: string }[],
+  reelCaption: 'Watch the video',
+  reelDialogEyebrow: 'Our work',
   galleryEyebrow: 'Photo gallery',
   galleryTitle: 'A Closer Look at Our Work',
   filters: [

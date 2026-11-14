@@ -62,3 +62,13 @@ Fotos de la carpeta "Material WhatsApp". Todavía no están conectadas a la pág
 | `hero/kitchen-island-enhanced.png` | Cocina moderna con isla y lámparas colgantes.png (versión mejorada) |
 | `services/residential/bedroom-pillows-enhanced.png` | Dormitorio acogedor con decoración vaquera.png (versión mejorada) |
 | `services/commercial/kennel-floor-enhanced.png` | Limpieza profesional en clínica veterinaria.png (versión mejorada) |
+
+## Portadas de videos (our-work/reels/)
+
+Fotogramas sacados de los videos de Our Work:
+
+| Archivo | Video | Momento |
+|---|---|---|
+| `our-work/reels/move-out-cover.jpg` | `videos/our-work/kitchens/apartment-walkthrough.mp4` | 70 % (~11 s) |
+| `our-work/reels/post-construction-cover.jpg` | `videos/our-work/kitchens/island-walkthrough.mp4` | 10 % (~1 s) |
+| `our-work/reels/deep-cleaning-cover.jpg` | `videos/our-work/details/ceiling-fan.mp4` | 30 % (~1,2 s) |

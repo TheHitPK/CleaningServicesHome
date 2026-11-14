@@ -1,8 +1,9 @@
 ---
 // Our Work — ref. docs/referencias/contenido-aprobado/07-our-work-videos.jpg + 08-our-work-galeria.jpg
-// Videos verticales (placeholders: abren un <dialog>) + galería filtrable.
+// Videos verticales del cliente (cada portada abre un <dialog> con el video) + galería filtrable.
+// Los videos usan preload="none": no se descarga nada hasta que se abren.
 // Sin JS se ven todas las fotos y los filtros quedan ocultos.
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import SectionHeading from '../ui/SectionHeading.astro';
 import Eyebrow from '../ui/Eyebrow.astro';
 import Dialog from '../ui/Dialog.astro';
@@ -10,19 +11,20 @@ import Icon from '../icons/Icon.astro';
 import { portfolio as copy } from '../../data/content';
 
 interface Props {
-  /** false: sin los videos placeholder (solo galería). Lo usa /propuesta. */
+  /** false: sin los videos (solo galería). Lo usa /propuesta. */
   reels?: boolean;
 }
 const { reels = true } = Astro.props;
+// Portada del video = la misma foto de la tarjeta, optimizada a WebP
+const posters = await Promise.all(copy.reels.map((r) => getImage({ src: r.image, width: 540, format: 'webp', quality: 60 })));
 ---
 <section class="section bg-soft" id="our-work" aria-labelledby="work-title" data-filter-root>
   <div class="container-site">
     <SectionHeading eyebrow={copy.eyebrow} title={copy.title} lead={copy.lead} layout="centered" id="work-title" />
 
-    <!-- PLACEHOLDER: videos antes/después pendientes del cliente -->
     {reels && <ul class="mx-auto mb-20 grid max-w-[905px] gap-6 max-sm:max-w-[300px] sm:grid-cols-3">
       {reels && copy.reels.map((r) => (
-        <li data-placeholder>
+        <li>
           <button
             class="group/reel block w-full overflow-hidden rounded-lg bg-white text-left shadow-sm transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-lg"
             type="button" data-dialog-open={r.id} aria-haspopup="dialog"
@@ -84,22 +86,28 @@ const { reels = true } = Astro.props;
     </ul>
   </div>
 
-  {copy.reels.map((r) => (
+  {copy.reels.map((r, i) => (
     <Dialog id={r.id} labelledby={`${r.id}-title`}>
       <Eyebrow>{copy.reelDialogEyebrow}</Eyebrow>
       <h3 id={`${r.id}-title`} class="text-[1.5rem]">{r.title.join(' ')}</h3>
-      <div class="mx-auto grid aspect-9/14 max-h-[50vh] w-full max-w-[260px] place-items-center rounded-md bg-[linear-gradient(#284964,#102d49)] p-6 text-center text-white">
-        <div class="grid justify-items-center gap-3">
-          <Icon name="play" size={40} />
-          <p class="text-sm text-white/85">{copy.reelDialogText}</p>
-        </div>
-      </div>
-      <p class="text-center text-sm text-muted">{copy.reelDialogNote}</p>
+      <video
+        class="mx-auto aspect-9/16 max-h-[70vh] w-full max-w-[340px] rounded-md bg-primary-900 object-contain"
+        src={r.video} poster={posters[i].src} controls playsinline preload="none" data-reel-video
+      ></video>
     </Dialog>
   ))}
 </section>
 
 <script>
+  // Videos: arrancan al abrir su diálogo y se pausan al cerrarlo (Esc, ×, fondo).
+  for (const video of document.querySelectorAll<HTMLVideoElement>('[data-reel-video]')) {
+    const dialog = video.closest('dialog')!;
+    document.querySelector(`[data-dialog-open="${dialog.id}"]`)?.addEventListener('click', () => {
+      void video.play().catch(() => {}); // si el navegador bloquea el autoplay, quedan los controles
+    });
+    dialog.addEventListener('close', () => video.pause());
+  }
+
   for (const root of document.querySelectorAll<HTMLElement>('[data-filter-root]')) {
     const bar = root.querySelector<HTMLElement>('[data-filters]')!;
     const buttons = [...bar.querySelectorAll<HTMLButtonElement>('[data-filter]')];
