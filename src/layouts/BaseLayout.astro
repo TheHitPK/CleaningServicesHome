@@ -3,7 +3,6 @@ import '../styles/global.css';
 import manropeUrl from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
 import dmSansUrl from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
 import { site, serviceAreas } from '../data/site';
-import PreviewFlag from '../components/ui/PreviewFlag.astro';
 
 interface Props {
   title: string;
@@ -58,6 +57,5 @@ const jsonLd = {
   <body>
     <a class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[1000] focus:rounded-sm focus:bg-primary focus:px-5 focus:py-3 focus:font-bold focus:text-white" href="#main">Skip to content</a>
     <slot />
-    <PreviewFlag />
   </body>
 </html>

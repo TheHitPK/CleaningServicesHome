@@ -1,6 +1,5 @@
 // CONTENIDO APROBADO — copiado literal de las capturas en docs/referencias/contenido-aprobado/
 // (mismo texto que Cleaning_4_You_Landing_Demo.html + folleto de Misión/Visión).
-// Los textos de las secciones NO aprobadas están aparte, en content-extras.ts.
 import type { ImageMetadata } from 'astro';
 import type { IconName } from '../components/icons/icons';
 import { site, services, serviceAreas, type ServiceId } from './site';
@@ -287,7 +286,6 @@ export const footer = {
   areasList: `${serviceAreas.join(', ')}, Arizona.`,
   rights: 'All rights reserved.',
   callOrText: 'Call or text',
-  conceptNote: 'Website concept · Not a live business website',
 };
 
 // Franja de confianza — solo datos confirmados
@@ -327,13 +325,16 @@ export const faq = {
     { q: 'Is the quote free?', a: quote.note.split('. ').slice(0, 2).join('. ') + '.' },
     { q: 'Which areas do you serve?', a: footer.areasText },
     { q: 'What types of cleaning do you offer?', a: services.map((s) => s.name).join(', ') + '.' },
-    { q: 'Do you bring your own supplies and equipment?', a: null },
     // Texto del cliente (2026-11-05)
     {
       q: 'Are you licensed and insured?',
       a: 'Yes! Cleaning 4 You is fully licensed and insured, giving you peace of mind when choosing our services. We are committed to providing professional, reliable cleaning services while treating your home or business with care and attention to every detail.',
     },
-    { q: 'How far in advance should I book?', a: null },
+    // Texto del cliente (2026-11-14); el teléfono sale de site.ts
+    {
+      q: 'How far in advance should I book?',
+      a: `We recommend booking your cleaning service as early as possible to secure your preferred date and time. Availability may vary depending on the service and schedule. Call or text us at ${site.phone.display}, and our team will help you find the best available appointment.`,
+    },
   ] satisfies { q: string; a: string | null }[],
 };
 
@@ -353,9 +354,6 @@ export const contact = {
   note: 'Opens a text message to our team on your phone. Nothing is sent to a server.',
 };
 
-// Aviso fijo de vista previa (aparece en todas las capturas aprobadas). Quitar al publicar.
-export const previewFlag = 'Design preview · not a live website';
-
 /** Errores en línea: causa + cómo corregirlo (ui-ux-pro-max: error-clarity) */
 export const formErrors = {
   name: 'Please enter your name.',
@@ -366,9 +364,9 @@ export const formErrors = {
 };
 
 export const notFound = {
-  eyebrow: 'Error 404',
-  title: ['This page got ', 'swept away', '.'],
-  lead: "The page you're looking for doesn't exist or has moved. Let's get you back to a cleaner place.",
+  eyebrow: 'Error 404 · Page not available',
+  title: ['This page is ', 'not available', '.'],
+  lead: "The page you're looking for isn't available. It may have moved or no longer exists. Let's get you back to a cleaner place.",
   home: 'Back to home',
   linksTitle: 'Maybe you were looking for',
 };

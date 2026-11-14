@@ -1,7 +1,7 @@
 // Links hacia el formulario de cotización (#quote-form):
 // 1. Links a "#quote" con data-service / data-prefill → preseleccionan el servicio o precargan detalles.
 // 2. En escritorio los links `sms:` no abren nada (no hay app de mensajes) → llevan al formulario.
-// Si la página no tiene formulario (404, /secciones-extra), navegan a "/#quote".
+// Si la página no tiene formulario (p. ej. la 404), navegan a "/#quote".
 const desktop = matchMedia('(hover: hover) and (pointer: fine)');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
