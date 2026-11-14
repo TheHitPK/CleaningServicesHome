@@ -59,7 +59,8 @@ Reglas concretas:
 src/
   assets/
     images/              # fotos (las procesa astro:assets). Material del cliente por sección; ver MATERIAL.md.
-    videos/              # videos del cliente, todavía sin conectar; ver MATERIAL.md.
+    videos/              # videos del cliente; ver MATERIAL.md. 3 conectados en Our Work (import `?url`
+                         # en content.ts, <video preload="none"> dentro del diálogo). Máx. 25 MB por archivo (Cloudflare).
     brand/               # logo-full.svg, logo-mark.svg
   components/
     ui/                  # Button, Eyebrow, SectionHeading, Field, Logo
