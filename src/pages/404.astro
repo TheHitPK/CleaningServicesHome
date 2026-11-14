@@ -13,16 +13,19 @@ import Icon from '../components/icons/Icon.astro';
 import { site, tel, services } from '../data/site';
 import { notFound } from '../data/content';
 
+// Mismo orden que el nav de la home (site.ts): servicios, trabajos, nosotros, zonas y cotización.
 const quickLinks = [
   { label: 'Our services', href: '/#services', icon: 'sparkle' },
   { label: 'Our work', href: '/#our-work', icon: 'search' },
+  { label: 'About us', href: '/#about', icon: 'heart' },
+  { label: 'Service areas', href: '/#service-areas', icon: 'map-pin' },
   { label: 'Get a free quote', href: '/#quote', icon: 'message' },
-  { label: 'Contact', href: '/#contact', icon: 'phone' },
+  { label: 'Call or text us', href: tel, icon: 'phone' },
 ] as const;
 ---
 <BaseLayout
-  title="Page not found | Cleaning 4 You"
-  description="This page doesn't exist. Go back to Cleaning 4 You, professional cleaning services in Arizona."
+  title="Page not available | Cleaning 4 You"
+  description="This page isn't available. Go back to Cleaning 4 You, professional cleaning services in Arizona."
   noindex
 >
   <TopBar />
@@ -55,7 +58,7 @@ const quickLinks = [
     <section class="section pt-16" aria-labelledby="nf-links">
       <div class="container-site">
         <h2 id="nf-links" class="mb-8 text-h3">{notFound.linksTitle}</h2>
-        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {quickLinks.map((l) => (
             <li>
               <a

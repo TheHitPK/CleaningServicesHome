@@ -50,7 +50,6 @@ Solo las secciones del **contenido aprobado**, en el orden de las capturas de `d
 
 Además:
 - **`/404`** ([src/pages/404.astro](src/pages/404.astro)), con el estilo del hero y accesos rápidos. Lleva `noindex`.
-- **`/secciones-extra`** ([src/pages/secciones-extra.astro](src/pages/secciones-extra.astro)): revisión interna (noindex) de las **secciones extra no aprobadas** (tabs de servicios, fundador + cifras, testimonios, banda de ciudades, contacto en 2 columnas). Cada una lleva una franja "⚠ Sección extra · No aprobada" y ninguna aparece en la home. Ver [src/components/extras/README.md](src/components/extras/README.md).
 - **`/propuesta`** ([src/pages/propuesta.astro](src/pages/propuesta.astro)): **propuesta de estructura** (noindex) para presentar al cliente. Mismo contenido aprobado en el orden en que decide un cliente: Hero → franja de confianza → Services → How it works → Our Work → Why + Commitment → Reseñas (pendientes) → About compacto → FAQ → Get a quote con el CTA final. Cada sección lleva una nota (qué duda responde y qué cambió) que se oculta con "Ocultar notas".
 
 ## Estructura del proyecto

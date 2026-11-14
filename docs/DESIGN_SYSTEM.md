@@ -737,6 +737,5 @@ Las 12 capturas de `docs/referencias/contenido-aprobado/` definen **qué seccion
 | CTA | Degradado navy → deep → `#3973A2`; botones `light` + `outline` |
 | Aviso de vista previa | Pill fija abajo a la derecha (solo desktop), con `data-placeholder`. Se quita al publicar |
 
-**Secciones extra (no aprobadas):** `src/components/extras/`, marcadas con `ExtraMarker` (franja rayada `accent`/`primary` + etiqueta). Solo se ven en `/secciones-extra`.
 
 **Desvío del audit (§9 #3):** las capturas aprobadas muestran 2 CTA en el hero ("Get a free quote" amarillo + "Explore services" outline). Se respetó el contenido aprobado, así que en el primer viewport hay 2 botones amarillos (header y hero) más el de la card.
