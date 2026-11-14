@@ -1,0 +1,11 @@
+// Cloudflare Workers (Workers Builds): el sitio es 100 % estático, así que el Worker
+// solo sirve los archivos de dist/ (sin código de servidor ni adaptador de Astro).
+{
+  "name": "cleaningserviceshome",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    // Rutas inexistentes → dist/404.html con código 404
+    "not_found_handling": "404-page"
+  }
+}
