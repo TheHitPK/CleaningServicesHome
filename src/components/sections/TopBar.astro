@@ -3,7 +3,7 @@ import Icon from '../icons/Icon.astro';
 import { site, tel } from '../../data/site';
 const link = 'inline-flex min-h-10 items-center gap-2 transition-colors hover:text-accent';
 ---
-<div class="bg-primary-900 text-[.8125rem] text-white/82">
+<div class="on-dark bg-primary-900 text-[.8125rem] text-white/82">
   <div class="container-site flex min-h-10 items-center justify-center gap-4 md:justify-between">
     <div class="flex gap-6">
       <a class={link} href={tel}><Icon name="phone" size={14} class="text-accent" /> Call / Text: {site.phone.display}</a>

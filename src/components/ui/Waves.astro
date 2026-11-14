@@ -1,0 +1,23 @@
+---
+// Ondas animadas del borde inferior (estilo Moppers). Se usan en el hero y en la 404.
+// Un <svg> por onda (capa propia en GPU), 120% de ancho para que el vaivén no muestre los bordes.
+// Se detienen con prefers-reduced-motion. Ver DESIGN_SYSTEM §8.3.
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+<div class:list={['pointer-events-none absolute inset-x-0 -bottom-px h-[clamp(60px,9vw,150px)]', className]} aria-hidden="true">
+  <svg
+    class="absolute bottom-0 -left-[10%] h-full w-[120%] origin-bottom animate-wave-back will-change-transform motion-reduce:animate-none"
+    viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false"
+  >
+    <path class="fill-white opacity-35" d="M0 58C210 132 430 6 724 46c282 38 494 112 716 30v84H0Z" />
+  </svg>
+  <svg
+    class="absolute bottom-0 -left-[10%] h-full w-[120%] origin-bottom animate-wave-front will-change-transform motion-reduce:animate-none"
+    viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false"
+  >
+    <path class="fill-white" d="M0 100c262 60 506-38 770-12 248 25 456 72 670 26v46H0Z" />
+  </svg>
+</div>

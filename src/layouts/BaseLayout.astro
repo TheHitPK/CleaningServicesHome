@@ -7,9 +7,11 @@ import { site, serviceAreas } from '../data/site';
 interface Props {
   title: string;
   description: string;
+  /** Páginas que no deben indexarse (404) */
+  noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 
 // Solo subset latin: un archivo por familia. Fallback con métricas ajustadas para reducir el salto (CLS).
@@ -36,7 +38,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <meta name="theme-color" content="#173A5A" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 

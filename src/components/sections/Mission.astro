@@ -1,0 +1,49 @@
+---
+// Who are we? / Mission / Vision / Philosophy — ref. docs/referencias/contenido-aprobado/12-folleto-mision-vision.jpg
+// Motivo del folleto: esquina con franjas en diagonal y un "techo" (franja dorada + triángulo navy)
+// con el lema. Todo en CSS (clip-path), sin imágenes.
+import Eyebrow from '../ui/Eyebrow.astro';
+import { mission } from '../../data/content';
+const [who, ...rest] = mission.blocks;
+---
+<section class="section relative isolate overflow-hidden pb-0" aria-labelledby="mission-title">
+  <!-- Esquina superior derecha: franja dorada + navy en diagonal (como el folleto) -->
+  <div class="pointer-events-none absolute -top-px right-0 -z-10 size-[clamp(140px,22vw,300px)] max-sm:opacity-60" aria-hidden="true">
+    <div class="absolute inset-0 bg-accent [clip-path:polygon(18%_0,100%_0,100%_82%)]"></div>
+    <div class="absolute inset-0 bg-primary [clip-path:polygon(40%_0,100%_0,100%_60%)]"></div>
+  </div>
+
+  <div class="container-site">
+    <Eyebrow>{mission.eyebrow}</Eyebrow>
+    <h2 id="mission-title" class="sr-only">Who we are: mission, vision and philosophy</h2>
+
+    <div class="mt-8 grid gap-10 md:grid-cols-2 lg:grid-cols-3 lg:gap-14">
+      <div>
+        <h3 class="mb-3 text-h3">{who.title}</h3>
+        <p class="text-[1.0625rem]">{who.text}</p>
+      </div>
+      <div>
+        <h3 class="mb-3 text-h3">{rest[0].title}</h3>
+        <p class="text-[1.0625rem]">{rest[0].text}</p>
+      </div>
+      <div class="grid content-start gap-10 md:col-span-2 md:grid-cols-2 lg:col-span-1 lg:grid-cols-1">
+        {rest.slice(1).map((b) => (
+          <div>
+            <h3 class="mb-3 text-h3">{b.title}</h3>
+            <p class="text-[1.0625rem]">{b.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- "Techo": franja dorada + triángulo navy con el lema -->
+  <div class="relative mx-auto mt-16 h-[clamp(260px,30vw,360px)] w-full max-w-[1100px]">
+    <div class="absolute inset-0 bg-accent [clip-path:polygon(50%_0,100%_100%,0_100%)]"></div>
+    <div class="absolute inset-x-[7%] top-[12%] bottom-0 bg-primary [clip-path:polygon(50%_0,100%_100%,0_100%)]"></div>
+    <!-- En mobile el texto es más angosto y va más abajo para quedar dentro del triángulo -->
+    <p class="absolute inset-x-0 bottom-[7%] mx-auto max-w-[44%] text-center text-balance font-display text-[clamp(.9375rem,.7rem+1.6vw,2rem)] leading-tight font-bold text-white sm:bottom-[12%] sm:max-w-[min(22ch,60%)]">
+      {mission.tagline}
+    </p>
+  </div>
+</section>

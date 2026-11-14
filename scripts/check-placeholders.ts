@@ -1,4 +1,5 @@
 // Avisa (sin fallar el build) si quedan placeholders o lorem ipsum en el HTML generado.
+// Falla el build si alguna página salió sin el CSS de Tailwind inlined (se vio de forma intermitente en Windows).
 // Node ≥ 22.18 ejecuta TypeScript nativamente (type stripping), sin dependencias.
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -16,10 +17,12 @@ async function htmlFiles(dir: string): Promise<string[]> {
 }
 
 let total = 0;
+const sinCss: string[] = [];
 for (const file of await htmlFiles(DIST)) {
   const html = await readFile(file, 'utf8');
   const placeholders = (html.match(/data-placeholder/g) ?? []).length;
   const lorem = (html.match(/lorem ipsum/gi) ?? []).length;
+  if (!html.includes('.container-site{')) sinCss.push(file);
   if (placeholders || lorem) {
     console.warn(`\x1b[33m⚠ ${file}: ${placeholders} data-placeholder · ${lorem} "lorem ipsum"\x1b[0m`);
     total += placeholders + lorem;
@@ -28,3 +31,8 @@ for (const file of await htmlFiles(DIST)) {
 console.log(total
   ? '\x1b[33m⚠ Contenido placeholder pendiente: no publicar como sitio final.\x1b[0m'
   : '\x1b[32m✓ Sin placeholders.\x1b[0m');
+
+if (sinCss.length) {
+  console.error(`\x1b[31m✗ Páginas sin el CSS de Tailwind: ${sinCss.join(', ')}. Corre de nuevo npm run build.\x1b[0m`);
+  process.exitCode = 1;
+}

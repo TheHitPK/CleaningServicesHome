@@ -1,0 +1,36 @@
+---
+// Nota entre secciones de /propuesta: número, qué duda responde y qué cambió respecto de la home.
+// Se oculta con el botón "Ocultar notas" (atributo data-clean en <html>).
+import type { ChangeKind } from '../../data/content-propuesta';
+
+interface Props {
+  n: number;
+  kind: ChangeKind;
+  title: string;
+  answers: string;
+  change: string;
+  /** La nota va debajo de su sección (p. ej. la franja que recibe la booking card del hero) */
+  above?: boolean;
+}
+const { n, kind, title, answers, change, above = false } = Astro.props;
+
+const badges: Record<ChangeKind, { label: string; class: string }> = {
+  igual: { label: 'Igual', class: 'bg-white/15 text-white' },
+  movida: { label: 'Cambia de lugar', class: 'bg-sky text-primary' },
+  fusion: { label: 'Fusión', class: 'bg-pale text-primary' },
+  nueva: { label: 'Nueva', class: 'bg-accent text-primary' },
+};
+const badge = badges[kind];
+---
+<aside class="border-y-2 border-accent bg-primary-900 text-white in-data-[clean]:hidden" aria-label={`Nota de la propuesta: sección ${n}`} data-proposal-note>
+  <div class="container-site grid gap-x-6 gap-y-2 py-4 md:grid-cols-[auto_1fr] md:items-start">
+    <div class="flex items-center gap-3">
+      <span class="grid size-9 shrink-0 place-items-center rounded-full bg-accent font-display text-sm font-extrabold text-primary">{n}</span>
+      <strong class="font-display">{above && <span aria-hidden="true">▲ </span>}{title}{above && <span class="sr-only"> (sección de arriba)</span>}</strong>
+      <span class:list={['rounded-sm px-2 py-0.5 text-[.6875rem] font-extrabold tracking-[.1em] uppercase', badge.class]}>{badge.label}</span>
+    </div>
+    <p class="text-sm text-white/80 md:pt-1.5">
+      <span class="text-accent">Responde: {answers}</span> · {change}
+    </p>
+  </div>
+</aside>

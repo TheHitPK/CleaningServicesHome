@@ -1,26 +1,29 @@
 ---
 import Field from '../ui/Field.astro';
 import Button from '../ui/Button.astro';
-import { services } from '../../data/site';
-import { booking } from '../../data/content';
+import FormResult from '../ui/FormResult.astro';
+import { serviceOptions } from '../../data/site';
+import { booking, formErrors } from '../../data/content';
 
 interface Props { class?: string }
 const { class: className } = Astro.props;
 ---
+<!-- on-light: restablece el color de foco (deep) dentro del hero oscuro -->
 <form
-  class:list={['grid gap-5 rounded-lg bg-white px-6 py-8 text-body shadow-lg sm:px-8', className]}
+  class:list={['on-light grid gap-5 rounded-lg bg-white px-6 py-8 text-body shadow-lg sm:px-8', className]}
   data-sms-form aria-labelledby="booking-title" novalidate
 >
   <h2 class="text-center text-h3 tracking-[-0.01em]" id="booking-title">{booking.title}</h2>
   <div class="grid gap-4">
-    <Field id="bk-name" name="name" label="Your name" placeholder="Full name" required autocomplete="name" />
-    <Field id="bk-phone" name="phone" label="Phone number" type="tel" inputmode="tel" placeholder="(000) 000-0000" required autocomplete="tel" />
-    <Field id="bk-zip" name="zip" label="ZIP code" inputmode="numeric" pattern="\d{5}" maxlength={5} placeholder="Your Arizona ZIP code" required autocomplete="postal-code" />
-    <Field id="bk-service" name="service" label="Choose a service" as="select" options={services.map((s) => s.name)} />
+    <Field id="bk-name" name="name" label="Full Name" placeholder="Your name" required autocomplete="name" error={formErrors.name} />
+    <Field id="bk-phone" name="phone" label="Phone Number" type="tel" inputmode="tel" placeholder="Your phone number" required minlength={10} maxlength={20} autocomplete="tel" error={formErrors.phone} />
+    <Field id="bk-zip" name="zip" label="ZIP Code" inputmode="numeric" pattern="[0-9]{5}" maxlength={5} placeholder="Your Arizona ZIP code" required autocomplete="postal-code" error={formErrors.zip} />
+    <Field id="bk-service" name="service" label="Choose a Service" as="select" options={serviceOptions} />
   </div>
   <Button type="submit" block icon="arrow-up-right">{booking.cta}</Button>
+  <p class="text-center text-sm data-[tone=error]:text-error data-[tone=info]:text-deep empty:hidden" role="status" aria-live="polite" data-form-status></p>
+  <FormResult />
   <p class="text-center text-[.8125rem] leading-normal text-muted">{booking.note}</p>
-  <p class="text-center text-sm text-error empty:hidden" role="status" aria-live="polite" data-form-status></p>
 </form>
 
 <script>

@@ -1,0 +1,26 @@
+---
+// Franja de confianza. Comparte el grid del hero, como About: la columna derecha
+// queda libre para la booking card que baja desde el hero.
+import Icon from '../icons/Icon.astro';
+import { trust } from '../../data/content';
+---
+<section class="pt-[calc(var(--section-y)*.6+2rem)] pb-[calc(var(--section-y)*.6)] lg:min-h-[280px] lg:pt-14" aria-labelledby="trust-title">
+  <div class="container-site lg:grid lg:grid-cols-[1fr_var(--booking-w)] lg:gap-12">
+    <div>
+      <h2 id="trust-title" class="sr-only">{trust.title}</h2>
+      <ul class="grid gap-6 sm:grid-cols-2">
+        {trust.items.map((t) => (
+          <li class="flex items-center gap-4">
+            <span class="grid size-14 shrink-0 place-items-center rounded-full bg-accent-100 text-primary">
+              <Icon name={t.icon} size={24} />
+            </span>
+            <span>
+              <strong class="block font-display text-h4 text-primary">{t.value}</strong>
+              <span class="text-sm text-muted">{t.label}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
