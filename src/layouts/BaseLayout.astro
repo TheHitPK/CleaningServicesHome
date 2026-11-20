@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import manropeUrl from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
 import dmSansUrl from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
-import { site, serviceAreas } from '../data/site';
+import { site, social, serviceAreas } from '../data/site';
 
 interface Props {
   title: string;
@@ -29,6 +29,7 @@ const jsonLd = {
   url: Astro.site?.toString(),
   areaServed: serviceAreas.map((city) => ({ '@type': 'City', name: `${city}, AZ` })),
   address: { '@type': 'PostalAddress', addressRegion: 'AZ', addressCountry: 'US' },
+  sameAs: social.map((s) => s.href),
 };
 ---
 <!doctype html>

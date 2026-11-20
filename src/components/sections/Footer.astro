@@ -1,7 +1,7 @@
 ---
 import Logo from '../ui/Logo.astro';
 import Icon from '../icons/Icon.astro';
-import { site, servicesByPriority, nav, tel, anchor } from '../../data/site';
+import { site, social, servicesByPriority, nav, tel, anchor } from '../../data/site';
 import { footer } from '../../data/content';
 
 const path = Astro.url.pathname;
@@ -17,6 +17,19 @@ const pages = nav.map((item) => ({ label: item.label, href: anchor(item.href, pa
         <p class="my-2 max-w-[34ch]">{footer.about}</p>
         <a class={link} href={tel}><Icon name="phone" size={16} class="text-accent" /> {site.phone.display}</a>
         <a class={link} href={`mailto:${site.email}`}><Icon name="mail" size={16} class="text-accent" /> {site.email}</a>
+        <ul class="mt-3 flex gap-3" aria-label="Social media">
+          {social.map((s) => (
+            <li>
+              <a
+                class="grid size-11 place-items-center rounded-full border border-white/20 text-white transition-colors duration-150 hover:border-accent hover:bg-accent hover:text-primary"
+                href={s.href} target="_blank" rel="noopener noreferrer"
+                aria-label={`${site.name} on ${s.name} (opens in a new tab)`}
+              >
+                <Icon name={s.icon} size={20} />
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
       <nav aria-labelledby="ft-links">
         <h2 class={title} id="ft-links">{footer.pagesTitle}</h2>
