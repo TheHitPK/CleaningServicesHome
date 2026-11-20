@@ -47,3 +47,9 @@ Videos de la carpeta "Material WhatsApp". Todavía no están conectados a la pá
 | `our-work/living-bedrooms/tile-floor-mopping.mp4` | 935b53fc-0bab-4a5d-956c-fccc875e83a1.mp4 |
 | `our-work/outdoor/patio-cleanup.mp4` | 33f92c5c-c6e0-4446-b62b-800718d8a7e2.mp4 |
 | `our-work/windows/sliding-door-glass.mp4` | f6f1495c-9794-4945-a595-5d26334ed76e.mp4 |
+
+## Reels de Our Work (reels/)
+
+| Archivo | Original | Notas |
+|---|---|---|
+| `our-work/reels/move-out-reel.mp4` | IMG_1645.MOV (enviado por el cliente, 2026-11-17) | Convertido de HEVC 1080×1920 (30 MB) a H.264 576×1024 (3,3 MB) con ffmpeg: `-vf scale=576:-2 -c:v libx264 -crf 26 -c:a aac -b:a 96k -movflags +faststart` |

@@ -19,6 +19,12 @@ export const site = {
   yearsOfExperience: 14,
 } as const;
 
+/** Redes sociales oficiales (confirmadas por el cliente). Se muestran en el footer y van en el JSON-LD (sameAs). */
+export const social = [
+  { name: 'Instagram', icon: 'instagram', href: 'https://www.instagram.com/cleaning4youllc/' },
+  { name: 'Facebook', icon: 'facebook', href: 'https://www.facebook.com/cleaning4youllc' },
+] as const;
+
 export const tel = `tel:${site.phone.e164}`;
 export const sms = (body?: string) =>
   body ? `sms:${site.phone.e164}?body=${encodeURIComponent(body)}` : `sms:${site.phone.e164}`;
