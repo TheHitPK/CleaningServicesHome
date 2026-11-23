@@ -1,11 +1,27 @@
-// Cloudflare Workers (Workers Builds): el sitio es 100 % estático, así que el Worker
-// solo sirve los archivos de dist/ (sin código de servidor ni adaptador de Astro).
+// Cloudflare Workers (Workers Builds).
+// - El sitio es estático: el Worker sirve dist/ tal cual.
+// - Solo /api/* pasa primero por el Worker (worker/index.ts): ahí llegan los formularios y se envían por email.
 {
   "name": "cleaningserviceshome",
+  "main": "worker/index.ts",
   "compatibility_date": "2026-11-01",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     // Rutas inexistentes → dist/404.html con código 404
-    "not_found_handling": "404-page"
-  }
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  // Email Routing: el Worker solo puede enviar a direcciones verificadas en
+  // Cloudflare → Email → Email Routing → Destination addresses.
+  // Debe coincidir con site.email (src/data/site.ts) y con MAIL_TO.
+  "send_email": [
+    { "name": "QUOTE_EMAIL", "destination_address": "cleaning4youllc@gmail.com" }
+  ],
+  "vars": {
+    // Remitente: cualquier dirección del dominio con Email Routing activo (no necesita buzón)
+    "MAIL_FROM": "quotes@cleaning4you-llc.com",
+    "MAIL_TO": "cleaning4youllc@gmail.com"
+  },
+  "observability": { "enabled": true }
 }

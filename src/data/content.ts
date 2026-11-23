@@ -16,16 +16,16 @@ import reelMove from '../assets/images/our-work/reels/move-out-cover.jpg';
 import reelPost from '../assets/images/our-work/reels/post-construction-cover.jpg';
 import reelDeep from '../assets/images/our-work/reels/deep-cleaning-cover.jpg';
 // Videos del cliente (Our Work): Vite los copia a dist/_astro con hash; se descargan solo al reproducir.
-import videoMove from '../assets/videos/our-work/kitchens/apartment-walkthrough.mp4?url';
+import videoMove from '../assets/videos/our-work/reels/move-out-reel.mp4?url';
 import videoPost from '../assets/videos/our-work/kitchens/island-walkthrough.mp4?url';
 import videoDeep from '../assets/videos/our-work/details/ceiling-fan.mp4?url';
 // Our Work: álbum
-import workMove from '../assets/images/services/move-out/kitchen-counters-logo.jpg';
-import workPost from '../assets/images/services/post-construction/new-kitchen-logo.jpg';
+import workMove from '../assets/images/services/move-out/kitchen-counters-no-logo.jpg';
+import workPost from '../assets/images/services/post-construction/new-kitchen-no-logo.jpg';
 import workResidential from '../assets/images/our-work/kitchen-05.jpg';
-import workPostDetails from '../assets/images/services/post-construction/carpet-vacuuming-logo.jpg';
+import workPostDetails from '../assets/images/services/post-construction/carpet-vacuuming-no-logo.jpg';
 import workMoveKitchen from '../assets/images/our-work/sink-01.jpg';
-import workCommercial from '../assets/images/services/commercial/lobby-floor-logo.jpg';
+import workCommercial from '../assets/images/services/commercial/lobby-floor-no-logo.jpg';
 import workLiving from '../assets/images/our-work/living-room-02.jpg';
 import workBathroom from '../assets/images/our-work/bathroom-01.jpg';
 import workFamilyRoom from '../assets/images/our-work/living-room-01.jpg';
@@ -47,8 +47,10 @@ export const hero = {
 
 export const booking = {
   title: 'Request a Free Quote',
-  cta: 'Text my request',
-  note: 'Demo only. Opens a text message to our team on your phone; nothing is sent to a server.',
+  cta: 'Send my request',
+  /** En mobile el formulario también abre un SMS, así que el botón lo dice */
+  ctaMobile: 'Text my request',
+  note: 'We will reply by phone or text. Your details are only used to answer your request.',
 };
 
 // ② About — ref. 02-about.jpg
@@ -353,8 +355,9 @@ export const contact = {
   eyebrow: 'Get in touch',
   title: 'Ready for a fresh start?',
   lead: 'Our team will help you with service information and scheduling.',
-  submit: 'Text my request',
-  note: 'Opens a text message to our team on your phone. Nothing is sent to a server.',
+  submit: 'Send my request',
+  submitMobile: 'Text my request',
+  note: 'We will reply by phone or text. Your details are only used to answer your request.',
 };
 
 /** Errores en línea: causa + cómo corregirlo (ui-ux-pro-max: error-clarity) */

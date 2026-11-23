@@ -1,13 +1,13 @@
 ---
-// Panel que se muestra en escritorio al enviar un formulario maqueta:
-// las computadoras no abren SMS, así que se muestra el mensaje listo para copiar.
+// Plan B en escritorio: si el envío a /api/quote falla, se muestra el mensaje listo para copiar
+// (las computadoras no abren SMS).
 import Icon from '../icons/Icon.astro';
 import { site, tel } from '../../data/site';
 ---
 <div class="grid gap-3 rounded-md border border-line border-l-4 border-l-accent bg-white p-5" data-form-result hidden>
-  <p class="font-display text-h4 font-bold text-primary" tabindex="-1" data-form-result-title>Your request is ready</p>
+  <p class="font-display text-h4 font-bold text-primary" tabindex="-1" data-form-result-title>We couldn't send your request</p>
   <p class="text-sm">
-    Text messages can't be sent from this computer. Send this message to
+    Something went wrong on our side. Please send this message to
     <a class="font-bold text-deep underline-offset-4 hover:underline" href={tel}>{site.phone.display}</a>
     from your phone, or give us a call.
   </p>

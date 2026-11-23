@@ -1,0 +1,10 @@
+---
+// Campo trampa contra bots: fuera de pantalla y oculto para lectores de pantalla.
+// Una persona nunca lo llena; si llega con texto, el Worker descarta el envío sin avisar.
+interface Props { id: string }
+const { id } = Astro.props;
+---
+<div class="absolute -left-[9999px] size-px overflow-hidden" aria-hidden="true">
+  <label for={id}>Leave this field empty</label>
+  <input id={id} name="website" type="text" tabindex="-1" autocomplete="off" data-honeypot />
+</div>

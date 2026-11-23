@@ -69,6 +69,15 @@ Fotogramas sacados de los videos de Our Work:
 
 | Archivo | Video | Momento |
 |---|---|---|
-| `our-work/reels/move-out-cover.jpg` | `videos/our-work/kitchens/apartment-walkthrough.mp4` | 70 % (~11 s) |
+| `our-work/reels/move-out-cover.jpg` | `videos/our-work/reels/move-out-reel.mp4` | ~10 s |
 | `our-work/reels/post-construction-cover.jpg` | `videos/our-work/kitchens/island-walkthrough.mp4` | 10 % (~1 s) |
 | `our-work/reels/deep-cleaning-cover.jpg` | `videos/our-work/details/ceiling-fan.mp4` | 30 % (~1,2 s) |
+
+## Versiones sin logo (enviadas por el cliente, 2026-11-17)
+
+| Archivo | Original | Reemplaza a |
+|---|---|---|
+| `services/post-construction/new-kitchen-no-logo.jpg` | Cocina moderna con suelo de roble.png | `services/post-construction/new-kitchen-logo.jpg` |
+| `services/commercial/lobby-floor-no-logo.jpg` | Interior Comercial con Suelo Reflectante y Trabajadores.png | `services/commercial/lobby-floor-logo.jpg` |
+| `services/move-out/kitchen-counters-no-logo.jpg` | Limpieza profunda en la cocina.png | `services/move-out/kitchen-counters-logo.jpg` |
+| `services/post-construction/carpet-vacuuming-no-logo.jpg` | Trabajadora de limpieza con aspiradora industrial.png | `services/post-construction/carpet-vacuuming-logo.jpg` |
