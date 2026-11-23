@@ -1,11 +1,16 @@
-// Formularios maqueta: validan con errores en línea y arman un mensaje.
-// Mobile: abren un borrador SMS. Escritorio (sin app de SMS): muestran el mensaje listo para copiar.
-// No envían nada a un servidor.
+// Formularios de cotización: validan con errores en línea y envían la solicitud por email
+// (POST /api/quote → Worker de Cloudflare → site.email; ver worker/index.ts).
+// - Computadora (pointer: fine): solo email. Si falla, se pide llamar al teléfono.
+// - Celular/tablet (pointer: coarse): email Y, además, abre un borrador SMS con la misma solicitud.
+//   El email sale con `keepalive`, así no se corta aunque el navegador pase a la app de Mensajes.
+// En `npm run dev` no hay Worker: el email falla (en mobile igual se abre el SMS).
 import { site, sms } from '../data/site';
 
 type Control = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
-const isDesktop = (): boolean => matchMedia('(hover: hover) and (pointer: fine)').matches;
+const ENDPOINT = '/api/quote';
+/** Mismo criterio que las variantes `pointer-coarse:` / `pointer-fine:` de Tailwind */
+const isTouch = (): boolean => matchMedia('(pointer: coarse)').matches;
 
 function validate(control: Control): boolean {
   const valid = control.checkValidity();
@@ -27,10 +32,24 @@ function buildMessage(form: HTMLFormElement, controls: Control[]): string {
   return lines.join('\n');
 }
 
+async function sendEmail(form: HTMLFormElement): Promise<boolean> {
+  const body = new FormData(form);
+  body.set('source', `${form.dataset.formSource ?? 'Website form'} (${isTouch() ? 'mobile' : 'desktop'})`);
+  try {
+    const response = await fetch(ENDPOINT, { method: 'POST', body, keepalive: true, headers: { Accept: 'application/json' } });
+    if (!response.ok) return false;
+    const result = (await response.json()) as { ok?: boolean };
+    return result.ok === true;
+  } catch {
+    return false;
+  }
+}
+
 for (const form of document.querySelectorAll<HTMLFormElement>('[data-sms-form]')) {
-  const controls = [...form.querySelectorAll<Control>('input, select, textarea')];
+  // El campo trampa (Honeypot) no se valida ni entra en el mensaje
+  const controls = [...form.querySelectorAll<Control>('input, select, textarea')].filter((c) => !c.hasAttribute('data-honeypot'));
   const status = form.querySelector<HTMLElement>('[data-form-status]');
-  const result = form.querySelector<HTMLElement>('[data-form-result]');
+  const submit = form.querySelector<HTMLButtonElement>('[type="submit"]');
 
   const setStatus = (text: string, tone: 'error' | 'info'): void => {
     if (!status) return;
@@ -45,12 +64,12 @@ for (const form of document.querySelectorAll<HTMLFormElement>('[data-sms-form]')
     });
     control.addEventListener('input', () => {
       if (control.hasAttribute('aria-invalid')) validate(control);
-      if (result) result.hidden = true;
     });
   }
 
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
+    if (form.hasAttribute('aria-busy')) return;
 
     const invalid = controls.filter((c) => !validate(c));
     if (invalid.length) {
@@ -59,30 +78,39 @@ for (const form of document.querySelectorAll<HTMLFormElement>('[data-sms-form]')
       return;
     }
 
+    const touch = isTouch();
     const message = buildMessage(form, controls);
+    form.setAttribute('aria-busy', 'true');
+    if (submit) submit.disabled = true;
 
-    if (isDesktop() && result) {
-      setStatus('', 'info');
-      result.querySelector('[data-form-message]')!.textContent = message;
-      result.hidden = false;
-      result.querySelector<HTMLElement>('[data-form-result-title]')?.focus();
-      return;
+    // Se arma antes de resetear el formulario; el envío por email arranca ya
+    const emailSent = sendEmail(form);
+
+    if (touch) {
+      // Mobile: también el SMS. Se abre dentro del mismo gesto del usuario (iOS bloquea sms: tras un await).
+      setStatus('Opening your messages app… Just tap send to text us your request.', 'info');
+      window.location.href = sms(message);
+    } else {
+      setStatus('Sending your request…', 'info');
     }
 
-    setStatus(`Opening your messages app… If nothing happens, text us at ${site.phone.display}.`, 'info');
-    window.location.href = sms(message);
-  });
+    const sent = await emailSent;
+    form.removeAttribute('aria-busy');
+    if (submit) submit.disabled = false;
 
-  // Copiar el mensaje (escritorio)
-  const copy = result?.querySelector<HTMLButtonElement>('[data-copy]');
-  copy?.addEventListener('click', async () => {
-    const label = copy.querySelector('[data-copy-label]')!;
-    try {
-      await navigator.clipboard.writeText(result!.querySelector('[data-form-message]')!.textContent ?? '');
-      label.textContent = 'Copied!';
-    } catch {
-      label.textContent = 'Select and copy the text above';
+    if (sent) {
+      form.reset();
+      setStatus(
+        touch
+          ? `Thank you! Your request was also sent by email. We'll contact you soon.`
+          : `Thank you! Your request was sent. We'll contact you soon. For urgent requests call ${site.phone.display}.`,
+        'info',
+      );
+    } else if (touch) {
+      setStatus(`Please send the text message that just opened. If it didn't open, text or call us at ${site.phone.display}.`, 'info');
+    } else {
+      setStatus(`We couldn't send your request. Please try again in a moment or call us at ${site.phone.display}.`, 'error');
     }
-    setTimeout(() => { label.textContent = 'Copy message'; }, 2500);
+    status?.focus();
   });
 }

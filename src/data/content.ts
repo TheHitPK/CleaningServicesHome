@@ -47,8 +47,10 @@ export const hero = {
 
 export const booking = {
   title: 'Request a Free Quote',
-  cta: 'Text my request',
-  note: 'Demo only. Opens a text message to our team on your phone; nothing is sent to a server.',
+  cta: 'Send my request',
+  /** En mobile el formulario también abre un SMS, así que el botón lo dice */
+  ctaMobile: 'Text my request',
+  note: 'We will reply by phone or text. Your details are only used to answer your request.',
 };
 
 // ② About — ref. 02-about.jpg
@@ -353,8 +355,9 @@ export const contact = {
   eyebrow: 'Get in touch',
   title: 'Ready for a fresh start?',
   lead: 'Our team will help you with service information and scheduling.',
-  submit: 'Text my request',
-  note: 'Opens a text message to our team on your phone. Nothing is sent to a server.',
+  submit: 'Send my request',
+  submitMobile: 'Text my request',
+  note: 'We will reply by phone or text. Your details are only used to answer your request.',
 };
 
 /** Errores en línea: causa + cómo corregirlo (ui-ux-pro-max: error-clarity) */
