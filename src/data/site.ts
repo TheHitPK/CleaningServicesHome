@@ -23,6 +23,7 @@ export const site = {
 export const social = [
   { name: 'Instagram', icon: 'instagram', href: 'https://www.instagram.com/cleaning4youllc/' },
   { name: 'Facebook', icon: 'facebook', href: 'https://www.facebook.com/cleaning4youllc' },
+  { name: 'TikTok', icon: 'tiktok', href: 'https://www.tiktok.com/@cleaning4youllc' },
 ] as const;
 
 export const tel = `tel:${site.phone.e164}`;

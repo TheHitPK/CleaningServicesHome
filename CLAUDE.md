@@ -15,7 +15,7 @@ Landing de una sola página para **Cleaning 4 You LLC**, empresa de limpieza pro
 - **Páginas internas solo en dev:** `/propuesta` se ve con `npm run dev` pero **nunca** sale publicada: la integración `internal-pages-dev-only` de `astro.config.ts` las borra de `dist/` al terminar el build. No las nombres en `robots.txt`, el sitemap ni ningún link público.
 - **Sistema de diseño:** [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) es la fuente de verdad visual. Si algo no está ahí, primero se agrega al documento y después se implementa.
 - **Look aprobado:** las capturas de [docs/referencias/](docs/referencias/) (demo anterior) y las de `contenido-aprobado/` definen el estilo de cada sección. Su tabla de lectura está en `DESIGN_SYSTEM.md` §6. El hero no sigue esas capturas: sigue la estructura de Moppers.
-- **Decisiones cerradas:** los formularios son **maqueta**: sin backend, arman un borrador `sms:` (mobile) o muestran el mensaje para copiar (escritorio). Los testimonios pasaron a **extra** porque no aparecen en el contenido aprobado.
+- **Formularios (aprobado por el usuario):** envían a `POST /api/quote` → Worker de Cloudflare (`worker/index.ts`) → email a `cleaning4youllc@gmail.com` con **Cloudflare Email Routing** (binding `send_email` en `wrangler.jsonc`; la dirección tiene que estar verificada en Email → Email Routing → Destination addresses). No se guarda nada: el email es el único registro. **Computadora** (`pointer: fine`): solo email; si falla, pide llamar. **Celular** (`pointer: coarse`): email (con `keepalive`) **y además** abre un borrador `sms:`; el botón dice "Text my request" y el botón "Send a text" de Contact solo se ve en pantallas táctiles (`pointer-fine:hidden`). En `npm run dev` no hay Worker y el email falla. Anti-spam: campo trampa `Honeypot` + chequeo de `Origin` + validación y límites de largo en el Worker.
 
 ## Stack (no cambiar sin preguntar)
 
@@ -82,11 +82,15 @@ src/
     sitemap.xml.ts       # sitemap sin dependencias; solo páginas indexables (hoy, solo "/")
     propuesta.astro      # propuesta de estructura (noindex) con notas por sección; se conserva como referencia
   scripts/
-    sms-form.ts          # lógica compartida de los formularios maqueta
+    sms-form.ts          # lógica compartida de los formularios: POST /api/quote y plan B por SMS
     quote-links.ts       # links a #quote (preseleccionan servicio) y sms: en escritorio → formulario
                          # (nav, tabs, filtros y barra mobile viven en el <script> de su componente)
   styles/
     global.css           # @import "tailwindcss" + @theme (tokens) + @utility propias + base
+worker/
+  index.ts               # Worker de Cloudflare: sirve dist/ y atiende POST /api/quote (email vía Email Routing)
+  cloudflare-email.d.ts  # tipos mínimos de `cloudflare:email` (sin @cloudflare/workers-types)
+wrangler.jsonc           # config del Worker: assets (dist/), run_worker_first /api/*, send_email, vars MAIL_FROM/MAIL_TO
 scripts/
   astro.ts               # wrapper del CLI de Astro: normaliza `c:` → `C:` en Windows (ver Comandos)
   check-placeholders.ts  # post-build: avisa si quedan lorem/placeholders y FALLA si una página salió sin CSS
@@ -108,7 +112,7 @@ docs/
 - **Diálogos:** `ui/Dialog.astro` (`<dialog>` nativo). Se abren con `data-dialog-open="<id>"`; los links internos con `data-dialog-close` cierran el diálogo antes de navegar.
 - **Páginas que no son la home:** los links a secciones usan `anchor("#x", Astro.url.pathname)` de `site.ts` (`#x` en la home, `/#x` en el resto). `BaseLayout` acepta `noindex`.
 - **Foco:** las secciones oscuras llevan la clase `on-dark` (foco sky) y las cards blancas dentro de ellas, `on-light` (foco deep).
-- **Formularios:** cada campo validable recibe `error="..."` (causa + cómo corregirlo, en `formErrors` de `content.ts`) y el formulario incluye `<FormResult />` para escritorio.
+- **Formularios:** cada campo validable recibe `error="..."` (causa + cómo corregirlo, en `formErrors` de `content.ts`). Los de la home llevan `<Honeypot />` y `data-form-source` (se ve en el email). `FormResult` solo queda en `/propuesta`.
 - **Estado desde JS:** el JS cambia atributos (`hidden`, `aria-selected`, `aria-pressed`, `aria-expanded`, `data-open`, `data-visible`) y Tailwind los estiliza con variantes (`aria-selected:bg-primary`, `data-[open]:block`). El JS no toca clases.
 - **Datos:** ningún componente escribe a mano el teléfono, email o lista de servicios. Todo se importa de `src/data/site.ts`.
 - **Templates:** nunca concatenes strings con placeholders tipo `{title}`. Usa interpolación de Astro en build. Para contenido que cambia en cliente (tabs), renderiza **todos los paneles en el HTML** y alterna `hidden`. Así no hay JS que pueda dejar `{EYEBROW}` en pantalla (fue un bug del demo anterior).
@@ -121,7 +125,7 @@ docs/
 Es un concepto para un negocio real. Para no publicar datos falsos:
 - Testimonios, contadores, logos de clientes y fotos de "proyectos" son **placeholders**. Cada uno lleva `data-placeholder` en el HTML y un comentario `<!-- PLACEHOLDER: ... -->`.
 - **No inventes** precios, premios, certificaciones, años de fundación, reseñas con nombre ni ratings. Los únicos datos confirmados son **14 años de experiencia**, el teléfono **(602) 396-3955**, el email **Cleaning4youllc@gmail.com** y las ciudades de `site.ts`.
-- El formulario **no envía nada a un servidor**: arma un borrador `sms:+16023963955?body=...`.
+- El formulario envía la solicitud por email (ver **Formularios** arriba). Si falla, arma un borrador `sms:+16023963955?body=...`.
 - El build de producción (`npm run build`) avisa con un warning si quedan `data-placeholder` (script `scripts/check-placeholders.ts`).
 
 ## Accesibilidad (mínimos)

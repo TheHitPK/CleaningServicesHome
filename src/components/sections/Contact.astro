@@ -3,7 +3,7 @@
 import SectionHeading from '../ui/SectionHeading.astro';
 import Button from '../ui/Button.astro';
 import Field from '../ui/Field.astro';
-import FormResult from '../ui/FormResult.astro';
+import Honeypot from '../ui/Honeypot.astro';
 import { site, serviceOptions, sms, tel } from '../../data/site';
 import { contact, formErrors } from '../../data/content';
 ---
@@ -13,7 +13,8 @@ import { contact, formErrors } from '../../data/content';
       <SectionHeading eyebrow={contact.eyebrow} title={contact.title} lead={contact.lead} id="contact-title" class="mb-8!" />
       <div class="flex w-full flex-wrap gap-3 max-sm:[&>*]:basis-full">
         <Button variant="secondary" href={tel} iconStart="phone">Call now</Button>
-        <Button href={sms()} iconStart="message">Send a text</Button>
+        <!-- En computadora no hay app de SMS: el botón solo se muestra en pantallas táctiles -->
+        <Button href={sms()} iconStart="message" class="pointer-fine:hidden">Send a text</Button>
       </div>
       <p class="mt-8 grid gap-1">
         <a class="font-display text-2xl leading-tight font-extrabold text-primary hover:text-deep" href={tel}>{site.phone.display}</a>
@@ -21,14 +22,18 @@ import { contact, formErrors } from '../../data/content';
       </p>
     </div>
 
-    <form id="quote-form" class="grid gap-5 rounded-lg border border-line bg-soft px-6 py-8 md:p-10" data-sms-form aria-label="Quote request" novalidate>
+    <form id="quote-form" class="relative grid gap-5 rounded-lg border border-line bg-soft px-6 py-8 md:p-10" data-sms-form data-form-source="Contact form" aria-label="Quote request" novalidate>
       <Field onSoft id="ct-name" name="name" label="Your name" placeholder="Full name" required autocomplete="name" error={formErrors.name} />
+      <Field onSoft id="ct-phone" name="phone" label="Phone number" type="tel" inputmode="tel" placeholder="Your phone number" required minlength={10} maxlength={20} autocomplete="tel" error={formErrors.phone} />
+      <Field onSoft id="ct-email" name="email" label="Email (optional)" type="email" inputmode="email" placeholder="name@example.com" autocomplete="email" error={formErrors.email} />
       <Field onSoft id="ct-zip" name="zip" label="ZIP code" inputmode="numeric" pattern="[0-9]{5}" maxlength={5} placeholder="Your Arizona ZIP code" required autocomplete="postal-code" error={formErrors.zip} />
       <Field onSoft id="ct-service" name="service" label="Cleaning service" as="select" options={serviceOptions} />
       <Field onSoft id="ct-details" name="details" label="Project details (optional)" as="textarea" placeholder="Tell us a little about your space" maxlength={500} />
-      <Button type="submit" block icon="arrow-up-right">{contact.submit}</Button>
-      <p class="text-sm data-[tone=error]:text-error data-[tone=info]:text-deep empty:hidden" role="status" aria-live="polite" data-form-status></p>
-      <FormResult />
+      <Honeypot id="ct-website" />
+      <Button type="submit" block icon="arrow-up-right">
+        <span class="pointer-coarse:hidden">{contact.submit}</span><span class="hidden pointer-coarse:inline">{contact.submitMobile}</span>
+      </Button>
+      <p class="text-sm data-[tone=error]:text-error data-[tone=info]:text-deep empty:hidden" role="status" aria-live="polite" tabindex="-1" data-form-status></p>
       <p class="text-[.8125rem] leading-normal text-muted">{contact.note}</p>
     </form>
   </div>
